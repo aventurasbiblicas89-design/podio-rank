@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pódio — O ranking que você disputa de verdade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0E1220;
+    --bg-raised: #161B2E;
+    --bg-raised-2: #1D2338;
+    --text: #E9ECF6;
+    --text-dim: #9AA1BC;
+    --line: rgba(233,236,246,0.09);
+    --gold: #FFB020;
+    --silver: #C7CEDC;
+    --bronze: #E07A4E;
+    --blue: #5B8CFF;
+    --green: #3ECF8E;
+    --red: #FF5A6E;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.num,.price{ font-family:'Space Grotesk', sans-serif; }
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:1040px; margin:0 auto; padding:0 24px; }
+  button{ font-family:'Inter', sans-serif; cursor:pointer; border:none; }
+
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 20%, transparent 75%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* Timer bar */
+  .timer-bar{
+    position:relative; z-index:2;
+    background: linear-gradient(90deg, rgba(255,90,110,0.15), rgba(255,176,32,0.1));
+    border-bottom:1px solid var(--line);
+    padding:10px 0;
+    text-align:center;
+    font-size:0.86rem;
+  }
+  .timer-bar strong{ color: var(--gold); font-family:'Space Grotesk', sans-serif; }
+
+  header{
+    position:relative; z-index:1;
+    padding:22px 0;
+    border-bottom:1px solid var(--line);
+  }
+  header .wrap{ display:flex; align-items:center; justify-content:space-between; }
+  .brand{ font-weight:700; font-size:1.25rem; display:flex; align-items:center; gap:8px; }
+  .brand .dot{ width:9px; height:9px; border-radius:50%; background:var(--gold); box-shadow:0 0 10px var(--gold); }
+  .live{
+    display:flex; align-items:center; gap:8px;
+    font-size:0.82rem; color:var(--text-dim);
+  }
+  .live .pulse{
+    width:7px; height:7px; border-radius:50%; background:var(--green);
+    box-shadow:0 0 8px var(--green);
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+
+  .hero{ position:relative; z-index:1; padding:64px 0 54px; }
+  .hero h1{
+    font-size:clamp(2.3rem, 5.2vw, 3.5rem);
+    font-weight:700;
+    line-height:1.08;
+    max-width:16ch;
+  }
+  .hero .lede{
+    margin-top:20px;
+    font-size:1.12rem;
+    color:var(--text-dim);
+    max-width:52ch;
+  }
+  .hero-ctas{ margin-top:32px; display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{ padding:13px 22px; border-radius:8px; font-weight:600; font-size:0.95rem; }
+  .btn-primary{ background:var(--gold); color:#1A1305; }
+  .btn-ghost{ background:transparent; border:1px solid var(--line); color:var(--text); }
+
+  .board{ position:relative; z-index:1; padding:20px 0 90px; }
+  .board-head{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:28px; flex-wrap:wrap; gap:10px; }
+  .board-head h2{ font-size:1.6rem; }
+  .board-head p{ color:var(--text-dim); font-size:0.92rem; }
+
+  .row{
+    display:grid;
+    grid-template-columns: 56px 1fr auto auto;
+    gap:18px; align-items:center;
+    padding:18px 20px;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:12px;
+    margin-bottom:10px;
+  }
+  .row.rank-1{ border-color:rgba(255,176,32,0.4); background:linear-gradient(180deg, rgba(255,176,32,0.07), var(--bg-raised) 60%); }
+  .row.rank-2{ border-color:rgba(199,206,220,0.3); }
+  .row.rank-3{ border-color:rgba(224,122,78,0.3); }
+
+  .rank-num{ font-size:1.4rem; font-weight:700; text-align:center; color:var(--text-dim); }
+  .row.rank-1 .rank-num{ color:var(--gold); }
+  .row.rank-2 .rank-num{ color:var(--silver); }
+  .row.rank-3 .rank-num{ color:var(--bronze); }
+
+  .entry-name{ font-weight:600; font-size:1.02rem; }
+  .entry-desc{ font-size:0.85rem; color:var(--text-dim); margin-top:2px; }
+
+  .price-block{ text-align:right; }
+  .price{ font-size:1.15rem; font-weight:700; }
+  .price-full{ font-size:0.8rem; color:var(--text-dim); text-decoration:line-through; }
+  .price-label{ font-size:0.72rem; color:var(--text-dim); margin-top:2px; }
+  .discount-tag{
+    display:inline-block; margin-left:8px;
+    font-size:0.68rem; font-weight:700;
+    background:rgba(62,207,142,0.15); color:var(--green);
+    padding:2px 6px; border-radius:5px;
+    vertical-align:middle;
+  }
+
+  .claim-btn{ padding:10px 18px; border-radius:7px; background:var(--blue); color:#fff; font-weight:600; font-size:0.88rem; white-space:nowrap; }
+
+  .empty-row{ border-style:dashed; border-color:rgba(233,236,246,0.18); background:transparent; }
+  .empty-row .entry-name{ color:var(--text-dim); font-weight:500; }
+
+  .skeleton{ opacity:0.4; }
+
+  @media (max-width:680px){
+    .row{ grid-template-columns:40px 1fr; grid-template-rows:auto auto; row-gap:12px; }
+    .price-block{ text-align:left; grid-column:2; }
+    .claim-btn{ grid-column:2; width:fit-content; }
+  }
+
+  .how{ position:relative; z-index:1; padding:70px 0; border-top:1px solid var(--line); }
+  .how-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-top:36px; }
+  .how h2{ font-size:1.6rem; }
+  .how-card{ background:var(--bg-raised); border:1px solid var(--line); border-radius:12px; padding:24px; }
+  .how-card .step-num{ font-size:0.8rem; color:var(--blue); font-weight:600; }
+  .how-card h3{ margin-top:10px; font-size:1.05rem; }
+  .how-card p{ margin-top:8px; font-size:0.9rem; color:var(--text-dim); }
+  @media (max-width:780px){ .how-grid{ grid-template-columns:1fr; } }
+
+  .overlay{
+    position:fixed; inset:0; background:rgba(6,8,16,0.72);
+    display:none; align-items:center; justify-content:center;
+    z-index:50; padding:20px;
+  }
+  .overlay.open{ display:flex; }
+  .modal{ background:var(--bg-raised-2); border:1px solid var(--line); border-radius:14px; padding:28px; max-width:400px; width:100%; }
+  .modal h3{ font-size:1.2rem; }
+  .modal p{ margin-top:8px; font-size:0.9rem; color:var(--text-dim); }
+  .modal .modal-price{ margin-top:20px; font-size:2rem; font-weight:700; }
+  .modal input{
+    margin-top:18px; width:100%;
+    padding:11px 13px; border-radius:8px;
+    background:var(--bg); border:1px solid var(--line);
+    color:var(--text); font-size:0.92rem;
+  }
+  .modal-actions{ margin-top:20px; display:flex; gap:10px; }
+  .modal-actions button{ flex:1; padding:12px; border-radius:8px; font-weight:600; font-size:0.9rem; }
+  .modal-cancel{ background:transparent; border:1px solid var(--line); color:var(--text); }
+  .modal-confirm{ background:var(--gold); color:#1A1305; }
+  .modal-note{ margin-top:14px; font-size:0.76rem; color:var(--text-dim); }
+
+  footer{ position:relative; z-index:1; padding:40px 0 60px; border-top:1px solid var(--line); }
+  footer p{ font-size:0.82rem; color:var(--text-dim); }
+</style>
+</head>
+<body>
+
+<div class="timer-bar">
+  Este ranking reseta em: <strong id="countdown">--</strong> — Garanta seu lugar no Top 10
+</div>
+
+<header>
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>Pódio</div>
+    <div class="live"><span class="pulse"></span><span id="onlineCount">312</span> disputando agora</div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>O ranking que muda porque alguém pagou pra tirar você do lugar.</h1>
+    <p class="lede">Só existem 10 posições. Toda vez que alguém reivindica uma vaga, o preço dela sobe 30% pro próximo. Toda semana, no domingo à noite, o ranking reseta do zero.</p>
+    <div class="hero-ctas">
+      <button class="btn btn-primary" onclick="document.getElementById('board').scrollIntoView({behavior:'smooth'})">Ver o ranking agora</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">Como funciona</button>
+    </div>
+  </div>
+</section>
+
+<section class="board" id="board">
+  <div class="wrap">
+    <div class="board-head">
+      <div>
+        <h2>Ranking ao vivo</h2>
+        <p>Sites, produtos e ferramentas em destaque agora</p>
+      </div>
+    </div>
+    <div id="boardList">
+      <div class="row skeleton"><div></div><div>Carregando ranking...</div><div></div><div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="wrap">
+    <h2>Como funciona</h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="step-num">01</div>
+        <h3>Escolha uma posição</h3>
+        <p>Cada vaga tem um preço atual. Quanto mais alta a posição, maior a visibilidade — e maior o preço.</p>
+      </div>
+      <div class="how-card">
+        <div class="step-num">02</div>
+        <h3>Pague pra assumir</h3>
+        <p>Ao reivindicar, seu site entra naquela posição e o preço sobe 30% para quem tentar tomar o lugar.</p>
+      </div>
+      <div class="how-card">
+        <div class="step-num">03</div>
+        <h3>Reset toda semana</h3>
+        <p>Todo domingo às 23:59, o ranking inteiro volta ao zero com os preços iniciais. Nova disputa, nova chance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Pódio é um ranking de visibilidade paga. Reivindicar uma posição não garante resultados — apenas destaque enquanto você estiver no topo.</p>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h3 id="modalTitle">Reivindicar posição</h3>
+    <p id="modalDesc">Você está prestes a assumir esta posição no ranking.</p>
+    <div class="modal-price" id="modalPrice">R$ 0</div>
+    <input type="text" id="modalName" placeholder="Nome do seu site ou produto">
+    <input type="text" id="modalUrl" placeholder="Link (ex: seusite.com)" style="margin-top:10px;">
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="modal-confirm" id="confirmBtn" onclick="confirmClaim()">Pagar com Mercado Pago</button>
+    </div>
+    <p class="modal-note" id="modalNote">Você será redirecionado para o checkout seguro do Mercado Pago.</p>
+  </div>
+</div>
+
+<script>
+  let boardState = null;
+  let activeIndex = null;
+
+  function fmt(n){ return "R$ " + n.toLocaleString('pt-BR'); }
+
+  async function loadBoard(){
+    try{
+      const res = await fetch('/.netlify/functions/get-board');
+      boardState = await res.json();
+      render();
+      updateCountdown();
+    } catch(err){
+      document.getElementById('boardList').innerHTML = '<p style="color:var(--text-dim)">Não foi possível carregar o ranking agora. Tente recarregar a página.</p>';
+    }
+  }
+
+  function render(){
+    const list = document.getElementById('boardList');
+    list.innerHTML = '';
+    boardState.entries.forEach((e, i) => {
+      const rank = i + 1;
+      const row = document.createElement('div');
+      row.className = 'row' + (rank <= 3 ? ' rank-' + rank : '') + (!e.holder ? ' empty-row' : '');
+      row.innerHTML = `
+        <div class="rank-num">#${rank}</div>
+        <div>
+          <div class="entry-name">${e.holder ? e.name : 'Posição livre'}</div>
+          <div class="entry-desc">${e.holder ? e.desc : 'Ninguém reivindicou este lugar ainda'}</div>
+        </div>
+        <div class="price-block">
+          ${e.discountActive ? `<div class="price-full">${fmt(e.basePrice)}</div>` : ''}
+          <div class="price">${fmt(e.price)}${e.discountActive ? '<span class="discount-tag">90% OFF</span>' : ''}</div>
+          <div class="price-label">para reivindicar</div>
+        </div>
+        <button class="claim-btn" onclick="openModal(${i})">${e.holder ? 'Tomar posição' : 'Reivindicar'}</button>
+      `;
+      list.appendChild(row);
+    });
+  }
+
+  function updateCountdown(){
+    if(!boardState) return;
+    const target = new Date(boardState.nextReset).getTime();
+    const el = document.getElementById('countdown');
+
+    function tick(){
+      const diff = target - Date.now();
+      if(diff <= 0){
+        el.textContent = "recarregando...";
+        loadBoard();
+        return;
+      }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      el.textContent = `${String(d).padStart(2,'0')}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+    }
+    tick();
+    setInterval(tick, 1000);
+  }
+
+  function openModal(i){
+    activeIndex = i;
+    const e = boardState.entries[i];
+    document.getElementById('modalTitle').textContent = `Posição #${i+1}`;
+    document.getElementById('modalDesc').textContent = e.holder
+      ? `Você vai tomar o lugar de "${e.name}" nesta posição.`
+      : 'Esta posição está livre. Seja o primeiro a reivindicá-la.';
+    document.getElementById('modalPrice').textContent = fmt(e.price);
+    document.getElementById('modalName').value = '';
+    document.getElementById('modalUrl').value = '';
+    document.getElementById('modalNote').textContent = 'Você será redirecionado para o checkout seguro do Mercado Pago.';
+    document.getElementById('overlay').classList.add('open');
+  }
+
+  function closeModal(){
+    document.getElementById('overlay').classList.remove('open');
+  }
+
+  async function confirmClaim(){
+    const name = document.getElementById('modalName').value.trim();
+    if(!name){ document.getElementById('modalName').focus(); return; }
+    const url = document.getElementById('modalUrl').value.trim();
+    const i = activeIndex;
+    const btn = document.getElementById('confirmBtn');
+    const note = document.getElementById('modalNote');
+
+    btn.disabled = true;
+    btn.textContent = 'Abrindo checkout...';
+
+    try{
+      const res = await fetch('/.netlify/functions/create-preference', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          index: i,
+          name,
+          url,
+          price: boardState.entries[i].price,
+          siteUrl: window.location.href
+        })
+      });
+      const data = await res.json();
+
+      if(!res.ok || !data.init_point){
+        note.textContent = 'Pagamento ainda não está configurado neste site.';
+        btn.disabled = false;
+        btn.textContent = 'Pagar com Mercado Pago';
+        return;
+      }
+
+      window.location.href = data.init_point;
+    } catch(err){
+      note.textContent = 'Erro ao conectar com o checkout. Tente novamente.';
+      btn.disabled = false;
+      btn.textContent = 'Pagar com Mercado Pago';
+    }
+  }
+
+  loadBoard();
+  setInterval(loadBoard, 30000); // mantém sincronizado com outros visitantes
+
+  setInterval(() => {
+    const el = document.getElementById('onlineCount');
+    const current = parseInt(el.textContent);
+    el.textContent = current + (Math.random() > 0.5 ? 1 : -1);
+  }, 4000);
+</script>
+
+</body>
+</html>
