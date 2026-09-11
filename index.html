@@ -183,7 +183,7 @@
 </style>
 </head>
 <body>
-<div id="online-counter" style="text-align:center;padding:8px 0;font-size:12px;font-weight:700;background:#0E1220;color:#9AA1BC;letter-spacing:.2px;border-bottom:1px solid rgba(233,236,246,.08)">7/50 vagas ocupadas • 38.421 cliques gerados</div>
+
 <div class="timer-bar">
   Este ranking reseta em: <strong id="countdown">--</strong> — Garanta seu lugar no Top 10
 </div>
@@ -288,37 +288,23 @@
       const rank = i + 1;
       const row = document.createElement('div');
       row.className = 'row' + (rank <= 3 ? ' rank-' + rank : '') + (!e.holder ? ' empty-row' : '');
-            row.innerHTML = `
+      row.innerHTML = `
         <div class="rank-num">#${rank}</div>
         <div>
-          <div class="entry-name">${e.holder || 'Posição Livre'}</div>
-          <div class="entry-desc">${e.holder? 'Ocupado por ' + e.holder : 'Seja o primeiro a ocupar'}</div>
-          <div style="font-size:11px;color:#9AA1BC;margin-top:4px;opacity:.9">R$ ${e.price || 197} · ${Math.floor(Math.random()*1500)+350} cliques · <u style="cursor:pointer" onclick="openModal(${i})">ver detalhes</u></div>
+          <div class="entry-name">${e.holder ? e.name : 'Posição livre'}</div>
+          <div class="entry-desc">${e.holder ? e.desc : 'Ninguém reivindicou este lugar ainda'}</div>
+        </div>
+        <div class="price-block">
+          ${e.discountActive ? `<div class="price-full">${fmt(e.basePrice)}</div>` : ''}
+          <div class="price">${fmt(e.price)}${e.discountActive ? '<span class="discount-tag">90% OFF</span>' : ''}</div>
           <div class="price-label">para reivindicar</div>
         </div>
-        <button class="claim-btn" onclick="openModal(${i})">${e.holder? 'Tomar' : 'Ocupar'}</button>
+        <button class="claim-btn" onclick="openModal(${i})">${e.holder ? 'Tomar posição' : 'Reivindicar'}</button>
       `;
-        
-        
-          
-          
-        
-      
-        
-          
-          
-    
-      
+      list.appendChild(row);
     });
   }
-function updateTopCounter(){
-  const total = 50;
-  const board = (typeof boardState !== 'undefined' && boardState.entries) ? boardState.entries : [];
-  const ocupadas = board.filter(e=>e.holder).length || 7;
-  const clics = 38421 + ocupadas * 123;
-  const el = document.getElementById('online-counter');
-  if(el) el.innerHTML = `${ocupadas}/${total} vagas ocupadas • ${clics.toLocaleString('pt-BR')} cliques gerados`;
-  }
+
   function updateCountdown(){
     if(!boardState) return;
     const target = new Date(boardState.nextReset).getTime();
@@ -397,47 +383,18 @@ function updateTopCounter(){
       btn.disabled = false;
       btn.textContent = 'Pagar com Mercado Pago';
     }
-       }
-  } catch(err){
-    note.textContent = 'Erro de conexão com o gateway. Tente novamente.';
-    btn.disabled = false;
-    btn.textContent = 'PAGAR E GARANTIR MINHA VAGA';
   }
-}
 
-render();
-updateCountdown();
-setInterval(updateCountdown, 1000);
+  loadBoard();
+  setInterval(loadBoard, 30000); // mantém sincronizado com outros visitantes
 
-// CONTADOR 7/50
-try{
-  const topCounter = document.getElementById('online-counter');
-  if(topCounter) topCounter.textContent = '7/50 vagas ocupadas • 38.421 cliques gerados';
-}catch(e){}
+  setInterval(() => {
+    const el = document.getElementById('onlineCount');
+    const current = parseInt(el.textContent);
+    el.textContent = current + (Math.random() > 0.5 ? 1 : -1);
+  }, 4000);
 </script>
-</body>
-</html>
 
-  
-    
-    
-        
-      
-      
-      
-    
-  }
-
-  render();
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-
-  // CONTADOR FIXO 7/50 - IGUAL DO GRINGO
-  const topCounter = document.getElementById('online-counter');
-  if (topCounter) {
-    topCounter.textContent = '7/50 vagas ocupadas • 38.421 cliques gerados';
-  }
-</script>
 </body>
 </html>
     
