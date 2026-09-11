@@ -1,6 +1,7 @@
-import { kv } from '@vercel/kv';
-const INICIAL = {10:{n:"Pedro @mercado",v:15,url:""},9:{n:"Livre",v:20,url:""},8:{n:"Livre",v:26,url:""},7:{n:"Livre",v:34,url:""},6:{n:"Livre",v:44,url:""},5:{n:"Livre",v:57,url:""},4:{n:"Livre",v:74,url:""},3:{n:"Livre",v:96,url:""},2:{n:"Livre",v:125,url:""},1:{n:"Livre",v:163,url:""}};
+import { Redis } from '@upstash/redis';
+const redis = Redis.fromEnv();
+const INICIAL = {10:{n:"Seu Primeiro",v:10,url:"https://google.com"},9:{n:"Exemplo 9",v:13,url:""},8:{n:"Exemplo 8",v:17,url:""},7:{n:"Exemplo 7",v:22,url:""},6:{n:"Exemplo 6",v:29,url:""},5:{n:"Exemplo 5",v:38,url:""},4:{n:"Exemplo 4",v:49,url:""},3:{n:"Exemplo 3",v:64,url:""},2:{n:"Exemplo 2",v:83,url:""},1:{n:"TOPO - MAIS CARO",v:108,url:""}};
 export default async function handler(req,res){
-  if(req.method==='GET'){ let r=await kv.get('ranking'); if(!r){await kv.set('ranking',INICIAL); r=INICIAL;} return res.json(r); }
-  if(req.method==='POST'){ const {pos,nome,url,preco}=req.body; let rank=await kv.get('ranking')||INICIAL; rank[pos]={n:nome,v:preco,url:url}; await kv.set('ranking',rank); return res.json({ok:true}); }
+  if(req.method==='GET'){ let r=await redis.get('ranking'); if(!r){await redis.set('ranking',INICIAL); r=INICIAL;} return res.json(r); }
+  if(req.method==='POST'){ const {pos,nome,url,preco}=req.body; let rank=await redis.get('ranking')||INICIAL; rank[pos]={n:nome,v:preco,url:url}; await redis.set('ranking',rank); return res.json({ok:true}); }
 }
