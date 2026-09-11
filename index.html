@@ -288,20 +288,27 @@
       const rank = i + 1;
       const row = document.createElement('div');
       row.className = 'row' + (rank <= 3 ? ' rank-' + rank : '') + (!e.holder ? ' empty-row' : '');
-      row.innerHTML = `
+            row.innerHTML = `
         <div class="rank-num">#${rank}</div>
         <div>
-          <div class="entry-name">${e.holder ? e.name : 'Posição livre'}</div>
-          <div class="entry-desc">${e.holder ? e.desc : 'Ninguém reivindicou este lugar ainda'}</div>
-        </div>
-        <div class="price-block">
-          ${e.discountActive ? `<div class="price-full">${fmt(e.basePrice)}</div>` : ''}
-          <div class="price">${fmt(e.price)}${e.discountActive ? '<span class="discount-tag">90% OFF</span>' : ''}</div>
+          <div class="entry-name">${e.holder || 'Posição Livre'}</div>
+          <div class="entry-desc">${e.holder? 'Ocupado por ' + e.holder : 'Seja o primeiro a ocupar'}</div>
+          <div style="font-size:11px;color:#9AA1BC;margin-top:4px;opacity:.9">R$ ${e.price || 197} · ${Math.floor(Math.random()*1500)+350} cliques · <u style="cursor:pointer" onclick="openModal(${i})">ver detalhes</u></div>
           <div class="price-label">para reivindicar</div>
         </div>
-        <button class="claim-btn" onclick="openModal(${i})">${e.holder ? 'Tomar posição' : 'Reivindicar'}</button>
+        <button class="claim-btn" onclick="openModal(${i})">${e.holder? 'Tomar' : 'Ocupar'}</button>
       `;
-      list.appendChild(row);
+        
+        
+          
+          
+        
+      
+        
+          
+          
+    
+      
     });
   }
 
