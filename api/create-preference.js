@@ -1,18 +1,18 @@
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 
-export default async (req) => {
-  if (req.method !== "POST") {
-    return new Response(JSON.stringify({ error: "Use POST" }), { status: 405 });
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Use POST' });
   }
 
   const accessToken = process.env.MP_ACCESS_TOKEN;
   if (!accessToken) {
-    return new Response(JSON.stringify({ error: "MP_ACCESS_TOKEN não configurado" }), { status: 500 });
+    return res.status(500).json({ error: 'MP_ACCESS_TOKEN nao configurado' });
   }
 
   try {
-    const body = await req.json();
-    const { index, name, url, price, siteUrl, title } = body;
+    const body = req.body || {};
+    const { title, price, name, url } = body;
 
     const client = new MercadoPagoConfig({ accessToken });
     const preference = new Preference(client);
@@ -20,31 +20,26 @@ export default async (req) => {
     const result = await preference.create({
       body: {
         items: [{
-          id: String(index || "1"),
-          title: title || name || "PódioRank TOP 10",
+          id: '1',
+          title: title || name || 'PodioRank TOP 10',
           quantity: 1,
-          unit_price: Number(price) || 29.90,
-          currency_id: "BRL"
+          unit_price: Number(price) || 29.9,
+          currency_id: 'BRL'
         }],
-        metadata: { buyer_name: name, buyer_url: url, site: siteUrl },
+        metadata: { buyer_name: name || '', buyer_url: url || '' },
         back_urls: {
-          success: "https://podiorank.com.br/sucesso.html",
-          failure: "https://podiorank.com.br/erro.html",
-          pending: "https://podiorank.com.br/pendente.html"
+          success: 'https://www.podiorank.com.br/sucesso.html',
+          failure: 'https://www.podiorank.com.br/erro.html',
+          pending: 'https://www.podiorank.com.br/pendente.html'
         },
-        auto_return: "approved"
+        auto_return: 'approved'
       }
     });
 
-    return new Response(JSON.stringify({ init_point: result.init_point }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" }
-    });
+    return res.status(200).json({ init_point: result.init_point, id: result.id });
 
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" }
-    });
+    console.log('ERRO MP:', e);
+    return res.status(500).json({ error: e.message });
   }
 }
