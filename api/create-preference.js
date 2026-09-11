@@ -1,74 +1,50 @@
+import { MercadoPagoConfig, Preference } from 'mercadopago';
+
 export default async (req) => {
   if (req.method !== "POST") {
-    return new Response(JSON.stringify({ error: "Método não permitido" }), { status: 405 });
+    return new Response(JSON.stringify({ error: "Use POST" }), { status: 405 });
   }
 
   const accessToken = process.env.MP_ACCESS_TOKEN;
   if (!accessToken) {
-    return new Response(
-      JSON.stringify({ error: "MP_ACCESS_TOKEN não configurado no Netlify" }),
-      { status: 500 }
-    );
+    return new Response(JSON.stringify({ error: "MP_ACCESS_TOKEN não configurado" }), { status: 500 });
   }
 
   try {
     const body = await req.json();
-    const { index, name, url, price, siteUrl } = body;
+    const { index, name, url, price, siteUrl, title } = body;
 
-    if (index === undefined || !name || !price) {
-      return new Response(JSON.stringify({ error: "Dados incompletos" }), { status: 400 });
-    }
+    const client = new MercadoPagoConfig({ accessToken });
+    const preference = new Preference(client);
 
-    const origin = new URL(siteUrl).origin;
-    const externalReference = JSON.stringify({ index, name, url: url || "" });
-
-    const preference = {
-      items: [
-        {
-          title: `Pódio — Posição #${index + 1}: ${name}`,
+    const result = await preference.create({
+      body: {
+        items: [{
+          id: String(index || "1"),
+          title: title || name || "PódioRank TOP 10",
           quantity: 1,
-          unit_price: Number(price),
-          currency_id: "BRL",
+          unit_price: Number(price) || 29.90,
+          currency_id: "BRL"
+        }],
+        metadata: { buyer_name: name, buyer_url: url, site: siteUrl },
+        back_urls: {
+          success: "https://podiorank.com.br/sucesso.html",
+          failure: "https://podiorank.com.br/erro.html",
+          pending: "https://podiorank.com.br/pendente.html"
         },
-      ],
-      back_urls: {
-        success: siteUrl || "/",
-        failure: siteUrl || "/",
-        pending: siteUrl || "/",
-      },
-      auto_return: "approved",
-      external_reference: externalReference,
-      notification_url: `${origin}/.netlify/functions/mp-webhook`,
-    };
-
-    const mpResponse = await fetch("https://api.mercadopago.com/checkout/preferences", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify(preference),
+        auto_return: "approved"
+      }
     });
 
-    const data = await mpResponse.json();
-
-    if (!mpResponse.ok) {
-      return new Response(JSON.stringify({ error: "Erro no Mercado Pago", details: data }), {
-        status: 502,
-      });
-    }
-
-    return new Response(JSON.stringify({ init_point: data.init_point }), {
+    return new Response(JSON.stringify({ init_point: result.init_point }), {
       status: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" }
     });
-  } catch (err) {
-    return new Response(JSON.stringify({ error: "Erro interno", details: String(err) }), {
+
+  } catch (e) {
+    return new Response(JSON.stringify({ error: e.message }), {
       status: 500,
+      headers: { "Content-Type": "application/json" }
     });
   }
-};
-
-export const config = {
-  path: "/.netlify/functions/create-preference",
-};
+}
