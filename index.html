@@ -397,23 +397,55 @@ function updateTopCounter(){
       btn.disabled = false;
       btn.textContent = 'Pagar com Mercado Pago';
     }
-  // CONTADOR HONESTO - VERSÃO SIMPLES QUE NÃO QUEBRA
-function atualizarContadorHonesto(){
-  try {
-    const el = document.getElementById('online-counter');
-    if(el){
-      el.textContent = '7/50 vagas ocupadas • 38.421 cliques gerados';
-    }
-  } catch(e){}
+       }
+  } catch(err){
+    note.textContent = 'Erro de conexão com o gateway. Tente novamente.';
+    btn.disabled = false;
+    btn.textContent = 'PAGAR E GARANTIR MINHA VAGA';
+  }
 }
 
 render();
 updateCountdown();
 setInterval(updateCountdown, 1000);
-atualizarContadorHonesto();
+
+// CONTADOR 7/50
+try{
+  const topCounter = document.getElementById('online-counter');
+  if(topCounter) topCounter.textContent = '7/50 vagas ocupadas • 38.421 cliques gerados';
+}catch(e){}
 </script>
 </body>
 </html>
+
+  
+    
+    
+        
+      
+      
+      
+    
+  }
+
+  render();
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // CONTADOR FIXO 7/50 - IGUAL DO GRINGO
+  const topCounter = document.getElementById('online-counter');
+  if (topCounter) {
+    topCounter.textContent = '7/50 vagas ocupadas • 38.421 cliques gerados';
+  }
+</script>
+</body>
+</html>
+    
+  
+
+
+
+
 
   
   
