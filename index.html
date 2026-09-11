@@ -1,65 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pódio Rank - Top 10 Mais Caro</title>
+<title>PÓDIO RANK - O outdoor mais disputado do Brasil</title>
 <style>
-body{font-family:Arial;background:#111;color:#fff;margin:0;padding:20px}
-h1{text-align:center}
-.card{background:#222;margin:10px 0;padding:15px;border-radius:10px;display:flex;justify-content:space-between;align-items:center}
-button{background:#00ff88;color:#000;border:none;padding:10px 15px;border-radius:8px;font-weight:bold;cursor:pointer}
-button:hover{background:#00cc6a}
-#loading{text-align:center;padding:20px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,Inter,Arial;background:#fafaf9;color:#111;max-width:680px;margin:0 auto;padding:20px 16px}
+header{text-align:center;padding:36px 0 16px}
+h1{font-size:38px;letter-spacing:-2px}
+.sub{color:#666;margin-top:10px}
+.stats{display:flex;gap:12px;margin:20px 0}
+.stat{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:14px;flex:1;text-align:center}
+.stat b{font-size:18px}
+.stat small{display:block;color:#999;font-size:11px;text-transform:uppercase;margin-top:2px;letter-spacing:.8px}
+.card{background:#fff;border:1px solid #e7e5e4;border-radius:16px;padding:16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.card.top{border:2px solid #111;background:#fffbeb}
+.num{background:#111;color:#fff;width:32px;height:32px;border-radius:99px;display:grid;place-items:center;font-weight:700;font-size:13px}
+.info a{color:#111;font-weight:700;text-decoration:underline; text-underline-offset:4px}
+.info small{color:#888;display:block;margin-top:2px;font-size:13px}
+.btn{background:#111;color:#fff;border:0;padding:11px 16px;border-radius:99px;font-weight:700;font-size:13px;cursor:pointer}
+#loading{text-align:center;padding:30px;color:#999}
+footer{text-align:center;color:#aaa;font-size:12px;padding:30px 0}
 </style>
 </head>
 <body>
-<h1>🏆 PÓDIO RANK - TOP 10</h1>
-<p style="text-align:center">Quem paga mais fica no topo! Igual outbid.lol</p>
-<div id="loading">Carregando ranking...</div>
+<header>
+<h1>🏆 PÓDIO RANK</h1>
+<p class="sub">Quem paga mais fica no topo. Pra sempre. Igual outbid.lol</p>
+<div class="stats">
+<div class="stat"><b id="vol">R$ --</b><small>Volume total</small></div>
+<div class="stat"><b>30% a mais</b><small>Pra tomar posição</small></div>
+</div>
+</header>
+<div id="loading">Carregando pódio...</div>
 <div id="lista"></div>
-
+<footer>podiorank.com.br • 100% automático via PIX • Mercado Pago</footer>
 <script>
-let dados = {};
-async function loadRanking(){
-  try{
-    const r = await fetch('/api/ranking');
-    dados = await r.json();
-    render();
-  }catch(e){
-    document.getElementById('loading').innerText = "Erro ao carregar. Tenta F5";
-  }
+async function load(){
+let r=await fetch('/api/ranking'); let d=await r.json();
+let total=0; for(let i=1;i<=10;i++) if(d[i]) total+=Number(d[i].v);
+document.getElementById('vol').innerText='R$ '+total;
+let html=''; for(let i=10;i>=1;i--){ let it=d[i]; if(!it) continue; let prox=Math.ceil(it.v*1.3); let acima=d[i-1]; if(acima) prox=Math.max(prox,Math.ceil(acima.v*1.3)); html+=`<div class="card ${i==1?'top':''}"><div style="display:flex;gap:12px;align-items:center"><div class="num">#${i}</div><div class="info"><a href="${it.url||'#'}" target="_blank">${it.n}</a><small>R$ ${it.v}</small></div></div><button class="btn" onclick="comprar(${i},${prox})">Tomar R$${prox}</button></div>`;}
+document.getElementById('loading').style.display='none'; document.getElementById('lista').innerHTML=html;
 }
-function render(){
-  document.getElementById('loading').style.display='none';
-  let html = "";
-  for(let i=10; i>=1; i--){
-    let d = dados[i];
-    if(!d) continue;
-    let prox = i===10? d.v : Math.ceil(dados[i+1]?.v * 1.30 || d.v * 1.30);
-    if(prox <= d.v) prox = Math.ceil(d.v * 1.30);
-    html += `<div class="card">
-      <div><b style="font-size:20px">#${i}</b> - <a href="${d.url}" target="_blank" style="color:#00ff88">${d.n}</a><br><small>R$ ${d.v}</small></div>
-      <div><button onclick="comprar(${i}, ${prox})">TOMAR POR R$${prox}</button></div>
-    </div>`;
-  }
-  document.getElementById('lista').innerHTML = html;
+async function comprar(pos,preco){
+let nome=prompt("Sua marca / nome:"); if(!nome) return;
+let url=prompt("Seu link https://..."); if(!url) return;
+let res=await fetch('/api/create-preference',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pos,preco,nome,url})});
+let data=await res.json(); if(data.init_point) location.href=data.init_point; else alert(JSON.stringify(data));
 }
-async function comprar(pos, preco){
-  let nome = prompt("Seu nome / projeto:");
-  if(!nome) return;
-  let url = prompt("Seu link (https://...):");
-  if(!url) return;
-  const res = await fetch('/api/create-preference', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({pos, preco, nome, url})
-  });
-  const data = await res.json();
-  if(data.init_point){ window.location.href = data.init_point; }
-  else{ alert("Erro: "+ (data.error||"tenta de novo")); }
-}
-loadRanking();
+load();
 </script>
 </body>
 </html>
