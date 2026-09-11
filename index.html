@@ -1,53 +1,65 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PódioRank - TOP 10</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pódio Rank - Top 10 Mais Caro</title>
 <style>
-:root{--bg:#0f1117;--card:#1c1f2b;--acc:#00ff88;--red:#ff3b3b}
-body{background:var(--bg);color:#fff;font-family:system-ui;margin:0;padding:16px}
-.wrap{max-width:900px;margin:auto}
-.badge{background:var(--card);border:1px solid #00ff8850;padding:10px 16px;border-radius:99px;display:inline-flex;gap:8px;margin:12px 0}
-.dot{width:8px;height:8px;background:var(--red);border-radius:50%;animation:p 1s infinite}
-@keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
-.card{background:var(--card);padding:14px;border-radius:12px;margin:10px 0;display:flex;justify-content:space-between}
-.btn{background:var(--acc);color:#000;padding:18px;border-radius:14px;text-decoration:none;font-weight:900;display:block;text-align:center;font-size:18px;margin:18px 0}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.s{opacity:.6;font-size:13px}
+body{font-family:Arial;background:#111;color:#fff;margin:0;padding:20px}
+h1{text-align:center}
+.card{background:#222;margin:10px 0;padding:15px;border-radius:10px;display:flex;justify-content:space-between;align-items:center}
+button{background:#00ff88;color:#000;border:none;padding:10px 15px;border-radius:8px;font-weight:bold;cursor:pointer}
+button:hover{background:#00cc6a}
+#loading{text-align:center;padding:20px}
 </style>
 </head>
 <body>
-<div class="wrap">
-<h1>🏆 PódioRank</h1>
-<div class="badge"><span class="dot"></span> <span id="counter">Carregando...</span></div>
-<a class="btn" id="btnTop" href="#" onclick="comprar(10,20)" style="background:#00ff88;color:#000;padding:14px 22px;border-radius:12px;font-weight:900;display:inline-block;margin:14px 0;text-decoration:none">🔥 ENTRAR NO TOP 10 - R$20 PIX</a>
-<div id="top"></div>
-</div>
+<h1>🏆 PÓDIO RANK - TOP 10</h1>
+<p style="text-align:center">Quem paga mais fica no topo! Igual outbid.lol</p>
+<div id="loading">Carregando ranking...</div>
+<div id="lista"></div>
+
 <script>
-const dados={
-  10:{n:"Pedro @mercado",v:15},
-  9:{n:"Livre",v:20},
-  8:{n:"Livre",v:26},
-  7:{n:"Livre",v:34},
-  6:{n:"Livre",v:44},
-  5:{n:"Livre",v:57},
-  4:{n:"Livre",v:74},
-  3:{n:"Livre",v:96},
-  2:{n:"Livre",v:125},
-  1:{n:"Livre",v:163}
+let dados = {};
+async function loadRanking(){
+  try{
+    const r = await fetch('/api/ranking');
+    dados = await r.json();
+    render();
+  }catch(e){
+    document.getElementById('loading').innerText = "Erro ao carregar. Tenta F5";
+  }
 }
 function render(){
-  let h="";for(let i=10;i>=1;i--){h+=`<div class="card"><span><b>#${i}</b> ${dados[i].n}</span><span class="s">R$${dados[i].v}</span></div>`}
-  document.getElementById('top').innerHTML=h;
-  let on=27;setInterval(()=>{on+=Math.floor(Math.random()*5)-2;if(on<15)on=15;if(on>59)on=59;document.getElementById('counter').innerText=`${on} pessoas online agora • ${Object.keys(dados).length} no ranking • 3 vagas`},2000);
-}render();
-async function comprar(idx){
-  const b=event.target;const t=b.innerText;b.innerText="⏳ Gerando PIX...";b.style.opacity=".6";
-  try{
-    const r=await fetch('/api/create-preference',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({index:idx,name:"PódioRank Top "+idx,url:"https://podiorank.com.br",price:29.90,siteUrl:"podiorank.com.br",title:"PódioRank TOP 10"})});
-    const d=await r.json();if(d.init_point)location.href=d.init_point;else{alert("Erro: "+(d.error||JSON.stringify(d)));b.innerText=t;b.style.opacity="1";}
-  }catch(e){alert("Erro conexao");b.innerText=t;b.style.opacity="1";}
+  document.getElementById('loading').style.display='none';
+  let html = "";
+  for(let i=10; i>=1; i--){
+    let d = dados[i];
+    if(!d) continue;
+    let prox = i===10? d.v : Math.ceil(dados[i+1]?.v * 1.30 || d.v * 1.30);
+    if(prox <= d.v) prox = Math.ceil(d.v * 1.30);
+    html += `<div class="card">
+      <div><b style="font-size:20px">#${i}</b> - <a href="${d.url}" target="_blank" style="color:#00ff88">${d.n}</a><br><small>R$ ${d.v}</small></div>
+      <div><button onclick="comprar(${i}, ${prox})">TOMAR POR R$${prox}</button></div>
+    </div>`;
+  }
+  document.getElementById('lista').innerHTML = html;
 }
+async function comprar(pos, preco){
+  let nome = prompt("Seu nome / projeto:");
+  if(!nome) return;
+  let url = prompt("Seu link (https://...):");
+  if(!url) return;
+  const res = await fetch('/api/create-preference', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({pos, preco, nome, url})
+  });
+  const data = await res.json();
+  if(data.init_point){ window.location.href = data.init_point; }
+  else{ alert("Erro: "+ (data.error||"tenta de novo")); }
+}
+loadRanking();
 </script>
 </body>
 </html>
