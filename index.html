@@ -24,7 +24,18 @@ body{background:var(--bg);color:#fff;font-family:system-ui;margin:0;padding:16px
 <div id="top"></div>
 </div>
 <script>
-const dados={10:{n:"Pedro @mercado",v:3200},9:{n:"Ana Mkt",v:2800},8:{n:"João Ecom",v:2500},7:{n:"Carla YT",v:2100},6:{n:"Marcos SEO",v:1900},5:{n:"Julia Fin",v:1700},4:{n:"Rafa Design",v:1500},3:{n:"Leo Crypto",v:1200},2:{n:"Bia",v:900},1:{n:"SEU NOME AQUI",v:500}};
+const dados={
+  10:{n:"Pedro @mercado",v:15},
+  9:{n:"Livre",v:20},
+  8:{n:"Livre",v:26},
+  7:{n:"Livre",v:34},
+  6:{n:"Livre",v:44},
+  5:{n:"Livre",v:57},
+  4:{n:"Livre",v:74},
+  3:{n:"Livre",v:96},
+  2:{n:"Livre",v:125},
+  1:{n:"Livre",v:163}
+}
 function render(){
   let h="";for(let i=10;i>=1;i--){h+=`<div class="card"><span><b>#${i}</b> ${dados[i].n}</span><span class="s">R$${dados[i].v}</span></div>`}
   document.getElementById('top').innerHTML=h;
