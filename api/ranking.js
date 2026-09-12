@@ -6,7 +6,7 @@ export default async function handler(req,res){
   if(typeof rank === 'string'){ try{ rank=JSON.parse(rank); }catch(e){} }
   if(!rank || Object.keys(rank).length===0){
     rank = {};
-    let preco = 30;
+    let preco = 19.90;
     for(let i=10; i>=1; i--){
       rank[i] = { preco: Number(preco.toFixed(2)), nome: null, url: null, clicks: 0 };
       preco = preco * 1.3;
