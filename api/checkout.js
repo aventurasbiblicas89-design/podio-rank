@@ -9,11 +9,11 @@ const MAX_LEN_URL = 300;
 
 function limpaNome(nome){
   return String(nome).trim()
-   .replace(/\s*-\s*\d+K\b/gi,'') // remove - 355K
-   .replace(/\s*\d+K\b/gi,'') // remove 355K solto
-   .replace(/[<>"']/g,'')
-   .split(' - ')[0].trim() // pega só antes do primeiro -
-   .slice(0,MAX_LEN_NOME);
+  .replace(/\s*-\s*\d+K\b/gi,'')
+  .replace(/\s*\d+K\b/gi,'')
+  .replace(/[<>"']/g,'')
+  .split(' - ')[0].trim()
+  .slice(0,MAX_LEN_NOME);
 }
 
 export default async function handler(req,res){
@@ -43,9 +43,8 @@ export default async function handler(req,res){
   let rank = await redis.get(`ranking:${category}`);
   if(typeof rank==='string') try{ rank=JSON.parse(rank); }catch{}
   if(!rank || Object.keys(rank).length===0){
-    // cria ranking base se não existe
     rank = {};
-    for(let i=1;i<=12;i++) rank[i]={preco:i===1?97: i<=3?67 : 37};
+    for(let i=1;i<=12;i++) rank[i]={preco: i===1?95 : i<=3?65 : 35};
     await redis.set(`ranking:${category}`, JSON.stringify(rank));
   }
   if(!rank[pos]) return res.status(400).json({error:'Posição não existe'});
@@ -54,12 +53,7 @@ export default async function handler(req,res){
   let precoFinal = slot.nome? Number((slot.preco*1.3).toFixed(2)) : Number(slot.preco);
   let tipo = slot.nome? 'tomar' : 'ocupar';
 
-  if(tipo==='ocupar'){
-    const livres = Object.entries(rank).filter(([k,v])=>!v.nome).map(([k,v])=>({pos:parseInt(k),preco:v.preco})).sort((a,b)=>a.preco-b.preco);
-    if(livres[0] && livres[0].pos!==pos){
-      return res.status(400).json({error:`Posição #${pos} não é a mais barata. Compre a #${livres[0].pos} por R$ ${livres[0].preco}`, suggestedPos:livres[0].pos});
-    }
-  }
+  // REMOVIDO o bloqueio de "mais barata" que impedia comprar a #1
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types:['card'],
@@ -71,4 +65,4 @@ export default async function handler(req,res){
     metadata:{cat:category,position:String(pos),nome,url,tipo,preco:String(precoFinal)}
   });
   res.json({url:session.url});
-    }
+  }
