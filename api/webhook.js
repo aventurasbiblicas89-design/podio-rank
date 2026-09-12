@@ -4,44 +4,41 @@ import { buffer } from 'micro';
 
 const redis = Redis.fromEnv();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
-// ESSENCIAL: desativa o bodyParser da Vercel
 export const config = { api: { bodyParser: false } };
 
 const CATEGORIAS = ['marketing','advogados','medicos','dentistas','clinicas','academias','empresarios','infoprodutos','sites','youtube','x','instagram','tiktok'];
 
-export default async function handler(req,res){
-  if(req.method !== 'POST') return res.status(405).end();
+function limpaNome(nome){
+  return String(nome||'').trim()
+  .replace(/\s*-\s*\d+K\b/gi,'')
+  .replace(/\s*\d+K\b/gi,'')
+  .replace(/[<>"']/g,'')
+  .split(' - ')[0].trim()
+  .slice(0,80);
+}
 
+export default async function handler(req,res){
+  if(req.method!== 'POST') return res.status(405).end();
   const sig = req.headers['stripe-signature'];
   if(!sig) return res.status(400).send('Sem assinatura');
-
   let event;
   try{
     const rawBody = await buffer(req);
     event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
-  }catch(e){
-    console.error('Webhook signature fail:', e.message);
-    return res.status(400).send(`Webhook Error: ${e.message}`);
-  }
+  }catch(e){ return res.status(400).send(`Webhook Error: ${e.message}`); }
 
   if(event.type==='checkout.session.completed'){
     const s = event.data.object;
-    
-    // Idempotência - se Stripe mandar 2x, não reseta clicks
     const already = await redis.get(`processed:${s.id}`);
     if(already) return res.json({received:true, duplicate:true});
-    
+
     let { cat, position, nome, url, preco } = s.metadata;
-    
     cat = String(cat||'marketing').toLowerCase().slice(0,30);
     if(!CATEGORIAS.includes(cat)) cat='marketing';
-    
     const pos = parseInt(position);
     if(isNaN(pos) || pos < 1 || pos > 100) return res.json({received:true});
 
-    // Sanitiza de novo (defesa em profundidade)
-    nome = String(nome||'').slice(0,80).replace(/[<>"']/g,'').trim();
+    nome = limpaNome(nome);
     url = String(url||'').slice(0,300).trim();
     try{
       const u = new URL(url.startsWith('http')?url:'https://'+url);
@@ -53,20 +50,18 @@ export default async function handler(req,res){
     if(typeof rank==='string'){ try{ rank=JSON.parse(rank); }catch{ rank=null; } }
     if(!rank) rank = {};
 
-    // Só atualiza se posição existe e não foi tomada por outra venda no mesmo segundo
-    rank[pos] = { 
-      preco: Number(Number(preco).toFixed(2)), 
-      nome, 
-      url, 
-      clicks: rank[pos]?.clicks || 0, // mantém clicks se for "tomar"
+    rank[pos] = {
+      preco: Number(Number(preco).toFixed(2)),
+      nome,
+      url,
+      clicks: rank[pos]?.clicks? Number(rank[pos].clicks) : 0,
       since: new Date().toISOString(),
       stripeSession: s.id
     };
-    
-    await redis.set(`ranking:${cat}`, JSON.stringify(rank));
-    await redis.set(`processed:${s.id}`, '1', {ex: 86400*7}); // guarda 7 dias
 
-    // EXPANSÃO AUTOMÁTICA
+    await redis.set(`ranking:${cat}`, JSON.stringify(rank));
+    await redis.set(`processed:${s.id}`, '1', {ex: 86400*7});
+
     let maxPos = Math.max(...Object.keys(rank).map(k=>parseInt(k)).filter(n=>!isNaN(n)));
     if(rank[maxPos]?.nome && maxPos < 100){
       let lastPrice = rank[maxPos].preco;
@@ -78,5 +73,5 @@ export default async function handler(req,res){
     }
   }
   res.json({received:true});
-}
+      }
 
