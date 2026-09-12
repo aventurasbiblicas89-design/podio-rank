@@ -1,6 +1,3 @@
-import { Redis } from '@upstash/redis';
-const redis = Redis.fromEnv();
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -8,42 +5,39 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
-    const { categoria, posicao, nome, link } = req.body;
-    
-    // Pega preço atual
-    const raw = await redis.get(`ranking:${categoria}`);
-    let ranking = typeof raw === 'string' ? JSON.parse(raw) : raw;
-    let preco = ranking?.[posicao]?.preco;
-    if (!preco) preco = posicao == 1 ? 95 : posicao <= 3 ? 65 : 35;
+    const token = process.env.MP_ACCESS_TOKEN;
+    if (!token) {
+      return res.status(200).json({ erro: 'SEM TOKEN - Coloca MP_ACCESS_TOKEN na Vercel' });
+    }
 
-    const mp = await fetch('https://api.mercadopago.com/checkout/preferences', {
+    const preco = 274.33;
+
+    const r = await fetch('https://api.mercadopago.com/checkout/preferences', {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}`,
-        'Content-Type': 'application/json'
+      headers: { 
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json' 
       },
       body: JSON.stringify({
-        items: [{ title: `Pódio #${posicao} - ${categoria}`, quantity: 1, unit_price: Number(preco), currency_id: 'BRL' }],
+        items: [{ title: 'Podio Rank #1', quantity: 1, unit_price: preco, currency_id: 'BRL' }],
         back_urls: {
-          success: 'https://www.podiorank.com.br/sucesso',
-          failure: 'https://www.podiorank.com.br/erro',
-          pending: 'https://www.podiorank.com.br/pendente'
+          success: 'https://www.podiorank.com.br/',
+          failure: 'https://www.podiorank.com.br/',
+          pending: 'https://www.podiorank.com.br/'
         },
-        auto_return: 'approved',
-        external_reference: `${categoria}|${posicao}|${nome}|${link}`,
-        notification_url: 'https://www.podiorank.com.br/api/webhook'
+        auto_return: 'approved'
       })
     });
 
-    const data = await mp.json();
+    const data = await r.json();
     
     if (!data.init_point) {
-      return res.status(500).json({ erro: 'Erro MP', detalhe: data });
+      return res.status(200).json({ erro: 'MP ERRO', detalhe: data });
     }
 
     return res.status(200).json({ url: data.init_point });
 
   } catch (e) {
-    return res.status(500).json({ erro: e.message });
+    return res.status(200).json({ erro: e.message });
   }
 }
