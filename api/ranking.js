@@ -1,34 +1,29 @@
 import { Redis } from '@upstash/redis';
 const redis = Redis.fromEnv();
 
-export default async function handler(req, res){
-  res.setHeader('Cache-Control','no-store, no-cache, must-revalidate, proxy-revalidate');
-  res.setHeader('Pragma','no-cache');
+function limpaNome(nome){
+  if(!nome) return null;
+  return String(nome).trim()
+  .replace(/\s*-\s*\d+K\b/gi,'')
+  .replace(/\s*\d+K\b/gi,'')
+  .split(' - ')[0].trim();
+}
 
+export default async function handler(req,res){
+  res.setHeader('Cache-Control','no-store, no-cache, must-revalidate, proxy-revalidate');
   const { category = 'marketing' } = req.query;
   const key = `ranking:${category}`;
-
   let data = await redis.get(key);
-  if(typeof data === 'string'){
-    try{ data = JSON.parse(data); }catch(e){ data = null; }
+  if(typeof data === 'string'){ try{ data = JSON.parse(data); }catch{ data = null; } }
+  if(!data || typeof data!== 'object' || Object.keys(data).length===0){
+    return res.json({});
   }
-
-  // Se não tem nada no Redis, retorna vazio - NÃO cria fake
-  if(!data ||!Array.isArray(data) || data.length === 0){
-    return res.json([]);
-  }
-
-  // Limpa qualquer nome que ainda tenha - 355K ou 48K
-  const limpo = data.map(item => {
-    if(!item) return null;
-    if(item.nome){
-      let nomeLimpo = String(item.nome).replace(/\s*-\s*\d+K/gi,'').replace(/\d+K/gi,'').trim();
-      // remove o - 355K do final
-      nomeLimpo = nomeLimpo.split(' - ')[0].trim();
-      return {...item, nome: nomeLimpo || item.nome, clicks: item.clicks > 1000? 50 : item.clicks};
+  // limpa nomes sujos e zera clicks absurdos
+  for(const k of Object.keys(data)){
+    if(data[k]?.nome){
+      data[k].nome = limpaNome(data[k].nome);
+      if(data[k].clicks > 5000) data[k].clicks = 0;
     }
-    return item;
-  }).filter(Boolean);
-
-  return res.json(limpo);
+  }
+  return res.json(data);
 }
