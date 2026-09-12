@@ -1,19 +1,20 @@
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({erro:'POST only'});
-  const token = process.env.MP_ACCESS_TOKEN;
-  if (!token) return res.status(500).json({erro:'SEM TOKEN'});
+  if (req.method !== 'POST') return res.status(405).json({erro: 'Method not allowed'})
+  const { link, valor } = req.body
+  const token = process.env.MP_ACCESS_TOKEN
   try {
-    const body = req.body || {};
-    const r = await fetch('https://api.mercadopago.com/checkout/preferences', {
+    const mpRes = await fetch('https://api.mercadopago.com/checkout/preferences', {
       method: 'POST',
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        items: [{ title: 'Lance Podio Rank', quantity: 1, unit_price: Number(body.valor)||274.33, currency_id: 'BRL' }],
-        back_urls: { success: 'https://www.podiorank.com.br/', failure: 'https://www.podiorank.com.br/', pending: 'https://www.podiorank.com.br/' },
-        external_reference: body.url || 'podio'
+        items: [{ title: `Top 1 - Podio Rank - ${link}`, quantity: 1, unit_price: Number(valor) || 274.33, currency_id: 'BRL' }],
+        back_urls: { success: 'https://www.podiorank.com.br/sucesso', failure: 'https://www.podiorank.com.br/erro', pending: 'https://www.podiorank.com.br/pendente' },
+        auto_return: 'approved'
       })
-    });
-    const data = await r.json();
-    return res.json({url: data.init_point || data.sandbox_init_point, raw: data});
-  } catch(e){ return res.status(500).json({erro:e.message}); }
+    })
+    const data = await mpRes.json()
+    return res.status(200).json({ url: data.init_point })
+  } catch (e) {
+    return res.status(500).json({erro: e.message})
+  }
 }
