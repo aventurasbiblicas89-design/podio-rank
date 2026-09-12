@@ -1,9 +1,5 @@
 {
-  "name": "podio-site",
+  "name": "podio-rank",
   "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-    "@upstash/redis": "^1.34.3",
-    "mercadopago": "^2.0.15"
-  }
+  "type": "module"
 }
