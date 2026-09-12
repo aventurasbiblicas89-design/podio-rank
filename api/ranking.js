@@ -2,42 +2,33 @@ import { Redis } from '@upstash/redis';
 const redis = Redis.fromEnv();
 
 export default async function handler(req, res){
-  res.setHeader('Cache-Control','no-store, no-cache, must-revalidate');
-  const cat = (req.query.cat || 'marketing').toLowerCase();
+  res.setHeader('Cache-Control','no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma','no-cache');
 
-  let rank = await redis.get(`ranking:${cat}`);
-  if(typeof rank === 'string'){ try{ rank = JSON.parse(rank) }catch(e){ rank = {} } }
-  if(!rank) rank = {};
+  const { category = 'marketing' } = req.query;
+  const key = `ranking:${category}`;
 
-  let mudou = false;
-  for(const k in rank){
-    const item = rank[k];
-    if(!item ||!item.nome) continue;
-    const nome = String(item.nome);
-    const clicks = Number(item.clicks) || 0;
+  let data = await redis.get(key);
+  if(typeof data === 'string'){
+    try{ data = JSON.parse(data); }catch(e){ data = null; }
+  }
 
-    // SE TEM 355K OU 48K NO NOME OU CLIQUE = SEGUIDOR, LIMPA
-    if(nome.includes('355K') || nome.includes('48K') || clicks >= 1000){
-      // tira o " - 355K" do nome
-      let limpo = nome.replace(/\s*-\s*355K/i,'').replace(/\s*-\s*48K/i,'').replace(/355K/i,'').replace(/48K/i,'').trim();
-      if(limpo === '') limpo = nome.split('-')[0].trim();
+  // Se não tem nada no Redis, retorna vazio - NÃO cria fake
+  if(!data ||!Array.isArray(data) || data.length === 0){
+    return res.json([]);
+  }
 
-      item.nome = limpo || 'Além dos Versículos';
-      if(nome.includes('355K')) item.seguidores = '355K';
-      if(nome.includes('48K')) item.seguidores = '48K';
-      item.clicks = Math.floor(Math.random()*90) + 30; // 30 a 120 cliques REAL
-      mudou = true;
+  // Limpa qualquer nome que ainda tenha - 355K ou 48K
+  const limpo = data.map(item => {
+    if(!item) return null;
+    if(item.nome){
+      let nomeLimpo = String(item.nome).replace(/\s*-\s*\d+K/gi,'').replace(/\d+K/gi,'').trim();
+      // remove o - 355K do final
+      nomeLimpo = nomeLimpo.split(' - ')[0].trim();
+      return {...item, nome: nomeLimpo || item.nome, clicks: item.clicks > 1000? 50 : item.clicks};
     }
-  }
+    return item;
+  }).filter(Boolean);
 
-  if(mudou){
-    await redis.set(`ranking:${cat}`, JSON.stringify(rank));
-  }
-
-  // monta resposta
-  const out = {};
-  for(let i=1;i<=30;i++){
-    out[i] = rank[i] || {nome: null, clicks: 0, preco: (274.33 - i*10).toFixed(2), seguidores: null};
-  }
-  res.json(out);
+  return res.json(limpo);
 }
