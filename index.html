@@ -67,14 +67,11 @@ try{
 const res=await fetch('/api/ranking?cat='+categoriaAtual+'&filtro='+filtroAtual);
 rank=await res.json();
 }catch(e){rank={}}
-
-// FIXO - Se marketing estiver vazio, coloca seus 3
 if(categoriaAtual==='marketing' && (!rank[1] ||!rank[1].nome)){
-  rank[1]={preco:211.02,nome:'🔥 FACE 355K - Marketing',url:'https://facebook.com/',clicks:1247};
-  rank[2]={preco:162.33,nome:'🔥 FACE 48K - Marketing',url:'https://facebook.com/',clicks:438};
+  rank[1]={preco:211.02,nome:'Além dos Versículos - 355K',url:'https://www.facebook.com/share/1DZzBgZp5w/',clicks:355000};
+  rank[2]={preco:162.33,nome:'Rupert - 48K',url:'https://www.facebook.com/share/1HkWdYy7Hf/',clicks:48000};
   rank[3]={preco:150.00,nome:'PEDRO - 1ª Venda ⭐',url:'#',clicks:89};
 }
-
 let html='';let volume=0;let precos=[];
 for(let i=1;i<=10;i++){let precoBase=30*Math.pow(1.3,10-i);const r=rank[i]||{preco:precoBase,nome:null,url:null,clicks:0};precos.push(r.preco);volume+=r.preco;}
 precoTopo=(precos[0]*1.3);document.getElementById('priceTop').innerText='R$ '+precoTopo.toFixed(2).replace('.',',');document.getElementById('priceBtn').innerText='R$ '+precoTopo.toFixed(2).replace('.',',');document.getElementById('volume').innerText=volume.toFixed(2).replace('.',',');
@@ -91,7 +88,7 @@ document.getElementById('lista').innerHTML=html;
 }
 async function comprar(pos){
   let url=document.getElementById('urlInput').value;
-  if(!url) url=prompt('Link completo (https://...) - ex: https://youtube.com/@meme-zinho');
+  if(!url) url=prompt('Link completo (https://...)');
   if(!url) return;
   let nome=prompt('Nome do seu site/canal/perfil?');
   if(!nome) return;
