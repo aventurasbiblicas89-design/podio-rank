@@ -71,6 +71,7 @@ if(categoriaAtual==='marketing'){
   rank[1]={preco:211.02,nome:'Além dos Versículos - 355K',url:'https://www.facebook.com/share/1DZzBgZp5w/',clicks:355000};
   rank[2]={preco:162.33,nome:'Rupert - 48K',url:'https://www.facebook.com/share/1HkWdYy7Hf/',clicks:48000};
   rank[3]={preco:150.00,nome:'PEDRO - 1ª Venda ⭐',url:'#',clicks:89};
+  for(let i=4;i<=10;i++) delete rank[i];
 }
 function precoBase(i){ return 19.90*Math.pow(1.3,10-i); }
 let apiPositions = Object.keys(rank).map(n=>parseInt(n));
