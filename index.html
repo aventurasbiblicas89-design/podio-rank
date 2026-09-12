@@ -93,9 +93,10 @@ positions.forEach(i=>{
   const r=rank[i]||{preco:precoBase(i),nome:null,url:null};
   const livre=!r.nome;
   let linkUrl='#';if(r.url){linkUrl=r.url.startsWith('http')?r.url:'https://'+r.url;}
-  let nomeHtml=livre?'LIVRE - Clique para ocupar':'<a href="'+linkUrl+'" target="_blank" style="color:inherit;text-decoration:none">'+r.nome+'</a>';
+  let clicksTxt = r.clicks? ` · 👁️ ${Number(r.clicks).toLocaleString('pt-BR')} cliques` : '';
+  let nomeHtml=livre?'LIVRE - Clique para ocupar':'<a href="'+linkUrl+'" target="_blank" onclick="registrarClique('+i+')" style="color:inherit;text-decoration:none">'+r.nome+'</a>';
   let selo = (livre && i===maisBarataPos)? ' <span style="background:#00c950;color:white;padding:2px 8px;border-radius:999px;font-size:10px">MAIS BARATA 🔥</span>':'';
-  let detalheHtml=livre?'R$ '+Number(r.preco).toFixed(2).replace('.',',')+' · 30 dias ou até alguém tomar'+selo:'<span style="color:#666">R$ '+Number(r.preco).toFixed(2).replace('.',',')+' · 30 dias ou até alguém tomar</span> · <a href="'+linkUrl+'" target="_blank" style="color:#ff5a2c;text-decoration:none;font-weight:700">ver →</a>';
+  let detalheHtml=livre?'R$ '+Number(r.preco).toFixed(2).replace('.',',')+' · 30 dias'+selo:'<span style="color:#666">R$ '+Number(r.preco).toFixed(2).replace('.',',')+clicksTxt+'</span> · <a href="'+linkUrl+'" target="_blank" onclick="registrarClique('+i+')" style="color:#ff5a2c;text-decoration:none;font-weight:700">ver →</a>';
   html+='<div class="card"><div style="display:flex;gap:12px;align-items:center"><div style="width:44px;height:44px;background:#111;color:white;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900">#'+i+'</div><div><div style="font-weight:900"><span class="pos">#'+i+'</span> '+nomeHtml+'</div><div class="clicks">'+detalheHtml+'</div></div></div><button onclick="comprar('+i+')" style="border:1px solid #ffd1c7;background:#fff1ed;color:#ff5a2c;padding:8px 14px;border-radius:999px;font-weight:800;cursor:pointer">'+(livre?'DAR LANCE':'TOMAR')+'</button></div>';
 });
 document.getElementById('lista').innerHTML=html;
@@ -117,6 +118,7 @@ async function comprar(pos){
 }
 async function claimTop(){comprar(1);}
 async function atualizarStats(){try{const r=await fetch('/api/stats?cat='+categoriaAtual);const s=await r.json();document.getElementById('online').innerText=s.online+' online';document.getElementById('visitors').innerText=s.visitorsToday.toLocaleString('pt-BR')+' visitors today';}catch(e){document.getElementById('online').innerText=(5+Math.floor(Math.random()*20))+' online';document.getElementById('visitors').innerText=(120+Math.floor(Math.random()*500))+' visitors today';}}
+async function registrarClique(pos){try{await fetch('/api/click?cat='+categoriaAtual+'&pos='+pos,{method:'POST'})}catch(e){}}
 function abrirStats(){alert('📊 Podio Rank Stats\n\nCategoria: '+categoriaAtual.toUpperCase()+'\n'+document.getElementById('online').innerText+'\n'+document.getElementById('visitors').innerText);}
 const urlParams=new URLSearchParams(window.location.search);if(urlParams.get('cat'))trocarCat(urlParams.get('cat'));else carregar();setInterval(atualizarStats,15000);atualizarStats();
 </script>
