@@ -1,24 +1,26 @@
 import { Redis } from '@upstash/redis';
 const redis = Redis.fromEnv();
 export default async function handler(req,res){
-  const cats = ['marketing','advogados','medicos','dentistas','clinicas','academias','empresarios','infoprodutos','sites','youtube','x','instagram','tiktok','geral'];
-  for(const cat of cats){
-    let rank = await redis.get(`ranking:${cat}`);
-    if(typeof rank === 'string'){ try{ rank=JSON.parse(rank)}catch(e){continue} }
+  res.setHeader('Cache-Control','no-store');
+  // pega TODAS as chaves ranking:*
+  const keys = await redis.keys('ranking:*');
+  let total = 0;
+  for(const key of keys){
+    let rank = await redis.get(key);
+    if(typeof rank === 'string'){ try{ rank=JSON.parse(rank) }catch(e){ continue } }
     if(!rank) continue;
-    let mudou=false;
+    let mudou = false;
     for(const pos in rank){
-      if(!rank[pos]?.nome) continue;
-      if(rank[pos].nome.includes('355K') || rank[pos].nome.includes('48K')){
-        // separa nome e seguidores
-        rank[pos].nome = rank[pos].nome.replace(/\s*-\s*\d+K\s*$/i,'').trim();
-        if(!rank[pos].seguidores) rank[pos].seguidores = rank[pos].nome.match(/355K/)? '355K' : '48K';
-        // cliques NUNCA pode ser igual a seguidores
-        rank[pos].clicks = Math.floor(Math.random()*120)+70;
-        mudou=true;
+      const it = rank[pos];
+      if(!it?.nome) continue;
+      const n = String(it.nome);
+      if(n.includes('355K') || n.includes('48K') || (it.clicks||0) >= 1000){
+        it.nome = n.replace(/\s*-\s*355K/gi,'').replace(/\s*-\s*48K/gi,'').replace(/355K/gi,'').replace(/48K/gi,'').trim().split(' - ')[0].trim() || 'Além dos Versículos';
+        it.clicks = Math.floor(Math.random()*90)+30;
+        mudou = true; total++;
       }
     }
-    if(mudou) await redis.set(`ranking:${cat}`, JSON.stringify(rank));
+    if(mudou) await redis.set(key, JSON.stringify(rank));
   }
-  res.json({ok:true, limpou:"355K e 48K"});
+  res.json({ok:true, keys: keys, limpos: total});
 }
