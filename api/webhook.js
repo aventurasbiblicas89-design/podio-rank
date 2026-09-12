@@ -1,43 +1,23 @@
 import { Redis } from '@upstash/redis';
-import { MercadoPagoConfig, Payment } from 'mercadopago';
-
 const redis = Redis.fromEnv();
-
-export default async function handler(req, res){
-  const id = req.query.id || req.body?.data?.id || req.query['data.id'];
-  if(!id) return res.json({ok:true});
-
-  try{
-    const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
-    const payment = new Payment(client);
-    const pay = await payment.get({id});
-
+export default async function handler(req,res){
+  if(req.method!== 'POST') return res.status(405).end();
+  const body = req.body;
+  if(body.type === 'payment'){
+    const id = body.data.id;
+    const mpRes = await fetch(`https://api.mercadopago.com/v1/payments/${id}`, { headers: { Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}` } });
+    const pay = await mpRes.json();
     if(pay.status === 'approved'){
-      let rank = await redis.get('ranking');
-      if(typeof rank === 'string'){
-        try{ rank=JSON.parse(rank); }catch(e){}
-      }
+      const { pos, nome, url, cat } = pay.metadata || {};
+      const categoria = (cat || 'marketing').toLowerCase();
+      const valor = Number(pay.transaction_amount);
+      let rank = await redis.get(`ranking:${categoria}`);
+      if(typeof rank === 'string'){ try{ rank=JSON.parse(rank); }catch(e){} }
       if(!rank) rank = {};
-
-      const pos = pay.metadata?.pos;
-      const nome = pay.metadata?.nome;
-      const url = pay.metadata?.url;
-      const valorPago = Number(pay.metadata?.valor || pay.transaction_amount);
-
-      if(pos && nome && url && valorPago){
-        rank[pos] = {
-          preco: valorPago,
-          nome: nome.toUpperCase(),
-          url: url
-        };
-        await redis.set('ranking', JSON.stringify(rank));
-        console.log(`Pos ${pos} tomada por ${nome} por ${valorPago}`);
-      }
+      rank[pos] = { preco: valor, nome, url, clicks: 0, data: new Date().toISOString() };
+      await redis.set(`ranking:${categoria}`, JSON.stringify(rank));
     }
-  }catch(e){
-    console.log('Webhook error', e.message);
   }
-
-  return res.json({ok:true});
+  res.status(200).end();
 }
 
