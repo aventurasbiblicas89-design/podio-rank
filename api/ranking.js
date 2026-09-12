@@ -55,8 +55,6 @@ export default async function handler(req,res){
         seguidoresTxt = match[1].toUpperCase();
         raw = raw.replace(/\s*-\s*\d+[KkMm]?\s*$/, '').trim();
       }
-
-      // CORRIGE MEU FAKE: se clique = seguidor, zera
       const seguidoresNum = parseNum(seguidoresTxt);
       if(seguidoresNum > 0 && rank[pos].clicks){
         if(Math.abs(rank[pos].clicks - seguidoresNum) < 5000){
@@ -64,7 +62,6 @@ export default async function handler(req,res){
           precisaSalvar = true;
         }
       }
-
       rank[pos].nome = raw;
       rank[pos].seguidores = seguidoresTxt;
     }
@@ -99,4 +96,4 @@ export default async function handler(req,res){
     if(rank[i]) pageData[i] = rank[i];
   }
   res.json(pageData);
-    }
+                              }
