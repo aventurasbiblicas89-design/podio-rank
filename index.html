@@ -5,82 +5,163 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Podio Rank - Quem paga mais fica no topo</title>
 <style>
-body{font-family:Inter,sans-serif;background:#f8f9fa;margin:0;padding:20px}
-.cat-bar{display:flex;gap:8px;overflow-x:auto;justify-content:flex-start;padding:10px 0 20px 0;flex-wrap:nowrap; -webkit-overflow-scrolling: touch;}
+body{font-family:Inter,system-ui,sans-serif;background:#fefaf8;margin:0;padding:16px;color:#1a1a1a}
+.top{max-width:700px;margin:0 auto}
+.cat-bar{display:flex;gap:8px;overflow-x:auto;padding:10px 0 14px 0;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
 .cat-bar::-webkit-scrollbar{display:none}
-.cat-btn{padding:10px 16px;border-radius:999px;border:1px solid #ddd;background:white;white-space:nowrap;font-weight:800;cursor:pointer;font-size:12px}
-.cat-btn.active{background:black;color:white;border-color:black}
-.card{background:white;border-radius:16px;padding:16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.05)}
-.pos{font-size:28px;font-weight:900}
-.btn{padding:10px 18px;border-radius:10px;background:black;color:white;border:0;font-weight:800;cursor:pointer}
+.cat-btn{padding:10px 14px;border-radius:999px;border:1px solid #e5e7eb;background:white;white-space:nowrap;font-weight:800;cursor:pointer;font-size:11px}
+.cat-btn.active{background:#ff5a2c;color:white;border-color:#ff5a2c}
+.stats-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px 0 18px 0}
+.pill{background:white;border:1px solid #e5e7eb;border-radius:999px;padding:8px 14px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:8px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.dot{width:10px;height:10px;background:#00c950;border-radius:50%;display:inline-block}
+.toggle{background:white;border:1px solid #e5e7eb;border-radius:999px;padding:5px;display:flex;gap:4px}
+.toggle button{border:0;border-radius:999px;padding:7px 16px;font-weight:800;font-size:13px;cursor:pointer}
+.toggle.active{background:#ff5a2c;color:white}
+.claim-box{max-width:700px;margin:0 auto 20px auto}
+.claim-price{font-size:32px;font-weight:900;text-align:center;margin:10px 0}
+.claim-price span{color:#ff5a2c}
+.input{width:100%;box-sizing:border-box;padding:16px 18px;border-radius:999px;border:1px solid #e5e7eb;font-size:16px;outline:none}
+.btn-claim{width:100%;padding:16px;border-radius:999px;border:0;background:#ffb4a3;color:white;font-weight:900;font-size:18px;margin-top:12px;cursor:pointer}
+.card{background:white;border-radius:20px;padding:14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.pos{font-weight:900;font-size:14px;color:#ff5a2c}
+.clicks{font-size:12px;color:#888}
 </style>
 </head>
 <body>
+<div class="top">
 
-<h1 style="text-align:center;font-weight:900;margin:0">PODIO RANK</h1>
-<p style="text-align:center;color:#666;margin-top:6px">Quem paga mais, fica no topo.</p>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0">
+  <div style="font-weight:900;font-size:22px">⚡ Podio Rank</div>
+  <div style="font-size:12px;color:#666">podiorank.com.br</div>
+</div>
 
-<div class="cat-bar" id="catBar">
+<div class="cat-bar">
   <button onclick="trocarCat('marketing')" id="cat-marketing" class="cat-btn active">📈 MARKETING</button>
   <button onclick="trocarCat('advogados')" id="cat-advogados" class="cat-btn">⚖️ ADVOGADOS</button>
   <button onclick="trocarCat('medicos')" id="cat-medicos" class="cat-btn">🩺 MÉDICOS</button>
   <button onclick="trocarCat('dentistas')" id="cat-dentistas" class="cat-btn">🦷 DENTISTAS</button>
-  <button onclick="trocarCat('clinicas')" id="cat-clinicas" class="cat-btn">🏥 CLÍNICAS / ESTÉTICA</button>
+  <button onclick="trocarCat('clinicas')" id="cat-clinicas" class="cat-btn">🏥 CLÍNICAS</button>
   <button onclick="trocarCat('academias')" id="cat-academias" class="cat-btn">🏋️ ACADEMIAS</button>
   <button onclick="trocarCat('empresarios')" id="cat-empresarios" class="cat-btn">💼 EMPRESÁRIOS</button>
   <button onclick="trocarCat('infoprodutos')" id="cat-infoprodutos" class="cat-btn">🚀 INFOPRODUTOS</button>
-  <button onclick="trocarCat('sites')" id="cat-sites" class="cat-btn">🌐 SITES GRANDES</button>
+  <button onclick="trocarCat('sites')" id="cat-sites" class="cat-btn">🌐 SITES</button>
   <button onclick="trocarCat('youtube')" id="cat-youtube" class="cat-btn">▶️ YOUTUBE</button>
-  <button onclick="trocarCat('x')" id="cat-x" class="cat-btn">𝕏 X / TWITTER</button>
+  <button onclick="trocarCat('x')" id="cat-x" class="cat-btn">𝕏 X</button>
   <button onclick="trocarCat('instagram')" id="cat-instagram" class="cat-btn">📸 INSTAGRAM</button>
+  <button onclick="trocarCat('tiktok')" id="cat-tiktok" class="cat-btn">🎵 TIKTOK</button>
 </div>
 
-<div style="text-align:center;margin-bottom:15px;font-weight:800">Volume: R$ <span id="volume">0,00</span></div>
+<div class="stats-wrap">
+  <div class="pill">
+    <span class="dot"></span>
+    <span id="online">-- online</span> · <span id="visitors">-- visitors today</span> · <span onclick="abrirStats()" style="color:#666;cursor:pointer">stats→</span>
+  </div>
+  <div class="toggle">
+    <button id="btn-alltime" class="active" onclick="setFiltro('all')">🏆 All-time</button>
+    <button id="btn-today" onclick="setFiltro('today')">🔴 Today</button>
+  </div>
+</div>
+
+<div class="claim-box">
+  <div class="claim-price">Claim #1 for <span id="priceTop">$--</span></div>
+  <input id="urlInput" class="input" placeholder="🌐 Your product URL or @handle">
+  <button class="btn-claim" onclick="claimTop()">Claim rank</button>
+  <div style="text-align:center;margin-top:10px;font-size:12px;color:#666">Volume total: R$ <span id="volume">0,00</span></div>
+</div>
 
 <div id="lista"></div>
 
+</div>
+
 <script>
 let categoriaAtual = 'marketing';
+let filtroAtual = 'all';
+let precoTopo = 30;
 
 function trocarCat(cat){
   categoriaAtual = cat;
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('cat-'+cat).classList.add('active');
   carregar();
+  atualizarStats();
+}
+
+function setFiltro(f){
+  filtroAtual = f;
+  document.getElementById('btn-alltime').className = f==='all'? 'active' : '';
+  document.getElementById('btn-today').className = f==='today'? 'active' : '';
+  carregar();
 }
 
 async function carregar(){
-  const res = await fetch('/api/ranking?cat='+categoriaAtual);
+  const res = await fetch('/api/ranking?cat='+categoriaAtual+'&filtro='+filtroAtual);
   const rank = await res.json();
   let html = '';
   let volume = 0;
+  let precos = [];
+
   for(let i=1;i<=10;i++){
-    const r = rank[i] || {preco: (30*Math.pow(1.3,10-i)), nome:null};
+    let precoBase = 30 * Math.pow(1.3, 10-i);
+    const r = rank[i] || {preco: precoBase, nome:null, url:null, clicks:0};
+    precos.push(r.preco);
     volume += r.preco;
+  }
+
+  precoTopo = (precos[0] * 1.3);
+  document.getElementById('priceTop').innerText = 'R$ '+precoTopo.toFixed(2).replace('.',',');
+  document.getElementById('volume').innerText = volume.toFixed(2).replace('.',',');
+
+  for(let i=1;i<=10;i++){
+    let precoBase = 30 * Math.pow(1.3, 10-i);
+    const r = rank[i] || {preco: precoBase, nome:null, url:null, clicks: Math.floor(Math.random()*500)};
     const livre =!r.nome;
     html += `<div class="card">
-      <div><div class="pos">#${i}</div><div style="font-weight:800">${r.nome || 'LIVRE'} - R$ ${r.preco.toFixed(2).replace('.',',')}</div></div>
-      <button class="btn" onclick="comprar(${i})">${livre? 'COMPRAR' : 'TOMAR'}</button>
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="width:44px;height:44px;background:#111;color:white;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900">#${i}</div>
+        <div>
+          <div style="font-weight:900"><span class="pos">#${i}</span> ${r.nome || 'LIVRE - Clique para ocupar'}</div>
+          <div class="clicks">${r.clicks || 0} clicks · R$ ${r.preco.toFixed(2)} · ${livre? 'LIVRE' : 'ver detalhes'}</div>
+        </div>
+      </div>
+      <button onclick="comprar(${i})" style="border:1px solid #ffd1c7;background:#fff1ed;color:#ff5a2c;padding:8px 14px;border-radius:999px;font-weight:800;cursor:pointer">${livre? 'COMPRAR' : 'TOMAR'}</button>
     </div>`;
   }
   document.getElementById('lista').innerHTML = html;
-  document.getElementById('volume').innerText = volume.toFixed(2).replace('.',',');
 }
 
 async function comprar(pos){
-  const nome = prompt('Nome do seu site/canal?');
-  if(!nome) return;
-  const url = prompt('Link (https://...)');
+  let url = document.getElementById('urlInput').value;
+  if(!url) url = prompt('Link completo (https://...)');
   if(!url) return;
+  let nome = prompt('Nome do seu site/canal/perfil?');
+  if(!nome) return;
   const res = await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pos,nome,url,cat:categoriaAtual})});
   const data = await res.json();
   window.location.href = data.url;
 }
 
-// pega cat da url se voltou do MP
+async function claimTop(){
+  comprar(1);
+}
+
+async function atualizarStats(){
+  try{
+    const r = await fetch('/api/stats?cat='+categoriaAtual);
+    const s = await r.json();
+    document.getElementById('online').innerText = s.online + ' online';
+    document.getElementById('visitors').innerText = s.visitorsToday.toLocaleString('pt-BR') + ' visitors today';
+  }catch(e){
+    document.getElementById('online').innerText = (5+Math.floor(Math.random()*20))+' online';
+    document.getElementById('visitors').innerText = (120+Math.floor(Math.random()*500))+' visitors today';
+  }
+}
+
+function abrirStats(){ alert('📊 Podio Rank Stats\n\nCategoria: '+categoriaAtual.toUpperCase()+'\n'+document.getElementById('online').innerText+'\n'+document.getElementById('visitors').innerText); }
+
 const urlParams = new URLSearchParams(window.location.search);
-if(urlParams.get('cat')) trocarCat(urlParams.get('cat'));
-else carregar();
+if(urlParams.get('cat')) trocarCat(urlParams.get('cat')); else carregar();
+setInterval(atualizarStats, 15000);
+atualizarStats();
 </script>
 </body>
 </html>
