@@ -47,7 +47,6 @@ body{font-family:Inter,system-ui,sans-serif;background:#fefaf8;margin:0;padding:
 <button onclick="trocarCat('tiktok')" id="cat-tiktok" class="cat-btn">🎵 TIKTOK</button>
 </div>
 <div class="stats-wrap"><div class="pill"><span class="dot"></span><span id="online">-- online</span> · <span id="visitors">-- visitors today</span> · <span onclick="abrirStats()" style="color:#666;cursor:pointer">stats→</span></div><div class="toggle"><button id="btn-alltime" class="active" onclick="setFiltro('all')">🏆 All-time</button><button id="btn-today" onclick="setFiltro('today')">🔴 Today</button></div></div>
-
 <div class="claim-box">
 <div class="auction-banner">🔥 LEILÃO AO VIVO - Fica 30 dias no topo ou até alguém pagar mais e tomar seu lugar</div>
 <div class="claim-price">Seja #1 por <span id="priceTop">R$ --</span></div>
@@ -56,7 +55,6 @@ body{font-family:Inter,system-ui,sans-serif;background:#fefaf8;margin:0;padding:
 <div style="text-align:center;margin-top:10px;font-size:11px;color:#888">Garantido por 30 dias. Depois só sai se alguém pagar mais que você.</div>
 <div style="text-align:center;margin-top:8px;font-size:12px;color:#666">Volume total: R$ <span id="volume">0,00</span></div>
 </div>
-
 <div id="lista"></div>
 </div>
 <script>
@@ -64,7 +62,20 @@ let categoriaAtual='marketing';let filtroAtual='all';let precoTopo=30;
 function trocarCat(cat){categoriaAtual=cat;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));document.getElementById('cat-'+cat).classList.add('active');carregar();atualizarStats();}
 function setFiltro(f){filtroAtual=f;document.getElementById('btn-alltime').className=f==='all'?'active':'';document.getElementById('btn-today').className=f==='today'?'active':'';carregar();}
 async function carregar(){
-const res=await fetch('/api/ranking?cat='+categoriaAtual+'&filtro='+filtroAtual);const rank=await res.json();let html='';let volume=0;let precos=[];
+let rank={};
+try{
+const res=await fetch('/api/ranking?cat='+categoriaAtual+'&filtro='+filtroAtual);
+rank=await res.json();
+}catch(e){rank={}}
+
+// FIXO - Se marketing estiver vazio, coloca seus 3
+if(categoriaAtual==='marketing' && (!rank[1] ||!rank[1].nome)){
+  rank[1]={preco:211.02,nome:'🔥 FACE 355K - Marketing',url:'https://facebook.com/',clicks:1247};
+  rank[2]={preco:162.33,nome:'🔥 FACE 48K - Marketing',url:'https://facebook.com/',clicks:438};
+  rank[3]={preco:150.00,nome:'PEDRO - 1ª Venda ⭐',url:'#',clicks:89};
+}
+
+let html='';let volume=0;let precos=[];
 for(let i=1;i<=10;i++){let precoBase=30*Math.pow(1.3,10-i);const r=rank[i]||{preco:precoBase,nome:null,url:null,clicks:0};precos.push(r.preco);volume+=r.preco;}
 precoTopo=(precos[0]*1.3);document.getElementById('priceTop').innerText='R$ '+precoTopo.toFixed(2).replace('.',',');document.getElementById('priceBtn').innerText='R$ '+precoTopo.toFixed(2).replace('.',',');document.getElementById('volume').innerText=volume.toFixed(2).replace('.',',');
 for(let i=1;i<=10;i++){
