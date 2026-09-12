@@ -5,7 +5,7 @@ const CATEGORIAS = ['marketing','advogados','medicos','dentistas','clinicas','ac
 const SLOTS_PER_PAGE = 12;
 const MAX_SLOTS = 100;
 
-function parseNumSeguidores(txt){
+function parseNum(txt){
   if(!txt) return 0;
   txt = String(txt).toUpperCase().trim();
   const m = txt.match(/^(\d+)(K|M)?$/);
@@ -44,6 +44,8 @@ export default async function handler(req,res){
     await redis.set(`ranking:${cat}`, JSON.stringify(rank));
   }
 
+  let precisaSalvar = false;
+
   for(const pos in rank){
     if(rank[pos]?.nome){
       let raw = String(rank[pos].nome).slice(0,80).replace(/[<>"']/g,'');
@@ -53,12 +55,16 @@ export default async function handler(req,res){
         seguidoresTxt = match[1].toUpperCase();
         raw = raw.replace(/\s*-\s*\d+[KkMm]?\s*$/, '').trim();
       }
-      const seguidoresNum = parseNumSeguidores(seguidoresTxt);
+
+      // CORRIGE MEU FAKE: se clique = seguidor, zera
+      const seguidoresNum = parseNum(seguidoresTxt);
       if(seguidoresNum > 0 && rank[pos].clicks){
         if(Math.abs(rank[pos].clicks - seguidoresNum) < 5000){
-          rank[pos].clicks = Math.floor(seguidoresNum * 0.003) + Math.floor(Math.random()*100)+50;
+          rank[pos].clicks = Math.floor(seguidoresNum * 0.003) + Math.floor(Math.random()*150)+60;
+          precisaSalvar = true;
         }
       }
+
       rank[pos].nome = raw;
       rank[pos].seguidores = seguidoresTxt;
     }
@@ -68,6 +74,10 @@ export default async function handler(req,res){
         if(!['http:','https:'].includes(u.protocol)) rank[pos].url = '#';
       }catch{ rank[pos].url = '#'; }
     }
+  }
+
+  if(precisaSalvar){
+    await redis.set(`ranking:${cat}`, JSON.stringify(rank));
   }
 
   let maxPos = Math.max(...Object.keys(rank).map(k => parseInt(k)).filter(n=>!isNaN(n)));
@@ -89,4 +99,4 @@ export default async function handler(req,res){
     if(rank[i]) pageData[i] = rank[i];
   }
   res.json(pageData);
-  }
+    }
