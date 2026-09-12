@@ -19,49 +19,38 @@ export default async function handler(req,res){
     }
   }
 
-  // === EXPANSÃO AUTOMÁTICA ===
-  // Converte chaves pra número e acha o maior
+  // === CORREÇÃO DA EXPANSÃO ===
   let maxPos = Math.max(...Object.keys(rank).map(k => parseInt(k)));
-  let occupied = Object.values(rank).filter(r => r.nome!== null).length;
 
-  // Se todos os slots atuais estão ocupados e ainda não chegou no máximo, cria mais 10
-  if(occupied >= maxPos && maxPos < MAX_SLOTS){
-    let lastPrice = rank[maxPos]?.preco || 19.90;
-    // Próximos 10 são MAIS BARATOS que o último - pra gerar volume
-    // Ex: #10 = 19.90, #11 = 15.30, #12 = 11.77...
+  // Expande se a ÚLTIMA posição estiver ocupada (não precisa estar tudo ocupado)
+  if(rank[maxPos]?.nome && maxPos < MAX_SLOTS){
+    let lastPrice = rank[maxPos].preco;
     let preco = lastPrice / 1.3;
+    let newSlots = {};
     for(let i = maxPos + 1; i <= Math.min(maxPos + 10, MAX_SLOTS); i++){
-      rank[i] = { preco: Number(preco.toFixed(2)), nome: null, url: null, clicks: 0 };
+      if(preco < 9.90) preco = 9.90;
+      newSlots[i] = { preco: Number(preco.toFixed(2)), nome: null, url: null, clicks: 0 };
       preco = preco / 1.3;
-      if(preco < 9.90) preco = 9.90; // piso mínimo
     }
+    rank = {...rank,...newSlots };
     maxPos = Math.max(...Object.keys(rank).map(k => parseInt(k)));
     await redis.set(`ranking:${cat}`, JSON.stringify(rank));
   }
 
   // === PAGINAÇÃO ===
-  const totalBidders = Object.keys(rank).length;
-  const totalOccupied = Object.values(rank).filter(r => r.nome!== null).length;
-  const totalPages = Math.ceil(totalBidders / SLOTS_PER_PAGE);
   const start = (page - 1) * SLOTS_PER_PAGE + 1;
-  const end = Math.min(start + SLOTS_PER_PAGE - 1, maxPos);
+  const end = start + SLOTS_PER_PAGE - 1;
 
-  // Retorna só a página pedida + info de expansão
   let pageData = {};
   for(let i = start; i <= end; i++){
     if(rank[i]) pageData[i] = rank[i];
   }
 
-  res.json({
-   ...pageData,
-    _pagination: {
-      currentPage: page,
-      totalPages,
-      totalBidders,
-      totalOccupied,
-      hasNextPage: maxPos > page * SLOTS_PER_PAGE,
-      hasPrevPage: page > 1,
-      maxPos
-    }
-  });
+  // Retorna só as posições pra não quebrar seu front
+  // A paginação vai via header
+  res.setHeader('X-Total-Positions', maxPos);
+  res.setHeader('X-Total-Pages', Math.ceil(maxPos / SLOTS_PER_PAGE));
+  res.setHeader('X-Current-Page', page);
+
+  res.json(pageData);
 }
