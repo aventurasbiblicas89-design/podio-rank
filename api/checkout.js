@@ -1,9 +1,11 @@
 export default async function handler(req, res) {
-  if (req.method!== 'POST') return res.status(405).json({error: 'Method not allowed'});
+  if (req.method !== 'POST') return res.status(405).json({error: 'Method not allowed'});
   try {
-    const { posicao, valor, link, nomeEmpresa } = req.body;
+    const { posicao, valor, link, nomeEmpresa, categoria } = req.body;
     const preco = parseFloat(valor) || 29.90;
     if (!link) return res.status(400).json({error: 'Link obrigatório'});
+    if (!categoria) return res.status(400).json({error: 'Categoria obrigatória'});
+
     const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
       method: 'POST',
       headers: {
@@ -24,7 +26,7 @@ export default async function handler(req, res) {
         },
         auto_return: 'approved',
         notification_url: 'https://podiorank.com.br/api/webhook',
-        metadata: { posicao, link, valor: preco, nomeEmpresa }
+        metadata: { posicao, link, valor: preco, nomeEmpresa, categoria }
       })
     });
     const data = await response.json();
