@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Podio Rank</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>body{font-family:sans-serif;background:#FFFBF7}</style>
+</head>
+<body>
+<div class="max-w-[500px] mx-auto px-4 py-6 space-y-4">
+  <h1 class="font-black text-[22px]">🔧 Admin Podio Rank</h1>
+
+  <div class="bg-white border rounded-2xl p-4">
+    <label class="text-[12px] font-bold text-zinc-500">Senha admin</label>
+    <input id="chave" type="password" class="w-full border rounded-xl px-3 py-2 mt-1" placeholder="Cole sua ADMIN_SECRET">
+  </div>
+
+  <div class="bg-white border rounded-2xl p-4 space-y-2">
+    <h2 class="font-black text-[15px]">🗑️ Limpar categoria</h2>
+    <input id="catLimpar" class="w-full border rounded-xl px-3 py-2" placeholder="ex: leaderboards">
+    <button onclick="limpar()" class="w-full bg-red-500 text-white rounded-xl py-2 font-bold">Limpar categoria</button>
+    <p id="msgLimpar" class="text-[12px]"></p>
+  </div>
+
+  <div class="bg-white border rounded-2xl p-4 space-y-2">
+    <h2 class="font-black text-[15px]">➕ Adicionar entrada</h2>
+    <input id="categoria" class="w-full border rounded-xl px-3 py-2" placeholder="Categoria (ex: redes-sociais)">
+    <input id="nome" class="w-full border rounded-xl px-3 py-2" placeholder="Nome (ex: Flagra Incrível)">
+    <input id="link" class="w-full border rounded-xl px-3 py-2" placeholder="Link https://...">
+    <input id="descricao" class="w-full border rounded-xl px-3 py-2" placeholder="Descrição curta">
+    <input id="valor" type="number" class="w-full border rounded-xl px-3 py-2" placeholder="Valor (ex: 999)">
+    <input id="cliques" type="number" class="w-full border rounded-xl px-3 py-2" placeholder="Cliques (opcional, ex: 500)">
+    <input id="diasAtras" type="number" class="w-full border rounded-xl px-3 py-2" placeholder="Dias atrás (0 = agora)">
+    <button onclick="adicionar()" class="w-full bg-black text-white rounded-xl py-2 font-bold">Adicionar</button>
+    <p id="msgAdd" class="text-[12px]"></p>
+  </div>
+</div>
+<script>
+function getChave(){
+  const c = document.getElementById('chave').value;
+  localStorage.setItem('adminKey', c);
+  return c;
+}
+document.getElementById('chave').value = localStorage.getItem('adminKey') || '';
+
+async function limpar(){
+  const r = await fetch('/api/admin', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-admin-key':getChave()},
+    body: JSON.stringify({ acao:'limpar', categoria: document.getElementById('catLimpar').value })
+  });
+  const d = await r.json();
+  document.getElementById('msgLimpar').innerText = r.ok ? '✅ Limpo!' : '❌ ' + (d.error || 'Erro');
+}
+
+async function adicionar(){
+  const r = await fetch('/api/admin', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-admin-key':getChave()},
+    body: JSON.stringify({
+      acao:'adicionar',
+      categoria: document.getElementById('categoria').value,
+      diasAtras: document.getElementById('diasAtras').value,
+      item: {
+        nome: document.getElementById('nome').value,
+        link: document.getElementById('link').value,
+        descricao: document.getElementById('descricao').value,
+        valor: document.getElementById('valor').value,
+        cliques: document.getElementById('cliques').value,
+      }
+    })
+  });
+  const d = await r.json();
+  document.getElementById('msgAdd').innerText = r.ok ? '✅ Adicionado!' : '❌ ' + (d.error || 'Erro');
+}
+</script>
+</body>
+</html>
