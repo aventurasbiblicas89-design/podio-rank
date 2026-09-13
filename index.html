@@ -1,137 +1,138 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Podio Rank - podiorank.com.br</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Podio Rank</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800;900&display=swap" rel="stylesheet">
-<style>body{font-family:Inter,sans-serif;background:#FFFBF7}.hide-scrollbar::-webkit-scrollbar{display:none}</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>body{font-family:Inter,sans-serif;background:#FFFAF5}.card{background:#FFF1E8}</style>
 </head>
 <body>
-<div class="max-w-[480px] mx-auto px-4 pt-5 pb-20">
+<div class="max-w-[520px] mx-auto px-4 pt-3 pb-20">
 
-<!-- HEADER IGUAL PRINT -->
-<div class="flex justify-between items-center">
-<h1 class="font-black text-[28px] flex items-center gap-2">⚡ Podio Rank</h1>
-<span class="text-[13px] text-zinc-400 font-medium">podiorank.com.br</span>
+<div class="flex justify-between py-2"><span>☰</span><b>podiorank.com.br</b><span>↻</span></div>
+
+<div class="flex justify-center gap-5 text-[14px] text-zinc-500 mt-1 font-medium">
+<span id="t-daily" onclick="showTab('daily')" class="font-bold text-black border-b-2 border-black cursor-pointer">Daily</span>
+<span id="t-cats" onclick="showTab('cats')" class="cursor-pointer">Categories</span>
+<span>About</span>
 </div>
 
-<div class="flex gap-2 mt-5 overflow-x-auto hide-scrollbar">
-<span class="bg-[#FF4A15] text-white px-5 py-3 rounded-full font-black text-[14px] whitespace-nowrap flex items-center gap-1">📈 MARKETING</span>
-<span class="bg-white border border-zinc-200 px-5 py-3 rounded-full font-black text-[14px] whitespace-nowrap flex items-center gap-1">⚖️ ADVOGADOS</span>
-<span class="bg-white border border-zinc-200 px-5 py-3 rounded-full font-black text-[14px] whitespace-nowrap flex items-center gap-1">🩺 MÉD</span>
+<div class="flex justify-center mt-4"><div class="bg-white border rounded-full px-4 py-2 text-[13px]"><span class="text-green-600 font-bold">● <span id="online">24</span> online</span> · <span id="visitors">4,116</span> today</div></div>
+
+<div id="dailyTab">
+<div class="mt-6"><h1 class="font-black text-[30px]">Claim #1 for <span id="precoTop" class="text-[#E07A5F]">R$ 3.129</span></h1>
+<input id="url" placeholder="Your product URL or @handle" class="w-full bg-white border rounded-full px-4 py-4 mt-3 text-[14px]">
+<button onclick="claimTop()" class="w-full bg-[#E07A5F] text-white rounded-full py-4 font-black mt-3">Claim rank</button>
+</div>
+<div id="lista" class="mt-6 space-y-3"></div>
 </div>
 
-<div class="flex justify-center mt-5">
-<div class="bg-white border border-zinc-200 rounded-full px-5 py-2.5 flex items-center gap-2 text-[14px] font-medium shadow-sm">
-<span class="w-5 h-5 bg-green-500 rounded-full border-2 border-green-200 block"></span> 25 online · 717 visitors today · stats→
-</div>
-</div>
-
-<div class="flex justify-center mt-5">
-<div class="bg-white border border-zinc-200 rounded-full p-1.5 flex gap-1 shadow-sm">
-<span class="bg-[#FF4A15] text-white px-7 py-2.5 rounded-full font-black text-[14px]">🏆 All-time</span>
-<span class="px-7 py-2.5 rounded-full font-black text-[14px] flex items-center gap-1"><span class="w-5 h-5 bg-red-500 rounded-full block"></span> Today</span>
-</div>
-</div>
-
-<!-- CARD LEILAO IGUAL PRINT -->
-<div class="bg-white border border-zinc-100 rounded-[28px] p-5 mt-7 shadow-[0px_8px_30px_rgba(0,0,0,0.06)]">
-<div class="bg-[#FFF4B5] rounded-[16px] px-4 py-3 text-center font-extrabold text-[14px] leading-[1.2]">🔥 LEILÃO AO VIVO - Fica 30 dias no topo ou até alguém pagar mais e tomar seu lugar</div>
-
-<h2 class="font-black text-[38px] leading-[0.9] mt-6 tracking-[-1px]">Seja #1 por <span class="text-[#FF4A15]">R$<br>3.129,00</span></h2>
-
-<div class="mt-6 relative">
-<span class="absolute left-4 top-[50%] -translate-y-1/2 text-[22px]">🌐</span>
-<input id="linkTop" placeholder="Cole seu link aqui (site, insta, you" class="w-full border border-zinc-200 rounded-full pl-12 pr-4 py-4 text-[14px] font-medium placeholder:text-zinc-400 outline-none">
-</div>
-
-<button onclick="pagar('LEILÃO #1 - TOPO',3129)" class="w-full bg-[#FF4A15] text-white rounded-full py-4 font-black text-[16px] mt-4">DAR LANCE DE R$ 3.129,00 →</button>
-
-<p class="text-[11px] text-zinc-400 text-center mt-3">✓ 30 dias garantidos • ✓ 355K cliques/mês • ✓ Link dofollow</p>
-</div>
-
-<!-- TOP 10 IGUAL PRINT -->
-<div class="bg-white border border-zinc-100 rounded-[28px] p-5 mt-6 shadow-[0px_8px_30px_rgba(0,0,0,0.06)]">
-<div class="flex justify-between items-start">
-<h3 class="font-black text-[20px] leading-[1.1]">🏆 Top 10 - Leilão<br>Principal</h3>
-<span class="bg-black text-white text-[12px] leading-[1.1] px-4 py-2.5 rounded-full font-medium">403K cliques<br>hoje</span>
-</div>
-
-<div id="top10" class="mt-2"></div>
-</div>
-
-<div id="categorias" class="mt-6"></div>
+<div id="catsTab" class="hidden mt-6"></div>
 
 </div>
 
 <script>
-const TOP10=[
- {p:1,nome:"Além dos...",full:"Além dos Versículos - 355K",link:"https://www.facebook.com/share/1C9k3ZA1pG/",valor:3129, cliques:"355K", fogo:true},
- {p:2,nome:"Rupert",full:"Rupert Marketing - 48K",link:"https://www.facebook.com/share/19T6y57XuF/",valor:2399, cliques:"48K", fogo:true, vivo:"AO VI..."},
- {p:3,nome:"PEDRO",full:"PEDRO Automação - YouTube",link:"https://youtube.com/@meme-zinho?si=VnRDBaijlDCtGv0e",valor:1299, cliques:"1K", fogo:true, vivo:"AO V..."},
- {p:4,nome:"VAGA LIVRE",valor:999, livre:true},
- {p:5,nome:"VAGA LIVRE",valor:799, livre:true},
- {p:6,nome:"VAGA LIVRE",valor:499, livre:true},
- {p:7,nome:"VAGA LIVRE",valor:299, livre:true},
- {p:8,nome:"VAGA LIVRE",valor:199, livre:true},
- {p:9,nome:"VAGA LIVRE",valor:149, livre:true},
- {p:10,nome:"VAGA LIVRE",valor:99, livre:true},
+let dadosTop = JSON.parse(localStorage.getItem('podio_top')||'null') || [
+ {nome:"Além dos Versículos - 355K",link:"https://www.facebook.com/share/1C9k3ZA1pG/",valor:3129,icon:"📖"},
+ {nome:"Rupert Marketing - 48K",link:"https://www.facebook.com/share/19T6y57XuF/",valor:2399,icon:"🚀"},
+ {nome:"PEDRO Automação - YouTube",link:"https://youtube.com/@meme-zinho?si=VnRDBaijlDCtGv0e",valor:1299,icon:"🤖"},
 ];
 
-function getPrice(pos){
- if(pos==1) return 3129; if(pos==2) return 2399; if(pos==3) return 1299; if(pos==4) return 999; if(pos==5) return 799; if(pos==6) return 499; if(pos==7) return 299; if(pos==8) return 199; if(pos==9) return 149; if(pos==10) return 99;
- if(pos<=20) return 79; if(pos<=50) return 39; if(pos<=100) return 19; return 1;
+function priceFor(pos){
+ if(pos==1) return 3129;
+ if(pos==2) return 2399;
+ if(pos==3) return 1299;
+ if(pos==4) return 999;
+ if(pos==5) return 799;
+ if(pos==6) return 599;
+ if(pos==7) return 499;
+ if(pos==8) return 399;
+ if(pos==9) return 299;
+ if(pos==10) return 199;
+ if(pos<=15) return 149 - (pos-10)*10;
+ if(pos<=20) return 99 - (pos-15)*5;
+ if(pos<=30) return 79 - (pos-20)*2;
+ if(pos<=50) return 59 - (pos-30);
+ if(pos<=100) return 39 - Math.floor((pos-50)*0.5);
+ return Math.max(1, 20 - Math.floor((pos-100)/10));
 }
 
-document.getElementById('top10').innerHTML = TOP10.map(t=>`
-<div class="flex items-center justify-between py-4 border-b border-zinc-100 last:border-0">
-<div class="flex items-center gap-3">
-<div class="w-[48px] h-[48px] ${t.p<=3?'bg-black text-white':'bg-zinc-100 text-black'} rounded-[14px] flex items-center justify-center font-black text-[16px]">#${t.p}</div>
-<div class="w-[36px] h-[36px] bg-[#F3F4F6] rounded-full flex items-center justify-center text-[18px]">🌐</div>
-<div class="leading-[1.1]">
-<p class="font-black text-[14px] flex items-center gap-1">${t.fogo?'🔥':''} ${t.livre?'VAGA LIVRE':t.nome} ${t.vivo?'• '+t.vivo:''}</p>
-<p class="text-[12px] text-zinc-500 font-medium mt-0.5">R$ ${t.valor.toFixed(2).replace('.',',')} · ${t.livre?'0 cliq...':t.cliques+' cliq...'}</p>
-</div>
-</div>
-<button onclick="pagar('${t.livre?'TOPO #'+t.p:t.full}',${t.valor})" class="${t.p==1?'bg-[#FF4A15]':'bg-black'} text-white px-5 py-3 rounded-full font-black text-[12px]">${t.p==1?'TOMAR #1':t.livre?'PEGAR #'+t.p:'TOMAR'}</button>
-</div>
-`).join('');
-
-const CATS=["📈 MARKETING","⚖️ ADVOGADOS","🩺 MÉDICOS","🛒 MERCADO","📦 ECOM","▶️ YOUTUBE","📘 FACEBOOK","📸 INSTAGRAM","🐦 X / TWITTER","🎨 DESIGN","💰 FINANÇAS","🔍 SEO","🎯 TRÁFEGO","📚 INFOPRODUTO","💎 PLR"];
-document.getElementById('categorias').innerHTML = CATS.map((cat,idx)=>`
-<div class="bg-white border border-zinc-100 rounded-[24px] p-4 mb-4">
-<div class="flex justify-between items-center"><p class="font-black text-[14px]">${cat}</p><span class="bg-zinc-100 text-[10px] font-bold px-2 py-1 rounded-full">R$ 3.129 a R$ 1</span></div>
-<div id="cat-${idx}" class="mt-3"></div>
-<button onclick="expandir(${idx})" id="btn-${idx}" class="w-full bg-zinc-100 rounded-full py-2.5 text-[11px] font-black mt-2">Ver 150 posições ↓</button>
-</div>`).join('');
-
-function renderCat(idx, lim=3){
- let h='';
- for(let i=1;i<=lim;i++){
-  let pr=getPrice(i);
-  h+=`<div class="flex justify-between items-center bg-[#FFFBF7] border border-zinc-100 rounded-full px-3 py-2.5 mb-2">
-  <div class="flex items-center gap-2"><div class="w-6 h-6 bg-black text-white rounded-full flex items-center justify-center text-[10px] font-black">#${i}</div><span class="text-[11px] font-black">VAGA LIVRE</span><span class="text-[10px] text-zinc-400">R$ ${pr}</span></div>
-  <button onclick="pagar('${CATS[idx]} #${i}',${pr})" class="bg-black text-white px-3 py-1.5 rounded-full text-[10px] font-black">PEGAR →</button></div>`;
+function renderTop(){
+ dadosTop.sort((a,b)=>b.valor-a.valor);
+ localStorage.setItem('podio_top',JSON.stringify(dadosTop));
+ document.getElementById('precoTop').innerText='R$ '+(dadosTop[0].valor+1);
+ let html='';
+ dadosTop.forEach((t,i)=>{
+  html+=`<div class="card rounded-[20px] p-4 flex gap-3"><div class="w-12 h-12 bg-black text-white rounded-[14px] flex items-center justify-center font-black">#${i+1}</div><div class="flex-1"><p class="font-black text-[14px]"><span class="text-[#E07A5F]">#${i+1}</span> ${t.nome}</p><p class="text-[11px] text-zinc-500">${t.link}</p></div><b class="text-[#E07A5F]">R$ ${t.valor}</b></div>
+  <button onclick="tomarTop(${i})" class="w-full bg-black text-white rounded-full py-2 text-[11px] font-black mb-3">TOMAR #${i+1} por R$ ${t.valor+1} →</button>`;
+ });
+ for(let i=dadosTop.length+1;i<=10;i++){
+  html+=`<div class="card rounded-[20px] p-4 flex gap-3 mb-3 opacity-60"><div class="w-12 h-12 bg-zinc-200 rounded-[14px] flex items-center justify-center font-black">#${i}</div><div class="flex-1"><p class="font-black">VAGA LIVRE #${i}</p><p class="text-[11px]">R$ ${priceFor(i)}</p></div></div>`;
  }
- document.getElementById(`cat-${idx}`).innerHTML=h;
+ document.getElementById('lista').innerHTML=html;
 }
-CATS.forEach((_,i)=>renderCat(i,3));
-function expandir(i){
- const b=document.getElementById(`btn-${i}`);
- if(b.innerText.includes('150')){renderCat(i,150);b.innerText='Mostrar menos ↑';}
- else{renderCat(i,3);b.innerText='Ver 150 posições ↓';}
+
+function claimTop(){
+ let link=document.getElementById('url').value; if(!link.startsWith('http')){alert('Cole https://');return;}
+ let nome=prompt('Seu nome:')||'Você'; let valor=dadosTop[0].valor+1;
+ dadosTop.unshift({nome,link,valor,icon:"🔥"}); renderTop();
 }
-async function pagar(pos,valor){
- let link=document.getElementById('linkTop')?.value;
- if(!link || link.length<5){ link=prompt('Cole seu link https://'); if(!link) return; }
- const nome=prompt('Nome que vai aparecer no Topo:')||'Anônimo';
- try{
-  const r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({posicao:pos+' - '+nome,valor,link,nomeEmpresa:nome})});
-  const d=await r.json(); if(d.url||d.init_point) location.href=d.url||d.init_point; else alert('Erro checkout');
- }catch(e){alert('Erro API /api/checkout');}
+function tomarTop(i){ let t=dadosTop[i]; let nome=prompt('Seu nome pra tomar #'+(i+1))||'Você'; let link=document.getElementById('url').value||t.link; dadosTop.unshift({nome,link,valor:t.valor+1,icon:"🔥"}); renderTop(); }
+
+// CATEGORIAS COM 150 CADA
+const CATEGORIAS=["📈 MARKETING","⚖️ ADVOGADOS","🩺 MÉDICOS","🛒 MERCADO","📦 ECOM","▶️ YOUTUBE","📘 FACEBOOK","📸 INSTAGRAM","🐦 X / TWITTER","🎨 DESIGN","💰 FINANÇAS","🔍 SEO","🎯 TRÁFEGO","📚 INFOPRODUTO","💎 PLR"];
+let catsData = JSON.parse(localStorage.getItem('podio_cats')||'null') || {};
+CATEGORIAS.forEach(c=>{ if(!catsData[c]) catsData[c]=[]; });
+
+function renderCats(){
+ let html='';
+ CATEGORIAS.forEach((cat,idx)=>{
+  let lista=catsData[cat];
+  lista.sort((a,b)=>b.valor-a.valor);
+  let vagasHtml='';
+  // mostra ocupadas
+  lista.forEach((t,i)=>{
+   vagasHtml+=`<div class="bg-[#FFF1E8] rounded-full px-3 py-2 mb-2 flex justify-between text-[11px]"><span><b>#${i+1}</b> ${t.nome} - R$ ${t.valor}</span><a href="${t.link}" target="_blank" class="underline">ver</a></div>`;
+  });
+  // completa até 150 com funil
+  for(let p=lista.length+1;p<=150;p++){
+   let pr=priceFor(p);
+   vagasHtml+=`<div class="bg-white border rounded-full px-3 py-2 mb-2 flex justify-between items-center text-[11px]"><span><b>#${p}</b> VAGA LIVRE - R$ ${pr}</span><button onclick="pegarCat('${cat}',${p})" class="bg-black text-white px-3 py-1 rounded-full font-bold">PEGAR</button></div>`;
+  }
+  html+=`<div class="bg-white border rounded-[20px] p-4 mb-4">
+  <div class="flex justify-between items-center"><p class="font-black">${cat}</p><span class="bg-black text-white text-[10px] px-2 py-1 rounded-full">150 VAGAS • R$ ${priceFor(1)} a R$ 1</span></div>
+  <div class="mt-3 max-h-[300px] overflow-y-auto pr-1" id="cat-${idx}">${vagasHtml}</div>
+  <button onclick="document.getElementById('cat-${idx}').classList.toggle('max-h-[300px]')" class="w-full bg-zinc-100 rounded-full py-2 text-[11px] font-bold mt-2">Ver 1 ao 150 ↓↑</button>
+  </div>`;
+ });
+ document.getElementById('catsTab').innerHTML=html;
 }
+
+function pegarCat(cat,pos){
+ let link=document.getElementById('url').value; if(!link){alert('Cole seu link no topo primeiro (Daily)'); showTab('daily'); return;}
+ let nome=prompt(`Seu nome pra #${pos} em ${cat}:`)||'Você';
+ let valor=priceFor(pos);
+ // se já tem gente, tem que cobrir
+ let lista=catsData[cat];
+ if(lista.length>=pos && lista[pos-1] && valor <= lista[pos-1].valor){ valor=lista[pos-1].valor+1; }
+ catsData[cat].push({nome,link,valor,pos});
+ localStorage.setItem('podio_cats',JSON.stringify(catsData));
+ renderCats();
+ alert(`Pegou #${pos} em ${cat} por R$ ${valor}! Agora só sai se pagarem R$ ${valor+1}`);
+}
+
+function showTab(t){
+ if(t=='daily'){document.getElementById('dailyTab').classList.remove('hidden');document.getElementById('catsTab').classList.add('hidden');document.getElementById('t-daily').classList.add('border-b-2','border-black');document.getElementById('t-cats').classList.remove('border-b-2','border-black');}
+ else{document.getElementById('dailyTab').classList.add('hidden');document.getElementById('catsTab').classList.remove('hidden');document.getElementById('t-cats').classList.add('border-b-2','border-black');document.getElementById('t-daily').classList.remove('border-b-2','border-black');renderCats();}
+}
+
+let on=24; setInterval(()=>{on+=Math.floor(Math.random()*3)-1; document.getElementById('online').innerText=on;},3000);
+let vis=parseInt(localStorage.getItem('vis')||'4116'); setInterval(()=>{vis++; localStorage.setItem('vis',vis); document.getElementById('visitors').innerText=vis;},5000);
+document.getElementById('visitors').innerText=vis;
+
+renderTop();
+renderCats();
 </script>
 </body>
 </html>
