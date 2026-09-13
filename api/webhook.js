@@ -18,19 +18,26 @@ export default async function handler(req, res) {
 
     const { link, valor, nomeEmpresa, categoria, descricao } = pagamento.metadata;
 
-    const chave = `ranking:${categoria}`;
-    const lista = (await kv.get(chave)) || [];
-
-    lista.push({
+    const entrada = {
       nome: nomeEmpresa || 'Anônimo',
       link,
       descricao: descricao || '',
       valor: Number(valor),
+      categoria,
       cliques: 0,
       pagoEm: Date.now(),
-    });
+    };
+
+    const chave = `ranking:${categoria}`;
+    const lista = (await kv.get(chave)) || [];
+    lista.push(entrada);
     lista.sort((a, b) => b.valor - a.valor);
     await kv.set(chave, lista);
+
+    const listaTodas = (await kv.get('ranking:todas')) || [];
+    listaTodas.push(entrada);
+    listaTodas.sort((a, b) => b.valor - a.valor);
+    await kv.set('ranking:todas', listaTodas);
 
     const stats = (await kv.get('stats')) || { receita: 0, produtos: 0 };
     stats.receita += Number(valor);
