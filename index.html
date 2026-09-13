@@ -5,66 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>podiorank.com.br</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui,sans-serif}
-body{background:#FFFBF7;color:#111}
-.main{max-width:620px;margin:0 auto;padding:16px}
-h1{font-size:34px;font-weight:900;text-align:center;line-height:1.1}
-h1 span{color:#111}
-.sub{text-align:center;color:#444;margin:6px 0 18px;font-size:17px}
-.input{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #e8e8e8;border-radius:999px;padding:14px 18px}
-.input input{border:none;outline:none;width:100%;font-size:16px}
-.btn{width:100%;background:#FF5A36;border:none;padding:17px;border-radius:999px;color:#fff;font-weight:800;font-size:19px;margin:14px 0;cursor:pointer}
-.card{display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:18px;padding:16px 18px;margin:12px 0;box-shadow:0 2px 12px rgba(0,0,0,.04)}
-.card b{font-size:18px}
-.card.tag{color:#FF5A36}
-.pag{display:flex;justify-content:center;margin:24px 0 10px}
-.pag span{background:#FF5A36;color:#fff;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
-.counter{text-align:center;color:#777;margin-bottom:30px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{background:#FFFBF7}
+.main{max-width:620px;margin:0 auto;padding:20px}
+h1{font-size:34px;font-weight:900;text-align:center}
+.sub{text-align:center;color:#666;margin:8px 0 24px}
+.box{background:#fff;border:1px solid #eee;border-radius:999px;padding:16px 20px;display:flex;gap:10px}
+.box input{border:none;outline:none;width:100%;font-size:16px}
+.btn{width:100%;background:#FF5A36;color:#fff;border:none;border-radius:999px;padding:18px;font-size:20px;font-weight:800;margin:16px 0}
+.card{background:#fff;border-radius:18px;padding:18px;display:flex;justify-content:space-between;margin:12px 0;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.pag{display:flex;justify-content:center;margin-top:28px}
+.pag span{background:#FF5A36;color:#fff;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800}
+.counter{text-align:center;color:#999;margin-top:10px}
 </style>
 </head>
 <body>
 <div class="main">
-<h1>Claim #1 por <span id="priceTop">R$274</span></h1>
+<h1>Claim #1 por R$275</h1>
 <div class="sub">Pódio Principal</div>
-<div class="input"><span style="opacity:.5">🌐</span><input id="urlInput" placeholder="Sua URL ou @handle"></div>
-<button class="btn" onclick="claim()">Claim Rank</button>
-<div id="board"></div>
-<div class="pag"><span id="pageNum">1</span></div>
-<div class="counter" id="counter">1 - 3 of 3</div>
+<div class="box">🌐 <input placeholder="Sua URL ou @handle"></div>
+<button class="btn">Claim Rank</button>
+<div class="card"><div><span style="color:#FF5A36;font-weight:800">#1</span> <b>Além dos Versículos</b></div><b>R$274</b></div>
+<div class="card"><div><span style="color:#FF5A36;font-weight:800">#2</span> <b>Rupert</b></div><b>R$211</b></div>
+<div class="card"><div><span style="color:#FF5A36;font-weight:800">#3</span> <b>Pedro</b></div><b>R$162</b></div>
+<div class="pag"><span>1</span></div>
+<div class="counter">1 - 3 of 3</div>
 </div>
-<script>
-let products = JSON.parse(localStorage.getItem('podiorank_v2')||'null') || [
-{name:'Além dos Versículos', url:'alem.com', price:274},
-{name:'Rupert', url:'rupert.com', price:211},
-{name:'Pedro', url:'pedro.com', price:162},
-];
-let page = 1;
-const perPage = 50;
-function save(){localStorage.setItem('podiorank_v2',JSON.stringify(products))}
-function render(){
- products.sort((a,b)=>b.price-a.price);
- let start=(page-1)*perPage;
- let slice=products.slice(start,start+perPage);
- let board=document.getElementById('board');
- board.innerHTML='';
- slice.forEach((p,i)=>{
-  let rank=start+i+1;
-  board.innerHTML+=`<div class="card"><div><span style="color:#FF5A36;font-weight:800;margin-right:6px">#${rank}</span><b>${p.name}</b> <span style="color:#666">- ${p.url}</span></div><div class="tag">R$${p.price}</div></div>`;
- });
- document.getElementById('counter').innerText=`${products.length==0?0:start+1} - ${Math.min(start+perPage,products.length)} of ${products.length}`;
- document.getElementById('priceTop').innerText='R$'+((products[0]?.price||273)+1);
- document.getElementById('pageNum').innerText=page;
-}
-function claim(){
- let v=document.getElementById('urlInput').value.trim();
- if(!v) return alert('Digite sua URL');
- let newPrice=(products[0]?.price||273)+1;
- products.unshift({name:v, url:v, price:newPrice});
- save(); render();
- document.getElementById('urlInput').value='';
-}
-render();
-</script>
 </body>
 </html>
     
