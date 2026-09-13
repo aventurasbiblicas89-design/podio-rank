@@ -210,10 +210,29 @@ async function pegar(posicao, valorMinimo){
 }
 document.getElementById('btnTopo').onclick = () => pegar('TOPO', 99);
 
+const sessionId = localStorage.getItem('sid') || (() => {
+  const id = crypto.randomUUID();
+  localStorage.setItem('sid', id);
+  return id;
+})();
+
+async function enviarHeartbeat(){
+  try{
+    await fetch('/api/heartbeat', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ sessionId })
+    });
+  }catch(e){}
+}
+
 renderTabs();
 carregarBoard();
 carregarOnline();
 carregarStats();
+enviarHeartbeat();
+setInterval(enviarHeartbeat, 15000);
+setInterval(carregarOnline, 10000);
 </script>
 </body>
 </html>
