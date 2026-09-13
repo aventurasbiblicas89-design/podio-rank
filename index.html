@@ -3,89 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PodioRank - Pódio Principal</title>
+<title>PodioRank - 140 Nichos</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui,sans-serif}
-body{background:#FFFBF7;color:#111}
-header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px}
-.logo{font-weight:900;font-size:22px}
-.tabs{display:flex;background:#fff;border:1px solid #eee;border-radius:999px;padding:4px;margin:14px auto;width:fit-content}
-.tab{padding:8px 18px;border-radius:999px;cursor:pointer}
-.tab.active{background:#FF6B4A;color:#fff}
-.main{max-width:620px;margin:0 auto;padding:10px 16px;text-align:center}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{background:#FFFBF7}
+.main{max-width:680px;margin:0 auto;padding:16px;text-align:center}
 h1{font-size:32px;font-weight:900}
-.price{font-size:42px;color:#FF6B4A;font-weight:900;margin:12px 0;display:flex;justify-content:center;align-items:center;gap:12px}
-.price button{width:36px;height:36px;border-radius:50%;border:none;background:#FFE8E2;color:#FF6B4A;font-size:20px}
-.input{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #e5e5e5;border-radius:999px;padding:14px 18px;margin-top:18px}
-.input input{border:none;outline:none;width:100%;font-size:16px}
-.claim{width:100%;background:#FF6B4A;border:none;padding:16px;border-radius:999px;color:#fff;font-weight:700;font-size:18px;margin:14px 0;cursor:pointer}
-.card{display:flex;gap:12px;background:#fff;border-radius:20px;padding:14px;text-align:left;margin:10px 0;box-shadow:0 2px 10px rgba(0,0,0,.03)}
-.pagination{display:flex;justify-content:center;gap:10px;margin:28px 0 10px;color:#FF6B4A}
-.pg{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #FF6B4A}
+.price{font-size:44px;color:#FF6B4A;font-weight:900;margin:10px}
+.card{background:#fff;border-radius:16px;padding:14px;margin:10px 0;text-align:left;display:flex;gap:10px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.pg{display:inline-flex;width:38px;height:38px;border-radius:50%;align-items:center;justify-content:center;border:1px solid #FF6B4A;margin:4px;cursor:pointer}
 .pg.active{background:#FF6B4A;color:#fff}
-.count{text-align:center;color:#666;margin-bottom:18px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
-.stat{background:#fff;border-radius:20px;padding:16px;text-align:center}
-.stat b{font-size:24px;display:block}
+.input{display:flex;background:#fff;border-radius:99px;padding:14px;border:1px solid #eee;margin-top:16px}
+.input input{border:none;outline:none;width:100%}
+.btn{width:100%;background:#FF6B4A;color:#fff;border:none;padding:16px;border-radius:99px;font-weight:700;margin:14px 0;font-size:18px}
 </style>
 </head>
 <body>
-<header><div class="logo">🏆 PodioRank</div><div>Categories</div></header>
-
 <div class="main">
-<h1>Claim #1 por <span id="claimPrice">$274</span></h1>
-<div class="input"><span>🌐</span><input id="urlInput" placeholder="Sua URL ou @handle"></div>
-<button class="claim" onclick="claimRank()">Claim rank - Pagar</button>
-
+<h1>Claim #1 por <span id="topPrice">$274</span></h1>
+<p>Modelo infinito - igual o gringo de 140 páginas</p>
+<div class="input"><input id="url" placeholder="Sua URL ou @handle"></div>
+<button class="btn" onclick="claim()">Claim Rank</button>
 <div id="board"></div>
-<div class="pagination" id="pagination"></div>
-<div class="count" id="countInfo">1 - 50 of 46</div>
-
-<div class="stats">
-<div class="stat"><b id="totalProducts">46</b><span>produtos</span></div>
-<div class="stat"><b id="totalRevenue">R$ 259k</b><span>faturamento</span></div>
+<div id="pagination"></div>
+<div id="counter" style="color:#666;margin:20px">1 - 50 of 0</div>
 </div>
-</div>
-
 <script>
-let products = JSON.parse(localStorage.getItem('podiorank') || 'null') || [
-{name:'Além dos Versículos', url:'alemdosversiculos.com', price:274},
-{name:'Rupert - Mentoria', url:'rupert.com', price:211},
-{name:'PEDRO - Ecom', url:'pedro.com', price:162},
-];
-let currentPage = 1;
-const perPage = 50;
-let claimValue = products[0]?.price + 1 || 35;
-
-function save(){ localStorage.setItem('podiorank', JSON.stringify(products)) }
+let products = JSON.parse(localStorage.getItem('pr')||'[]');
+if(products.length==0){
+ products = [
+  {name:'Além dos Versículos',url:'alem.com',price:274},
+  {name:'Rupert',url:'rupert.com',price:211},
+  {name:'Pedro',url:'pedro.com',price:162},
+ ];
+}
+let page=1, perPage=50;
+let claimValue=products[0]?products[0].price+1:35;
 
 function render(){
  products.sort((a,b)=>b.price-a.price);
- const start = (currentPage-1)*perPage;
- const slice = products.slice(start, start+perPage);
- const board = document.getElementById('board');
- board.innerHTML='';
- slice.forEach((p,i)=>{
-   const rank = start+i+1;
-   board.innerHTML += `<div class="card"><b style="color:#FF6B4A">#${rank}</b><div><b>${p.name}</b><br><small>${p.url} - R$${p.price}</small></div></div>`;
- });
- document.getElementById('countInfo').innerText = `${start+1} - ${Math.min(start+perPage, products.length)} of ${products.length}`;
- document.getElementById('totalProducts').innerText = products.length;
- document.getElementById('claimPrice').innerText = 'R$'+claimValue;
- const totalPages = Math.ceil(products.length/perPage) || 1;
- let pag='';
- for(let k=1;k<=totalPages;k++){ pag+=`<div class="pg ${k===currentPage?'active':''}" onclick="currentPage=${k};render()">${k}</div>` }
- document.getElementById('pagination').innerHTML=pag;
+ let start=(page-1)*perPage;
+ let slice=products.slice(start,start+perPage);
+ document.getElementById('board').innerHTML=slice.map((p,i)=>`<div class="card"><b style="color:#FF6B4A">#${start+i+1}</b> <b>${p.name}</b> - ${p.url} <span style="margin-left:auto;color:#FF6B4A">R$${p.price}</span></div>`).join('');
+ document.getElementById('counter').innerText=`${start+1} - ${Math.min(start+perPage,products.length)} of ${products.length}`;
+ document.getElementById('topPrice').innerText='R$'+(products[0]?.price||35);
+ claimValue=(products[0]?.price||34)+1;
+ let totalPages=Math.ceil(products.length/perPage)||1;
+ let html='';
+ for(let k=1;k<=Math.min(totalPages,5);k++){ html+=`<span class="pg ${k==page?'active':''}" onclick="page=${k};render()">${k}</span>` }
+ if(totalPages>5) html+=`...<span class="pg" onclick="page=${totalPages};render()">${totalPages}</span>`;
+ document.getElementById('pagination').innerHTML=html;
+ localStorage.setItem('pr',JSON.stringify(products));
 }
-
-function claimRank(){
- const url = document.getElementById('urlInput').value.trim();
- if(!url) return alert('Coloca sua URL');
- const newProd = {name:url, url:url, price:claimValue};
- products.push(newProd);
- claimValue = Math.max(...products.map(p=>p.price))+1;
- save(); render();
- window.open('https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=SEU_PREF_ID','_blank');
+function claim(){
+ let v=document.getElementById('url').value.trim();
+ if(!v) return alert('Digite sua URL');
+ products.push({name:v,url:v,price:claimValue});
+ render();
+ document.getElementById('url').value='';
 }
 render();
 </script>
