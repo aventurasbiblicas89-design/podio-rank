@@ -7,6 +7,11 @@ function tempoRelativo(timestamp) {
   return `${dias} dias`;
 }
 
+function extrairDominio(link) {
+  try { return new URL(link).hostname.replace(/^www\./, ''); }
+  catch { return link; }
+}
+
 export default async function handler(req, res) {
   try {
     const { categoria = 'marketing', periodo = 'all' } = req.query;
@@ -19,9 +24,14 @@ export default async function handler(req, res) {
       itens = itens.filter(i => i.pagoEm >= inicioHoje.getTime());
     }
 
+    itens = [...itens].sort((a, b) => b.valor - a.valor);
+
     const itensFormatados = itens.map(i => ({
+      id: i.pagoEm,
       nome: i.nome,
       link: i.link,
+      descricao: i.descricao || '',
+      dominio: extrairDominio(i.link),
       valor: i.valor,
       cliques: i.cliques || 0,
       tempoRelativo: tempoRelativo(i.pagoEm),
