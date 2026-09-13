@@ -3,139 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Podio Rank - 41.281 visitas/dia - AO VIVO</title>
+<title>Podio Rank - 41.281 visitas/dia - Compre seu lugar no Topo</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
-body{font-family:Inter,sans-serif;background:#FFFBF7}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.pulse-dot{animation:pulse 1.5s infinite}
+body{font-family:'Inter',sans-serif;background:#FFFBF7}
 </style>
 </head>
 <body class="antialiased">
-<div class="max-w-[680px] mx-auto px-4 pt-5 pb-32">
+<div class="max-w-[700px] mx-auto px-4 pt-6 pb-24">
 
-<div class="flex justify-between items-center">
-<div class="flex flex-col gap-[5px]"><div class="w-[18px] h-[6px] bg-[#FF6B35] rounded-full"></div><div class="w-[32px] h-[6px] bg-black rounded-full"></div><div class="w-[24px] h-[6px] bg-black rounded-full"></div></div>
-<div class="flex gap-6 text-[14px]"><span class="font-black border-b-[3px] border-black pb-1">Diário</span><span class="text-zinc-400">Categorias</span><span class="text-zinc-400">Histórico</span><span class="text-zinc-400">Estatísticas</span></div>
-<div class="w-9 h-9 bg-black rounded-full flex items-center justify-center text-white">👤</div>
-</div>
+<!-- HEADER -->
+<h1 class="font-black text-[42px] leading-[0.9] text-center tracking-[-2px]">Compre seu<br>lugar no Topo</h1>
+<p class="text-center text-[13px] mt-3 font-bold text-zinc-500">41.281 visitas/dia • Topo fixo no podiorank.com.br</p>
 
-<div class="flex justify-center mt-6">
-<div class="bg-white border border-zinc-200 rounded-full pl-2 pr-5 py-[9px] text-[11px] shadow-[0_4px_24px_rgba(0,0,0,0.08)] flex items-center gap-3">
-<span class="bg-green-500 text-white px-3 py-1 rounded-full font-black text-[10px] flex items-center gap-1.5"><span class="w-2 h-2 bg-white rounded-full pulse-dot"></span>AO VIVO</span>
-<span class="font-bold"><b id="online">28</b> online agora</span>
-<span class="w-1 h-1 bg-zinc-300 rounded-full"></span>
-<span>41.281 visitas hoje</span>
-<span class="w-1 h-1 bg-zinc-300 rounded-full"></span>
-<span>R$ <b id="lancesTop">207.543</b> em lances</span>
-<span class="underline ml-1">ver stats →</span>
+<!-- TOP 10 -->
+<div class="bg-white border-[2.5px] border-black rounded-[32px] p-5 mt-7 shadow-[6px_6px_0px_0px_#000]">
+<div class="flex justify-between items-center mb-4">
+<h2 class="font-black text-[20px]">🏆 TOP 10 - Diário</h2>
+<span class="bg-red-500 text-white text-[10px] font-black px-3 py-1 rounded-full animate-pulse">AO VIVO AGORA</span>
 </div>
+<div id="top10"></div>
 </div>
 
-<div class="text-center mt-10">
-<h1 class="font-black text-[46px] leading-[0.85] tracking-tighter">Compre seu<br>lugar no Topo</h1>
-<p class="text-[15px] text-zinc-500 mt-4 max-w-[360px] mx-auto leading-[1.5]">41.281 pessoas verão seu link todo dia. Pague para ficar em #1 por 30 dias. Quem pagar R$ 0,01 a mais rouba sua posição.</p>
+<!-- CATEGORIAS -->
+<div class="mt-10">
+<h2 class="font-black text-[26px] tracking-[-1px]">Categorias Premium</h2>
+<p class="text-[12px] font-bold text-zinc-500 -mt-1">15 categorias x 150 posições = 2.250 lugares pra vender</p>
+<div id="cats" class="mt-5"></div>
 </div>
 
-<div class="bg-white border-[2.5px] border-black rounded-[36px] p-[24px] mt-8 shadow-[0_20px_60px_rgba(0,0,0,0.12)]">
-<div class="flex justify-between items-center">
-<div class="bg-[#FFF8C6] border border-[#FDE68A] rounded-full px-4 py-2 text-[11px] font-bold flex items-center gap-2"><span class="w-2 h-2 bg-red-500 rounded-full pulse-dot"></span>🔥 Leilão Ao Vivo • 355K + 48K Verificados • <span id="watching">28</span> assistindo</div>
-<span class="text-[11px] text-zinc-400" id="updated">Atualizado agora</span>
-</div>
-<div class="flex gap-6 mt-6">
-<div class="flex-1">
-<p class="text-[11px] font-black tracking-widest text-zinc-400">LANCE ATUAL PELO #1</p>
-<p class="font-black text-[46px] tracking-tighter leading-none mt-1">R$ 3.129,00</p>
-<p class="text-[12px] text-zinc-500 mt-2">por <b class="text-black">Além dos Versículos (355K)</b> • <span id="ago">há 8 min</span></p>
-</div>
-<div class="text-right">
-<p class="text-[11px] font-black tracking-widest text-zinc-400">PRÓXIMO LANCE</p>
-<p class="font-black text-[22px] mt-1">R$ 3.129,01</p>
-<p class="text-[11px] text-green-600 font-bold">+ R$ 0,01 pra vencer</p>
-</div>
-</div>
-<button onclick="pagar('TOPO #1 - Leilão Principal',3129)" class="w-full bg-[#FF5A36] text-white font-black py-[20px] rounded-full mt-6 text-[20px] shadow-[0_10px_30px_rgba(255,90,54,0.4)] hover:bg-[#E84522] hover:shadow-[0_14px_40px_rgba(255,90,54,0.5)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 cursor-pointer">DAR LANCE R$ 3.129,00 →</button>
-<div class="grid grid-cols-3 gap-3 mt-4">
-<div class="bg-[#FFFBF7] border rounded-[16px] py-3.5 text-center"><p class="font-black text-[13px]">✓ 30 dias</p><p class="text-[10px] text-zinc-500">garantidos</p></div>
-<div class="bg-[#FFFBF7] border rounded-[16px] py-3.5 text-center"><p class="font-black text-[13px]">✓ 1.2M cliques</p><p class="text-[10px] text-zinc-500">por mês</p></div>
-<div class="bg-[#FFFBF7] border rounded-[16px] py-3.5 text-center"><p class="font-black text-[13px]">✓ Dofollow</p><p class="text-[10px] text-zinc-500">link SEO</p></div>
-</div>
-</div>
-
-<div class="bg-white border border-zinc-200 rounded-[36px] p-6 mt-8 shadow-[0_8px_40px_rgba(0,0,0,0.05)]">
-<div class="flex justify-between items-start">
-<div><h2 class="font-black text-[28px] leading-[0.9] tracking-tighter">🏆 Top 10<br>Ranking Diário</h2><p class="text-[12px] text-zinc-500 mt-2">Quem paga mais, fica no topo. Clique → Facebook 355K / 48K / YouTube</p></div>
-<div class="bg-black text-white text-[11px] font-bold px-4 py-3 rounded-[18px] text-center leading-tight">41.281<br>cliques hoje<br><span class="text-[10px] font-normal text-zinc-400">AO VIVO</span></div>
-</div>
-<div id="top10" class="mt-6"></div>
-<div class="bg-[#F9F9F7] rounded-[20px] p-4 mt-6">
-<p class="text-[11px] font-black tracking-widest text-zinc-400">🔴 LANCES AO VIVO - ATUALIZANDO</p>
-<div id="live-feed" class="mt-3 space-y-2"></div>
-</div>
-</div>
-
-<div class="bg-white border border-zinc-200 rounded-[36px] p-6 mt-8">
-<h2 class="font-black text-[24px] tracking-tighter">📂 15 Categorias Premium - Tudo R$ 3.129</h2>
-<div id="cats" class="mt-6 grid gap-5"></div>
-</div>
-
-<div class="bg-white border border-zinc-200 rounded-[36px] p-6 mt-8">
-<h2 class="font-black text-[22px]">❓ Perguntas Frequentes</h2>
-<div class="mt-6 space-y-6 text-[13px]">
-<div><p class="font-black">Quanto tempo fico no topo?</p><p class="text-zinc-500 mt-2 leading-[1.6]">30 dias garantidos. Se alguém pagar R$ 0,01 a mais, você recebe email com 12h para cobrir o lance.</p></div>
-<div><p class="font-black">O link é clicável? É dofollow?</p><p class="text-zinc-500 mt-2 leading-[1.6]">Sim! 100% clicável e dofollow. Clique no Top 10 e vai direto pro Facebook verificado (355K / 48K) e YouTube.</p></div>
-<div><p class="font-black">Posso colocar link do Facebook?</p><p class="text-zinc-500 mt-2 leading-[1.6]">Sim! Facebook, Instagram, YouTube, site, WhatsApp. Aprovamos em 2 minutos.</p></div>
-<div><p class="font-black">Por que R$ 3.129?</p><p class="text-zinc-500 mt-2 leading-[1.6]">Preço premium filtra curiosos. Por isso páginas de 355K pagam. 178x mais barato que Google Ads.</p></div>
-</div>
-</div>
-
-<div class="text-center mt-12 pb-10">
-<p class="font-black text-[22px]">PODIO RANK</p>
-<p class="text-[12px] text-zinc-500 mt-2">41.281 visitas • R$ <span id="lances2">207.543</span> em lances • Facebook 355K + 48K verificados • Feito no Brasil 🇧🇷</p>
-</div>
 </div>
 
 <script>
-// LINKS CORRIGIDOS - PEDRO AGORA É YOUTUBE
 const TOP10=[
- {p:1,nome:"Além dos Versículos - 355K",link:"https://www.facebook.com/share/1C9k3ZA1pG/",valor:3129.00,clicks:"1.2M",vivo:true,top:true,avatar:"📖"},
- {p:2,nome:"Rupert Marketing - 48K",link:"https://www.facebook.com/share/19T6y57XuF/",valor:1305.00,clicks:"890K",vivo:true,avatar:"🚀"},
- {p:3,nome:"PEDRO Automação - YouTube",link:"https://youtube.com/@meme-zinho?si=VnRDBaijlDCtGv0e",valor:850.00,clicks:"420K",vivo:true,avatar:"🤖"},
- {p:4,nome:"VAGA LIVRE",link:"",valor:499.00,clicks:"0",livre:true},
- {p:5,nome:"VAGA LIVRE",link:"",valor:299.00,clicks:"0",livre:true},
- {p:6,nome:"VAGA LIVRE",link:"",valor:199.00,clicks:"0",livre:true},
- {p:7,nome:"VAGA LIVRE",link:"",valor:149.00,clicks:"0",livre:true},
- {p:8,nome:"VAGA LIVRE",link:"",valor:124.86,clicks:"0",livre:true},
- {p:9,nome:"VAGA LIVRE",link:"",valor:124.86,clicks:"0",livre:true},
- {p:10,nome:"VAGA LIVRE",link:"",valor:124.86,clicks:"0",livre:true},
+ {p:1,nome:"Além dos Versículos - 355K",link:"https://www.facebook.com/share/1C9k3ZA1pG/",valor:3129.00,avatar:"📖"},
+ {p:2,nome:"Rupert Marketing - 48K",link:"https://www.facebook.com/share/19T6y57XuF/",valor:2399.00,avatar:"🚀"},
+ {p:3,nome:"PEDRO Automação - YouTube",link:"https://youtube.com/@meme-zinho?si=VnRDBaijlDCtGv0e",valor:1299.00,avatar:"🤖"},
+ {p:4,nome:"VAGA LIVRE",link:"",valor:999.00,livre:true},
+ {p:5,nome:"VAGA LIVRE",link:"",valor:799.00,livre:true},
+ {p:6,nome:"VAGA LIVRE",link:"",valor:499.00,livre:true},
+ {p:7,nome:"VAGA LIVRE",link:"",valor:299.00,livre:true},
+ {p:8,nome:"VAGA LIVRE",link:"",valor:199.00,livre:true},
+ {p:9,nome:"VAGA LIVRE",link:"",valor:149.00,livre:true},
+ {p:10,nome:"VAGA LIVRE",link:"",valor:99.00,livre:true},
 ];
 
-document.getElementById('top10').innerHTML=TOP10.map(t=>{
- return `<div class="flex justify-between items-center py-[18px] border-b border-zinc-100 last:border-0 group">
-   <div class="flex items-center gap-3">
-     <div class="w-[54px] h-[54px] ${t.top?'bg-black text-white':'bg-zinc-100 text-zinc-500'} rounded-[18px] flex items-center justify-center font-black text-[15px] group-hover:scale-105 transition-all">#${t.p}</div>
-     <div class="w-10 h-10 bg-[#FFFBF7] border rounded-full flex items-center justify-center text-[18px]">${t.avatar||'🌐'}</div>
-     <div>
-       ${t.livre?`<p class="font-black text-[14px]">VAGA LIVRE</p>`: `<a href="${t.link}" target="_blank" class="font-black text-[14px] hover:text-[#FF5A36] hover:underline">🔥 ${t.nome} ↗</a>`}
-       <p class="text-[12px] text-zinc-500">R$ ${t.valor.toLocaleString('pt-BR',{minimumFractionDigits:2})} · ${t.clicks} ${t.vivo?'<span class="text-green-600 font-bold">• AO VIVO</span>':''}</p>
-     </div>
-   </div>
-   <button onclick="pagar('TOPO #${t.p}',${t.valor})" class="${t.top?'bg-[#FF5A36] hover:bg-[#E84522] shadow-[0_6px_20px_rgba(255,90,54,0.3)]':'bg-black hover:bg-zinc-800'} text-white px-5 py-2.5 rounded-full font-black text-[12px] hover:scale-105 active:scale-95 transition-all cursor-pointer">${t.livre?'PEGAR #'+t.p:'TOMAR'}</button>
- </div>`
-}).join('');
+function getPrice(pos){
+ if(pos==1) return 3129;
+ if(pos==2) return 2399;
+ if(pos==3) return 1299;
+ if(pos==4) return 999;
+ if(pos==5) return 799;
+ if(pos==6) return 499;
+ if(pos==7) return 299;
+ if(pos==8) return 199;
+ if(pos==9) return 149;
+ if(pos==10) return 99;
+ if(pos<=20) return 79;
+ if(pos<=50) return 39;
+ if(pos<=100) return 19;
+ return 1;
+}
 
-const CATS=["📈 MARKETING","⚖️ ADVOGADOS","🩺 MÉDICOS","🛒 MERCADO","📦 ECOM","▶️ YOUTUBE","📘 FACEBOOK","📸 INSTAGRAM","🐦 X / TWITTER","🎨 DESIGN","💰 FINANÇAS","🔍 SEO","🎯 TRÁFEGO PAGO","📚 INFOPRODUTO","💎 PLR"];
-document.getElementById('cats').innerHTML=CATS.map(c=>`<div class="border border-zinc-100 rounded-[24px] p-4 bg-[#FFFBF7]/60 hover:shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-all"><div class="flex justify-between"><p class="font-black text-[13px]">${c}</p><span class="text-[10px] bg-black text-white px-3 py-1.5 rounded-full font-black">R$ 3.129</span></div><div class="mt-4 space-y-2.5">${[1,2,3].map(i=>`<div class="flex justify-between items-center bg-white border rounded-full px-3.5 py-3 hover:border-black transition-colors"><div class="flex items-center gap-2"><div class="w-7 h-7 bg-zinc-900 text-white rounded-full flex items-center justify-center font-black text-[11px]">#${i}</div><span class="font-bold text-[12px]">VAGA LIVRE</span><span class="text-[11px] text-zinc-400">· R$ 3.129</span></div><button onclick="pagar('${c} #${i}',3129)" class="bg-black text-white px-4 py-2 rounded-full text-[11px] font-black hover:bg-zinc-800 hover:scale-105 active:scale-95 transition-all cursor-pointer">PEGAR →</button></div>`).join('')}</div></div>`).join('');
+const topDiv = document.getElementById('top10');
+topDiv.innerHTML = TOP10.map(t=>`
+<div class="flex justify-between items-center py-4 border-b border-zinc-100 last:border-0">
+<div class="flex gap-3 items-center min-w-0">
+<div class="w-12 h-12 ${t.p==1?'bg-black text-white':'bg-zinc-100 text-black'} rounded-[14px] flex items-center justify-center font-black text-[14px] shrink-0">#${t.p}</div>
+<div class="min-w-0">
+${t.livre?`<p class="font-black text-[13px] truncate">VAGA LIVRE</p>`:`<a href="${t.link}" target="_blank" class="font-black text-[13px] hover:underline line-clamp-1">${t.avatar} ${t.nome} ↗</a>`}
+<p class="text-[11px] font-bold text-zinc-500">R$ ${t.valor.toFixed(2).replace('.',',')} ${t.p<=3?'• AO VIVO':''}</p>
+</div>
+</div>
+<button onclick="pagar('TOPO #${t.p}',${t.valor})" class="bg-black text-white px-5 py-2.5 rounded-full font-black text-[11px] shrink-0 hover:bg-zinc-800">${t.livre?'PEGAR #'+t.p:'TOMAR'}</button>
+</div>
+`).join('');
 
-const feeds=["🔥 Lance R$ 3.129 no #1 - Além 355K - agora","⚡ Rupert 48K pagou R$ 1.305 no #2 - há 2 min","👀 28 pessoas vendo #1 agora","💰 +R$ 5.200 em lances hoje"];
-document.getElementById('live-feed').innerHTML=feeds.map(f=>`<div class="bg-white border rounded-full px-4 py-2.5 text-[11px]">${f}</div>`).join('');
+const CATEGORIAS=["📈 MARKETING","⚖️ ADVOGADOS","🩺 MÉDICOS","🛒 MERCADO","📦 ECOM","▶️ YOUTUBE","📘 FACEBOOK","📸 INSTAGRAM","🐦 X / TWITTER","🎨 DESIGN","💰 FINANÇAS","🔍 SEO","🎯 TRÁFEGO","📚 INFOPRODUTO","💎 PLR"];
 
-let valor=207543; let online=28;
-setInterval(()=>{valor+=Math.floor(Math.random()*8)+2; document.getElementById('lancesTop').innerText=valor.toLocaleString('pt-BR'); document.getElementById('lances2').innerText=valor.toLocaleString('pt-BR');},2500);
-setInterval(()=>{online=26+Math.floor(Math.random()*9); document.getElementById('online').innerText=online; document.getElementById('watching').innerText=online; document.getElementById('updated').innerText="Atualizado há "+Math.floor(Math.random()*59)+"s"; document.getElementById('ago').innerText="há "+(Math.floor(Math.random()*9)+1)+" min";},3000);
+document.getElementById('cats').innerHTML=CATEGORIAS.map((cat,idx)=>`
+<div class="bg-white border-[2px] border-black rounded-[28px] p-5 mb-5 shadow-[4px_4px_0px_0px_#000]">
+<div class="flex justify-between items-center">
+<p class="font-black text-[15px]">${cat}</p>
+<span class="text-[9px] font-black bg-black text-white px-3 py-1 rounded-full">150 VAGAS • R$ 1 a R$ 3.129</span>
+</div>
+<div id="cat-${idx}" class="mt-4"></div>
+<button onclick="expandir(${idx})" id="btn-${idx}" class="w-full mt-3 bg-[#FFFBF7] border border-black rounded-full py-3 text-[11px] font-black hover:bg-black hover:text-white transition">Ver todas 150 posições ↓</button>
+</div>`).join('');
 
-async function pagar(pos,valor){const nome=prompt('Nome da Empresa:'); if(!nome) return; const link=prompt('Seu Link https:// (Facebook, site, Instagram):'); if(!link) return; try{const r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({posicao:pos+' - '+nome,valor,link,nomeEmpresa:nome})}); const d=await r.json(); if(d.url||d.init_point) location.href=d.url||d.init_point; else alert('Erro checkout');}catch(e){alert('Erro conexão API');}}
+function renderCat(idx, limite=3){
+ let html='';
+ for(let i=1;i<=limite;i++){
+  let preco=getPrice(i);
+  html+=`<div class="flex justify-between items-center bg-[#FFFBF7] border border-zinc-200 rounded-full px-3.5 py-3 mb-2">
+  <div class="flex items-center gap-2 min-w-0">
+  <div class="w-7 h-7 bg-black text-white rounded-full flex items-center justify-center font-black text-[10px] shrink-0">#${i}</div>
+  <span class="font-black text-[11px]">VAGA LIVRE</span>
+  <span class="text-[10px] font-bold text-zinc-400">· R$ ${preco}</span>
+  </div>
+  <button onclick="pagar('${CATEGORIAS[idx]} #${i}',${preco})" class="bg-black text-white px-4 py-2 rounded-full text-[10px] font-black shrink-0">PEGAR →</button>
+  </div>`;
+ }
+ document.getElementById(`cat-${idx}`).innerHTML=html;
+}
+CATEGORIAS.forEach((_,i)=>renderCat(i,3));
+
+function expandir(idx){
+ const btn=document.getElementById(`btn-${idx}`);
+ if(btn.innerText.includes('150')){
+  renderCat(idx,150);
+  btn.innerText='Mostrar menos ↑';
+ }else{
+  renderCat(idx,3);
+  btn.innerText='Ver todas 150 posições ↓';
+  document.getElementById(`cat-${idx}`).scrollIntoView({behavior:'smooth', block:'center'});
+ }
+}
+
+async function pagar(pos,valor){
+ const nome=prompt('Seu NOME que vai aparecer no Topo:');
+ if(!nome) return;
+ const link=prompt('Seu LINK (https://):');
+ if(!link) return;
+ if(!link.startsWith('http')){ alert('Link precisa começar com https://'); return; }
+ try{
+  const r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({posicao:pos+' - '+nome,valor,link,nomeEmpresa:nome})});
+  const d=await r.json();
+  if(d.url||d.init_point){ location.href=d.url||d.init_point; }
+  else{ alert('Erro no checkout: '+(d.error||'tente de novo')); }
+ }catch(e){ alert('Erro API - verifica /api/checkout'); }
+}
 </script>
 </body>
 </html>
