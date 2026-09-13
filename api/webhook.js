@@ -2,10 +2,12 @@ import { kv } from '@vercel/kv';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(200).end();
-
   try {
     const paymentId = req.body?.data?.id;
     if (!paymentId) return res.status(200).end();
+
+    const jaProcessado = await kv.sismember('pagamentos_processados', paymentId);
+    if (jaProcessado) return res.status(200).end();
 
     const r = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
       headers: { 'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}` },
@@ -14,7 +16,7 @@ export default async function handler(req, res) {
 
     if (pagamento.status !== 'approved') return res.status(200).end();
 
-    const { posicao, link, valor, nomeEmpresa, categoria } = pagamento.metadata;
+    const { link, valor, nomeEmpresa, categoria } = pagamento.metadata;
 
     const chave = `ranking:${categoria}`;
     const lista = (await kv.get(chave)) || [];
@@ -33,6 +35,8 @@ export default async function handler(req, res) {
     stats.receita += Number(valor);
     stats.produtos += 1;
     await kv.set('stats', stats);
+
+    await kv.sadd('pagamentos_processados', paymentId);
 
     return res.status(200).end();
   } catch (err) {
