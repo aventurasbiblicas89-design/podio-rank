@@ -3,156 +3,172 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Podio Rank</title>
+<title>Podio Rank - Leilão Ao Vivo</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 .scrollbar-hide::-webkit-scrollbar{display:none}
-.scrollbar-hide{-ms-overflow-style:none; scrollbar-width:none}
+.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
 </style>
 </head>
 <body class="bg-[#FFFBF7] text-zinc-900">
-<div class="max-w-[680px] mx-auto p-4 pb-24">
+<div class="max-w-[700px] mx-auto p-4 pb-24">
 
 <!-- HEADER -->
 <div class="flex justify-between items-center mt-2">
-<h1 class="text-[26px] font-black tracking-tight">⚡ Podio Rank</h1>
+<h1 class="text-[26px] font-black">⚡ Podio Rank</h1>
 <span class="text-[12px] text-zinc-400">podiorank.com.br</span>
 </div>
 
-<!-- CATEGORIAS TOPO -->
+<!-- CATEGORIAS -->
 <div class="flex gap-2 mt-4 overflow-x-auto scrollbar-hide">
-<div class="bg-[#FF5A36] text-white px-5 py-2.5 rounded-full text-[13px] font-bold shrink-0">📈 MARKETING</div>
-<div class="bg-white border px-5 py-2.5 rounded-full text-[13px] font-bold shrink-0">⚖️ ADVOGADOS</div>
-<div class="bg-white border px-5 py-2.5 rounded-full text-[13px] font-bold shrink-0">🩺 MÉDICOS</div>
-<div class="bg-white border px-5 py-2.5 rounded-full text-[13px] font-bold shrink-0">🛒 MERCADO</div>
-<div class="bg-white border px-5 py-2.5 rounded-full text-[13px] font-bold shrink-0">📦 ECOM</div>
+<div class="bg-[#FF5A36] text-white px-6 py-3 rounded-full text-[13px] font-black shrink-0">📈 MARKETING</div>
+<div class="bg-white border px-6 py-3 rounded-full text-[13px] font-bold shrink-0">⚖️ ADVOGADOS</div>
+<div class="bg-white border px-6 py-3 rounded-full text-[13px] font-bold shrink-0">🩺 MÉDICOS</div>
+<div class="bg-white border px-6 py-3 rounded-full text-[13px] font-bold shrink-0">🛒 MERCADO</div>
+<div class="bg-white border px-6 py-3 rounded-full text-[13px] font-bold shrink-0">📦 ECOM</div>
 </div>
 
-<div class="flex justify-center mt-4">
+<!-- CONTADORES -->
+<div class="flex justify-center mt-5">
 <div id="online" class="bg-white border border-zinc-200 rounded-full px-5 py-2.5 text-[13px] shadow-sm">🟢 25 online · 717 visitors today · stats→</div>
 </div>
 
 <div class="flex justify-center mt-3">
 <div class="bg-white border rounded-full p-1 flex gap-1">
-<div class="bg-[#FF5A36] text-white px-6 py-2 rounded-full text-[13px] font-bold">🏆 All-time</div>
-<div class="px-6 py-2 rounded-full text-[13px] font-bold">🔴 Today</div>
+<div class="bg-[#FF5A36] text-white px-6 py-2.5 rounded-full text-[13px] font-bold">🏆 All-time</div>
+<div class="px-6 py-2.5 rounded-full text-[13px] font-bold">🔴 Today</div>
 </div>
 </div>
 
-<!-- CARD TOPO #1 -->
-<div class="bg-white border border-zinc-200 rounded-[28px] p-6 mt-5 shadow-sm">
-<div class="bg-[#FFF9C1] border border-[#FDE68A] rounded-2xl p-3 text-center">
+<!-- CARD PRINCIPAL - LEILÃO -->
+<div class="bg-white border border-zinc-200 rounded-[28px] p-6 mt-6 shadow-sm">
+<div class="bg-[#FFF9C1] border border-[#FDE68A] rounded-2xl p-4 text-center">
 <p class="font-bold text-[14px] leading-tight">🔥 LEILÃO AO VIVO - Fica 30 dias no topo ou até alguém pagar mais e tomar seu lugar</p>
 </div>
 
-<h2 class="text-[46px] font-black text-center mt-6 leading-[0.9] tracking-tight">Seja #1 por <span class="text-[#FF5A36]">R$<br>274,33</span></h2>
+<h2 class="text-[48px] font-black text-center mt-6 leading-[0.9]">Seja #1 por <span class="text-[#FF5A36]">R$<br>274,33</span></h2>
 
-<div class="mt-6">
+<!-- LUGAR DO LINK E NOME DA EMPRESA -->
+<div class="mt-6 space-y-3">
+<label class="text-[11px] font-black tracking-widest text-zinc-500 ml-4">NOME DA EMPRESA / LINK</label>
+<div class="flex items-center gap-3 border-2 border-zinc-200 focus-within:border-[#FF5A36] rounded-full px-5 py-4 bg-white">
+<span class="text-xl">🏢</span>
+<input id="nomeEmpresa" placeholder="Nome da sua empresa" class="w-full outline-none text-[15px] bg-transparent font-medium">
+</div>
 <div class="flex items-center gap-3 border-2 border-zinc-200 focus-within:border-[#FF5A36] rounded-full px-5 py-4 bg-white">
 <span class="text-xl">🌐</span>
 <input id="link" placeholder="Cole seu link aqui (site, insta, youtube)" class="w-full outline-none text-[15px] bg-transparent font-medium">
 </div>
 </div>
 
-<button onclick="pagarTop()" class="w-full bg-[#FF5A36] hover:bg-[#E64A2E] text-white font-black py-5 rounded-full mt-4 text-[18px] shadow-lg">DAR LANCE DE R$ 274,33 →</button>
-
+<button onclick="pagarTopo()" class="w-full bg-[#FF5A36] hover:bg-[#E54D2E] text-white font-black py-5 rounded-full mt-5 text-[18px] shadow-lg">DAR LANCE DE R$ 274,33 →</button>
 <p class="text-[11px] text-zinc-400 text-center mt-3">Garantido por 30 dias. Só sai se alguém pagar mais que você.</p>
 </div>
 
-<!-- LISTA DE CATEGORIAS -->
-<div id="lista" class="mt-6 space-y-4"></div>
+<!-- 10 POSIÇÕES - COM CLIQUES E LEILÃO -->
+<div class="bg-white border border-zinc-200 rounded-[28px] p-6 mt-6 shadow-sm">
+<div class="flex justify-between items-center mb-5">
+<h3 class="font-black text-[18px]">🏆 Top 10 - Ranking Ao Vivo</h3>
+<span class="text-[11px] bg-black text-white px-3 py-1 rounded-full">LEILÃO</span>
+</div>
+<div id="top10"></div>
+</div>
 
 </div>
 
 <script>
-const CATEGORIAS = [
-  "📈 Marketing — 3 vagas",
-  "⚖️ Advogados — 3 vagas",
-  "🩺 Médicos — 3 vagas",
-  "🛒 Mercado — 3 vagas",
-  "📦 Ecom — 3 vagas",
-  "▶️ YouTube — 3 vagas",
-  "🔍 SEO — 3 vagas",
-  "💰 Finanças — 3 vagas"
+// 10 POSIÇÕES - LEILÃO DECRESCENTE - SÓ OS 3 PRIMEIROS OCUPADOS
+const RANKING = [
+  {pos:1, nome:"Além dos Versículos", empresa:"Além dos Versículos", clicks:"355K", valor:274.33, ocupado:true, link:"https://"},
+  {pos:2, nome:"Rupert", empresa:"Rupert Tools", clicks:"48K", valor:211.02, ocupado:true},
+  {pos:3, nome:"PEDRO", empresa:"Pedro Marketing", clicks:"1,4K", valor:162.32, ocupado:true},
+  {pos:4, nome:"VAGA LIVRE", empresa:"Livre", clicks:"0", valor:124.86, ocupado:false},
+  {pos:5, nome:"VAGA LIVRE", empresa:"Livre", clicks:"0", valor:96.04, ocupado:false},
+  {pos:6, nome:"VAGA LIVRE", empresa:"Livre", clicks:"0", valor:73.88, ocupado:false},
+  {pos:7, nome:"VAGA LIVRE", empresa:"Livre", clicks:"0", valor:56.83, ocupado:false},
+  {pos:8, nome:"VAGA LIVRE", empresa:"Livre", clicks:"0", valor:43.72, ocupado:false},
+  {pos:9, nome:"VAGA LIVRE", empresa:"Livre", clicks:"0", valor:33.63, ocupado:false},
+  {pos:10, nome:"VAGA LIVRE", empresa:"Livre", clicks:"0", valor:29.90, ocupado:false},
 ];
 
-function renderLista(){
-  const html = CATEGORIAS.map(cat => `
-    <div class="bg-white border border-zinc-200 rounded-[28px] p-6 shadow-sm">
-      <h3 class="font-black text-[18px] mb-5">${cat}</h3>
-      <div class="space-y-4">
-        <div class="flex justify-between items-center text-[16px]"><span>#1 Livre - 0 cliques</span><b class="text-[17px]">R$ 29,90</b></div>
-        <div class="flex justify-between items-center text-[16px]"><span>#2 Livre - 0 cliques</span><b class="text-[17px]">R$ 29,90</b></div>
-        <div class="flex justify-between items-center text-[16px]"><span>#3 Livre - 0 cliques</span><b class="text-[17px]">R$ 29,90</b></div>
+function renderTop10(){
+  document.getElementById('top10').innerHTML = RANKING.map(r=>`
+    <div class="flex justify-between items-center py-4 border-b border-zinc-100 last:border-0 gap-3">
+      <div class="flex items-center gap-3 flex-1 min-w-0">
+        <div class="w-11 h-11 ${r.pos<=3?'bg-black text-white':'bg-zinc-100 text-zinc-600'} rounded-xl flex items-center justify-center font-black text-[14px] shrink-0">#${r.pos}</div>
+        <div class="min-w-0 flex-1">
+          <p class="font-bold text-[15px] truncate">${r.pos<=3?'🔥':''} ${r.nome} ${r.ocupado?'':''}</p>
+          <p class="text-[12px] text-zinc-500 truncate">
+            ${r.ocupado?`R$ ${r.valor.toFixed(2).replace('.',',')} · ${r.clicks} cliques · ${r.empresa} · <span class="text-[#FF5A36]">ver →</span>`:`Lance mínimo R$ ${r.valor.toFixed(2).replace('.',',')} · 0 cliques · Vaga livre`}
+          </p>
+        </div>
       </div>
-      <button onclick="pagarPos('${cat} #1', 29.90, this)" class="w-full bg-zinc-900 hover:bg-black text-white font-black py-4 rounded-full mt-6 text-[16px]">PEGAR #1 - R$ 29,90</button>
-      <p class="text-[13px] text-zinc-400 text-center mt-3">Cole seu link em cima e clique</p>
+      <button onclick="pagarPosicao(${r.pos}, ${r.valor}, this)" class="${r.pos==1?'bg-[#FF5A36]':'bg-zinc-900'} text-white px-5 py-2.5 rounded-full text-[13px] font-bold shrink-0 hover:scale-105 transition">
+        ${r.ocupado?(r.pos==1?'TOMAR #1':'TOMAR'):`PEGAR #${r.pos}`}
+      </button>
     </div>
   `).join('');
-  document.getElementById('lista').innerHTML = html;
 }
 
-async function pagarTop(){
+async function pagarTopo(){
+  const nome = document.getElementById('nomeEmpresa').value.trim();
   const link = document.getElementById('link').value.trim();
-  if(!link){
-    alert('Cole seu link ali em cima primeiro! 🌐');
-    document.getElementById('link').focus();
+  if(!nome ||!link){
+    alert('Preencha NOME DA EMPRESA e LINK! 🏢🌐');
     return;
   }
-  await pagarPos(link + ' - TOPO #1', 274.33, event.target);
+  await pagarPosicao(1, 274.33, event.target, true);
 }
 
-async function pagarPos(posicao, valor, btn){
-  const linkInput = document.getElementById('link').value.trim();
-  const linkFinal = linkInput || posicao;
+async function pagarPosicao(pos, valor, btn, isTopo=false){
+  const nome = document.getElementById('nomeEmpresa').value.trim();
+  const link = document.getElementById('link').value.trim();
 
-  if(!linkInput){
-    alert('Cole seu link em cima primeiro! 🌐');
-    document.getElementById('link').focus();
+  if(!nome ||!link){
+    alert('Preencha NOME DA EMPRESA e LINK ali em cima! 🏢🌐');
+    document.getElementById('nomeEmpresa').focus();
     window.scrollTo({top:0, behavior:'smooth'});
     return;
   }
 
-  const textoOriginal = btn.innerText;
-  btn.innerText = 'GERANDO PIX...';
+  const posicaoTexto = isTopo? `TOPO #1 - ${nome}` : `#${pos} - ${nome}`;
+  const txt = btn.innerText;
+  btn.innerText = '...';
   btn.disabled = true;
 
   try{
     const res = await fetch('/api/checkout', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        posicao: posicao,
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        posicao: posicaoTexto,
         valor: valor,
-        link: linkFinal
+        link: link,
+        nomeEmpresa: nome,
+        posicaoNumero: pos
       })
     });
-
     const data = await res.json();
-
     if(data.url || data.init_point){
       window.location.href = data.url || data.init_point;
     } else {
-      alert('Erro: ' + JSON.stringify(data).substring(0,200));
-      btn.innerText = textoOriginal;
-      btn.disabled = false;
+      alert('Erro: '+JSON.stringify(data).slice(0,200));
+      btn.innerText = txt; btn.disabled = false;
     }
-  }catch(err){
-    alert('Erro ao conectar com checkout');
-    btn.innerText = textoOriginal;
-    btn.disabled = false;
+  }catch(e){
+    alert('Erro checkout');
+    btn.innerText = txt; btn.disabled = false;
   }
 }
 
-// contador online fake
+// CONTADORES AO VIVO
 let online = 25;
 setInterval(()=>{
-  online = Math.max(18, Math.min(42, online + (Math.floor(Math.random()*3)-1)));
-  const el = document.getElementById('online');
-  if(el) el.innerText = `🟢 ${online} online · 717 visitors today · stats→`;
-}, 2800);
+  online = Math.max(18, Math.min(48, online + (Math.floor(Math.random()*3)-1)));
+  document.getElementById('online').innerText = `🟢 ${online} online · 717 visitors today · stats→`;
+}, 2500);
 
-renderLista();
+renderTop10();
 </script>
 </body>
 </html>
