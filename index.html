@@ -151,6 +151,17 @@ document.getElementById('btnMais').onclick = () => {
   valorLanceAtual += PASSO; atualizarValorLance();
 };
 
+// Gera uma cor consistente a partir do nome (mesmo nome = sempre mesma cor)
+function corDoNome(nome){
+  let hash = 0;
+  for(let i=0; i<nome.length; i++){ hash = nome.charCodeAt(i) + ((hash << 5) - hash); }
+  const hue = Math.abs(hash) % 360;
+  return `hsl(${hue}, 65%, 42%)`;
+}
+function inicialDoNome(nome){
+  return (nome || '?').trim().charAt(0).toUpperCase();
+}
+
 async function carregarBoard(){
   const boardEl = document.getElementById('board');
   boardEl.innerHTML = `<p class="text-[13px] text-zinc-400 text-center py-6">Carregando ranking...</p>`;
@@ -176,10 +187,13 @@ async function carregarBoard(){
     const offset = (paginaAtual - 1) * 50;
     boardEl.innerHTML = itens.map((t,i) => `
       <div class="flex items-start gap-3 py-4 border-b border-zinc-100 last:border-0">
-        <div class="w-11 h-11 ${(offset+i)<3?'bg-black text-white':'bg-[#F3F4F6]'} rounded-[14px] flex items-center justify-center font-black text-[14px] shrink-0 mt-0.5">#${offset+i+1}</div>
+        <div class="w-12 h-12 rounded-[14px] flex items-center justify-center font-black text-[16px] text-white shrink-0" style="background:${corDoNome(t.nome)}">${inicialDoNome(t.nome)}</div>
         <div class="min-w-0 flex-1">
           <div class="flex items-start justify-between gap-2">
-            <a href="${t.link}" target="_blank" rel="noopener" onclick="registrarClique('${t.id}','${t.categoria}')" class="font-black text-[14px] hover:underline line-clamp-1">${t.nome} ↗</a>
+            <div class="min-w-0">
+              <span class="text-[11px] font-black text-zinc-400">#${offset+i+1}</span>
+              <a href="${t.link}" target="_blank" rel="noopener" onclick="registrarClique('${t.id}','${t.categoria}')" class="font-black text-[14px] hover:underline line-clamp-1 block">${t.nome} ↗</a>
+            </div>
             <span class="font-black text-[#FF4A15] text-[13px] shrink-0">${formatarValor(t.valor)}</span>
           </div>
           ${t.descricao ? `<p class="text-[12px] text-zinc-500 mt-0.5 line-clamp-2">${t.descricao}</p>` : ''}
@@ -305,7 +319,7 @@ setInterval(enviarHeartbeat, 15000);
 setInterval(carregarOnline, 10000);
 </script>
 </body>
-  </html>
+</html>
 
     
   
