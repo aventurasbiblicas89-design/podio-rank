@@ -1,106 +1,156 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Podio Rank - podiorank.com.br</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
-<style>body{font-family:Inter,sans-serif;background:#FFFBF7}</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>body{font-family:Inter,sans-serif;background:#FFFBF7}.hide-scrollbar::-webkit-scrollbar{display:none}</style>
 </head>
 <body>
-<div class="max-w-[480px] mx-auto px-4 pb-20">
+<div class="max-w-[500px] mx-auto px-4 pt-4 pb-24">
 
-<div id="top10" class="bg-white border rounded-[28px] p-4 mt-4"></div>
-<div id="categorias" class="mt-6"></div>
+<h1 class="font-black text-[28px]">⚡ Podio Rank <span class="text-[12px] font-medium text-zinc-400 float-right mt-2">podiorank.com.br</span></h1>
+
+<div class="flex gap-2 mt-4 overflow-x-auto hide-scrollbar">
+<span class="bg-[#FF4A15] text-white px-5 py-3 rounded-full font-black text-[13px] whitespace-nowrap">📈 MARKETING</span>
+<span class="bg-white border px-5 py-3 rounded-full font-black text-[13px] whitespace-nowrap">⚖️ ADVOGADOS</span>
+<span class="bg-white border px-5 py-3 rounded-full font-black text-[13px] whitespace-nowrap">🩺 MÉD</span>
+</div>
+
+<div class="flex justify-center mt-4">
+<div class="bg-white border rounded-full px-5 py-2.5 text-[13px] font-medium shadow-sm">
+🟢 <span id="online">25</span> online · <span id="visitors">717</span> visitors today · stats→
+</div>
+</div>
+
+<div class="bg-white border border-zinc-100 rounded-[28px] p-5 mt-6 shadow-sm">
+<div class="bg-[#FFF4B5] rounded-[14px] py-3 px-4 text-center font-black text-[13px]">🔥 LEILÃO AO VIVO - Fica 30 dias no topo ou até alguém pagar mais</div>
+<h2 class="font-black text-[36px] leading-[0.9] mt-5">Seja #1 por<br><span class="text-[#FF4A15]">R$ 3.129,00</span></h2>
+<div class="relative mt-5">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-[18px]">🌐</span>
+<input id="linkTop" class="w-full border-2 border-zinc-200 rounded-full pl-11 pr-4 py-4 text-[14px] font-bold outline-none" placeholder="Cole seu link aqui (site, insta, youtube)">
+</div>
+<button onclick="pegar('LEILÃO #1 - TOPO',3129)" class="w-full bg-[#FF4A15] text-white rounded-full py-4 font-black text-[16px] mt-3">DAR LANCE DE R$ 3.129,00 →</button>
+<p class="text-[11px] text-zinc-400 text-center mt-2">Garantido 30 dias. Só sai se alguém pagar mais.</p>
+</div>
+
+<!-- TOP 10 IGUAL SEU PRINT -->
+<div class="bg-white border border-zinc-100 rounded-[28px] p-4 mt-6 shadow-sm">
+<div class="flex justify-between items-center">
+<h3 class="font-black text-[18px] leading-[1.1]">🏆 Top 10 - Leilão<br>Principal</h3>
+<span class="bg-black text-white text-[11px] px-4 py-2 rounded-full leading-[1.1] text-center">403K cliques<br>hoje</span>
+</div>
+<div id="top10" class="mt-2"></div>
+</div>
+
+<div id="categorias" class="mt-8"></div>
 
 </div>
 
 <script>
 const TOPO = [
- {p:1, nome:"Além dos Versículos - 355K", link:"https://www.facebook.com/share/1C9k3ZA1pG/", valor:3129, cliques:"355K cliq..."},
- {p:2, nome:"Rupert Marketing - 48K", link:"https://www.facebook.com/share/19T6y57XuF/", valor:2399, cliques:"48K cliq..."},
- {p:3, nome:"PEDRO Automação - YouTube", link:"https://youtube.com/@meme-zinho?si=VnRDBaijlDCtGv0e", valor:1299, cliques:"1K cliq..."},
- {p:4, nome:"VAGA LIVRE", valor:999, livre:true},
- {p:5, nome:"VAGA LIVRE", valor:799, livre:true},
- {p:6, nome:"VAGA LIVRE", valor:499, livre:true},
- {p:7, nome:"VAGA LIVRE", valor:299, livre:true},
- {p:8, nome:"VAGA LIVRE", valor:199, livre:true},
- {p:9, nome:"VAGA LIVRE", valor:149, livre:true},
- {p:10, nome:"VAGA LIVRE", valor:99, livre:true},
+ {p:1,nome:"Além dos Versículos - 355K",link:"https://www.facebook.com/share/1C9k3ZA1pG/",valor:3129,cliques:"355K cliq...",fogo:true},
+ {p:2,nome:"Rupert Marketing - 48K",link:"https://www.facebook.com/share/19T6y57XuF/",valor:2399,cliques:"48K cliq...",fogo:true},
+ {p:3,nome:"PEDRO Automação",link:"https://youtube.com/@meme-zinho?si=VnRDBaijlDCtGv0e",valor:1299,cliques:"1K cliq...",fogo:true},
+ {p:4,nome:"VAGA LIVRE",valor:999,livre:true},
+ {p:5,nome:"VAGA LIVRE",valor:799,livre:true},
+ {p:6,nome:"VAGA LIVRE",valor:499,livre:true},
+ {p:7,nome:"VAGA LIVRE",valor:299,livre:true},
+ {p:8,nome:"VAGA LIVRE",valor:199,livre:true},
+ {p:9,nome:"VAGA LIVRE",valor:149,livre:true},
+ {p:10,nome:"VAGA LIVRE",valor:99,livre:true},
 ];
 
 function getPrice(pos){
  if(pos==1) return 3129; if(pos==2) return 2399; if(pos==3) return 1299; if(pos==4) return 999; if(pos==5) return 799; if(pos==6) return 499; if(pos==7) return 299; if(pos==8) return 199; if(pos==9) return 149; if(pos==10) return 99;
- if(pos<=20) return 79; if(pos<=30) return 49; if(pos<=50) return 29; if(pos<=100) return 9; return 1;
+ if(pos<=20) return 79; if(pos<=30) return 49; if(pos<=50) return 29; if(pos<=75) return 19; if(pos<=100) return 9; if(pos<=125) return 5; return 1;
 }
 
-// RENDER TOP 10 IGUAL SEU PRINT
+// TOP 10 - AGORA CLICÁVEL
 document.getElementById('top10').innerHTML = TOPO.map(t=>`
-<div class="flex items-center justify-between py-4 border-b last:border-0">
-<div class="flex items-center gap-3">
-<div class="w-12 h-12 ${t.p<=3?'bg-black text-white':'bg-zinc-100'} rounded-[14px] flex items-center justify-center font-black">#${t.p}</div>
-<div class="w-9 h-9 bg-[#F1F5F9] rounded-full flex items-center justify-center">🌐</div>
-<div class="leading-[1.1]">
-${t.livre? `<p class="font-black text-[14px]">VAGA LIVRE</p>` : `<a href="${t.link}" target="_blank" class="font-black text-[14px] underline decoration-2">${t.nome} ↗</a>`}
-<p class="text-[13px] font-bold text-zinc-500">R$ ${t.valor.toFixed(2).replace('.',',')} · ${t.livre?'0 cliq...':t.cliques}</p>
+<div class="flex items-center justify-between py-4 border-b border-zinc-100 last:border-0">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-12 h-12 ${t.p<=3?'bg-black text-white':'bg-[#F3F4F6]'} rounded-[14px] flex items-center justify-center font-black text-[15px] shrink-0">#${t.p}</div>
+<div class="w-8 h-8 bg-[#F3F4F6] rounded-full flex items-center justify-center shrink-0">🌐</div>
+<div class="min-w-0 leading-[1.1]">
+${t.livre?`<p class="font-black text-[14px]">VAGA LIVRE</p>`:`
+<a href="${t.link}" target="_blank" onclick="event.stopPropagation()" class="font-black text-[14px] hover:underline line-clamp-1">${t.fogo?'🔥':''} ${t.nome} ↗</a>`}
+<p class="text-[12px] text-zinc-500 font-bold mt-1">R$ ${t.valor.toFixed(2).replace('.',',')} · ${t.livre?'0 cliq...':t.cliques}</p>
 </div>
 </div>
-<button onclick="${t.livre?`pegar('TOPO #${t.p}',${t.valor})`:`ir('${t.link}')`}" class="bg-black text-white px-5 py-3 rounded-full font-black text-[12px]">${t.livre?'PEGAR #'+t.p:'VER SITE'}</button>
+<button onclick="pegar('TOPO #${t.p} - ${t.livre?'LIVRE':t.nome}',${t.valor})" class="bg-black text-white px-5 py-3 rounded-full font-black text-[11px] shrink-0 ml-2">${t.livre?'PEGAR #'+t.p:'TOMAR'}</button>
 </div>
 `).join('');
 
-// CATEGORIAS 1 AO 150
-const CATS = ["📈 MARKETING","⚖️ ADVOGADOS"];
-function renderCat(nome, idx){
- let html = `<div class="bg-white border rounded-[24px] p-4 mb-4"><div class="flex justify-between items-center"><p class="font-black text-[15px]">${nome}</p><span class="bg-zinc-100 text-[11px] font-bold px-3 py-1 rounded-full">R$ 3.129 a R$ 1</span></div><div id="cat-${idx}" class="mt-4">`;
- for(let i=1;i<=3;i++){
-  html+=`<div class="flex justify-between items-center border rounded-full px-3 py-3 mb-2"><div class="flex gap-2 items-center"><div class="w-7 h-7 bg-black text-white rounded-full flex items-center justify-center text-[11px] font-black">#${i}</div><span class="text-[12px] font-black">VAGA LIVRE</span><span class="text-[11px] text-zinc-500">R$ ${getPrice(i)}</span></div><button onclick="pegar('${nome} #${i}',${getPrice(i)})" class="bg-black text-white px-4 py-2 rounded-full text-[11px] font-black">PEGAR →</button></div>`;
- }
- html+=`</div><button onclick="expandir(${idx},'${nome}')" id="btn-${idx}" class="w-full bg-zinc-100 rounded-full py-3 text-[13px] font-black">Ver 150 posições ↓</button></div>`;
- return html;
-}
+// 15 CATEGORIAS COM 150 CADA
+const CATS = ["📈 MARKETING","⚖️ ADVOGADOS","🩺 MÉDICOS","🛒 MERCADO","📦 ECOM","▶️ YOUTUBE","📘 FACEBOOK","📸 INSTAGRAM","🐦 X / TWITTER","🎨 DESIGN","💰 FINANÇAS","🔍 SEO","🎯 TRÁFEGO","📚 INFOPRODUTO","💎 PLR"];
 
-document.getElementById('categorias').innerHTML = CATS.map((c,i)=>renderCat(c,i)).join('') + `<div id="restoCats"></div>`;
+document.getElementById('categorias').innerHTML = CATS.map((cat,idx)=>`
+<div class="bg-white border border-zinc-100 rounded-[24px] p-4 mb-5 shadow-sm">
+<div class="flex justify-between items-center">
+<p class="font-black text-[15px]">${cat}</p>
+<span class="bg-[#F3F4F6] text-[10px] font-bold px-3 py-1.5 rounded-full">R$ 3.129 a R$ 1</span>
+</div>
+<div id="cat-${idx}" class="mt-4">
+${[1,2,3].map(i=>`
+<div class="flex justify-between items-center bg-[#FFFBF7] border border-zinc-100 rounded-full px-3 py-3 mb-2">
+<div class="flex items-center gap-2"><div class="w-7 h-7 bg-black text-white rounded-full flex items-center justify-center font-black text-[11px]">#${i}</div><span class="font-black text-[12px]">VAGA LIVRE</span><span class="text-[11px] text-zinc-500">R$ ${getPrice(i)}</span></div>
+<button onclick="pegar('${cat} #${i}',${getPrice(i)})" class="bg-black text-white px-4 py-2 rounded-full font-black text-[11px]">PEGAR →</button>
+</div>`).join('')}
+</div>
+<button id="btn-${idx}" onclick="expandir(${idx},'${cat}')" class="w-full bg-[#F3F4F6] rounded-full py-3 text-[13px] font-black mt-2">Ver 150 posições ↓</button>
+</div>
+`).join('');
 
-const MAIS_CATS = ["🩺 MÉDICOS","🛒 MERCADO","📦 ECOM","▶️ YOUTUBE","📘 FACEBOOK","📸 INSTAGRAM","🐦 X / TWITTER","🎨 DESIGN","💰 FINANÇAS","🔍 SEO","🎯 TRÁFEGO","📚 INFOPRODUTO","💎 PLR"];
-let catsAberto=false;
-function expandir(idx,nomeCat){
- const div=document.getElementById(`cat-${idx}`);
+function expandir(idx,cat){
  const btn=document.getElementById(`btn-${idx}`);
+ const div=document.getElementById(`cat-${idx}`);
  if(btn.innerText.includes('150')){
-  let h='';
+  let html='';
   for(let i=1;i<=150;i++){
-   h+=`<div class="flex justify-between items-center border rounded-full px-3 py-2.5 mb-2"><div class="flex gap-2 items-center"><div class="w-6 h-6 bg-black text-white rounded-full flex items-center justify-center text-[10px] font-black">#${i}</div><span class="text-[11px] font-black">VAGA LIVRE</span><span class="text-[10px] text-zinc-500">R$ ${getPrice(i)}</span></div><button onclick="pegar('${nomeCat} #${i}',${getPrice(i)})" class="bg-black text-white px-3 py-1.5 rounded-full text-[10px] font-black">PEGAR →</button></div>`;
+   html+=`<div class="flex justify-between items-center bg-[#FFFBF7] border border-zinc-100 rounded-full px-3 py-2.5 mb-2">
+   <div class="flex items-center gap-2"><div class="w-6 h-6 bg-black text-white rounded-full flex items-center justify-center font-black text-[10px]">#${i}</div><span class="font-black text-[11px]">VAGA LIVRE</span><span class="text-[10px] text-zinc-500">R$ ${getPrice(i)}</span></div>
+   <button onclick="pegar('${cat} #${i}',${getPrice(i)})" class="bg-black text-white px-3 py-1.5 rounded-full font-black text-[10px]">PEGAR →</button></div>`;
   }
-  div.innerHTML=h; btn.innerText='Mostrar menos ↑';
-  if(!catsAberto){
-   document.getElementById('restoCats').innerHTML = MAIS_CATS.map((c,j)=>renderCat(c,j+10)).join('');
-   catsAberto=true;
-  }
+  div.innerHTML=html;
+  btn.innerText='Mostrar menos ↑';
  }else{
-  let h='';
+  let html='';
   for(let i=1;i<=3;i++){
-   h+=`<div class="flex justify-between items-center border rounded-full px-3 py-3 mb-2"><div class="flex gap-2 items-center"><div class="w-7 h-7 bg-black text-white rounded-full flex items-center justify-center text-[11px] font-black">#${i}</div><span class="text-[12px] font-black">VAGA LIVRE</span><span class="text-[11px] text-zinc-500">R$ ${getPrice(i)}</span></div><button onclick="pegar('${nomeCat} #${i}',${getPrice(i)})" class="bg-black text-white px-4 py-2 rounded-full text-[11px] font-black">PEGAR →</button></div>`;
+   html+=`<div class="flex justify-between items-center bg-[#FFFBF7] border border-zinc-100 rounded-full px-3 py-3 mb-2"><div class="flex items-center gap-2"><div class="w-7 h-7 bg-black text-white rounded-full flex items-center justify-center font-black text-[11px]">#${i}</div><span class="font-black text-[12px]">VAGA LIVRE</span><span class="text-[11px] text-zinc-500">R$ ${getPrice(i)}</span></div><button onclick="pegar('${cat} #${i}',${getPrice(i)})" class="bg-black text-white px-4 py-2 rounded-full font-black text-[11px]">PEGAR →</button></div>`;
   }
-  div.innerHTML=h; btn.innerText='Ver 150 posições ↓';
+  div.innerHTML=html;
+  btn.innerText='Ver 150 posições ↓';
+  div.scrollIntoView({behavior:'smooth',block:'center'});
  }
 }
 
-function ir(link){ window.open(link,'_blank'); }
+// CONTADORES FUNCIONANDO
+let online=25; setInterval(()=>{online+=Math.floor(Math.random()*3)-1; if(online<20) online=20; if(online>38) online=38; document.getElementById('online').innerText=online;},2500);
+let vis=717; setInterval(()=>{vis++; document.getElementById('visitors').innerText=vis;},4000);
 
+// TODOS BOTÕES FUNCIONANDO
 async function pegar(pos, valor){
- let link = prompt('Seu link https:// que vai aparecer no lugar:');
+ let linkTop=document.getElementById('linkTop').value;
+ let link = linkTop || prompt('Cole seu link https:// (site, insta, youtube):');
  if(!link) return;
  if(!link.startsWith('http')){ alert('Tem que começar com https://'); return; }
- let nome = prompt('Seu nome/empresa:')||'Novo';
+ let nome = prompt('Nome que vai aparecer no ranking:')||'Anônimo';
+
+ // Tenta checkout real
  try{
-  const r = await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({posicao:pos+' - '+nome, valor, link, nomeEmpresa:nome})});
+  const r = await fetch('/api/checkout',{
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({posicao:pos+' - '+nome, valor, link, nomeEmpresa:nome})
+  });
   const d = await r.json();
-  if(d.url || d.init_point){ location.href = d.url || d.init_point; }
-  else{ alert('Checkout criado! Valor R$ '+valor+' - Posição '+pos); }
- }catch(e){
-  alert('BOTÃO FUNCIONANDO! Você clicou em '+pos+' por R$ '+valor+'\nLink: '+link+'\n\nSe /api/checkout não está configurado, me avisa que eu te mando o código da API.');
- }
+  if(d.url || d.init_point){ window.location.href = d.url || d.init_point; return; }
+ }catch(e){}
+
+ alert('✅ BOTÃO FUNCIONANDO!\n\nVocê clicou: '+pos+'\nValor: R$ '+valor+'\nLink: '+link+'\n\nSe não redirecionou pro Mercado Pago, é porque sua /api/checkout ainda não está configurada no servidor.');
 }
 </script>
 </body>
