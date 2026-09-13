@@ -3,259 +3,149 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Podio Rank - Buy your spot at the Top - 41,281 visits/day</title>
+<title>Podio Rank - 41.281 visitas/dia - AO VIVO</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
 body{font-family:Inter,sans-serif;background:#FFFBF7}
-::-webkit-scrollbar{display:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.pulse-dot{animation:pulse 1.5s infinite}
 </style>
 </head>
-<body class="antialiased text-zinc-900">
+<body class="antialiased">
 <div class="max-w-[680px] mx-auto px-4 pt-5 pb-32">
 
-<!-- HEADER COMPLETO -->
+<!-- HEADER EM PORTUGUÊS -->
 <div class="flex justify-between items-center">
 <div class="flex flex-col gap-[5px]"><div class="w-[18px] h-[6px] bg-[#FF6B35] rounded-full"></div><div class="w-[32px] h-[6px] bg-black rounded-full"></div><div class="w-[24px] h-[6px] bg-black rounded-full"></div></div>
-<div class="flex gap-6 text-[14px]"><span class="font-black border-b-[3px] border-black pb-1">Daily</span><span class="text-zinc-400 font-medium">Weekly</span><span class="text-zinc-400 font-medium">Categories</span><span class="text-zinc-400 font-medium">About</span></div>
-<div class="w-9 h-9 bg-black rounded-full flex items-center justify-center text-white text-[13px]">👤</div>
+<div class="flex gap-6 text-[14px]"><span class="font-black border-b-[3px] border-black pb-1">Diário</span><span class="text-zinc-400">Categorias</span><span class="text-zinc-400">Histórico</span><span class="text-zinc-400">Estatísticas</span></div>
+<div class="w-9 h-9 bg-black rounded-full flex items-center justify-center text-white">👤</div>
 </div>
 
-<!-- STATS AO VIVO -->
+<!-- BARRA LIVE EM PORTUGUÊS COM MOVIMENTAÇÃO -->
 <div class="flex justify-center mt-6">
-<div class="bg-white border border-zinc-200 rounded-full pl-2 pr-5 py-[9px] text-[11px] shadow-[0_4px_24px_rgba(0,0,0,0.06)] flex items-center gap-3">
-<span class="bg-green-500 text-white px-2.5 py-1 rounded-full font-black text-[10px] flex items-center gap-1.5"><span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>LIVE</span>
-<span><b id="online">28</b> online now</span>
+<div class="bg-white border border-zinc-200 rounded-full pl-2 pr-5 py-[9px] text-[11px] shadow-[0_4px_24px_rgba(0,0,0,0.08)] flex items-center gap-3">
+<span class="bg-green-500 text-white px-3 py-1 rounded-full font-black text-[10px] flex items-center gap-1.5"><span class="w-2 h-2 bg-white rounded-full pulse-dot"></span>AO VIVO</span>
+<span class="font-bold"><b id="online">28</b> online agora</span>
 <span class="w-1 h-1 bg-zinc-300 rounded-full"></span>
-<span>41.281 visitors today</span>
+<span>41.281 visitas hoje</span>
 <span class="w-1 h-1 bg-zinc-300 rounded-full"></span>
-<span>R$ <b id="lances">207.543</b> in bids</span>
-<span class="underline ml-1">stats →</span>
+<span>R$ <b id="lancesTop">207.543</b> em lances</span>
+<span class="underline ml-1">ver stats →</span>
 </div>
 </div>
 
-<!-- HERO COMPLETO -->
+<!-- HERO EM PORTUGUÊS -->
 <div class="text-center mt-10">
-<h1 class="font-black text-[44px] leading-[0.85] tracking-[-0.04em]">Buy your<br>spot at the Top</h1>
-<p class="text-[15px] text-zinc-500 mt-4 max-w-[340px] mx-auto leading-[1.45]">41.281 people will see your link every single day. Pay to rank #1 for 30 days. Anyone can outbid you by R$ 0,01 and steal your spot.</p>
-<div class="flex justify-center gap-2 mt-5">
-<div class="bg-white border rounded-full px-3 py-1.5 text-[11px] flex items-center gap-1.5">🌍 41.281 visits/day</div>
-<div class="bg-white border rounded-full px-3 py-1.5 text-[11px] flex items-center gap-1.5">⚡ 1.2M clicks/mo</div>
-<div class="bg-white border rounded-full px-3 py-1.5 text-[11px] flex items-center gap-1.5">🔥 18.7% CTR</div>
-</div>
+<h1 class="font-black text-[46px] leading-[0.85] tracking-tighter">Compre seu<br>lugar no Topo</h1>
+<p class="text-[15px] text-zinc-500 mt-4 max-w-[360px] mx-auto leading-[1.5]">41.281 pessoas verão seu link todo dia. Pague para ficar em #1 por 30 dias. Quem pagar R$ 0,01 a mais rouba sua posição.</p>
 </div>
 
-<!-- CAIXA LANCE PRINCIPAL -->
+<!-- CAIXA PRINCIPAL -->
 <div class="bg-white border-[2.5px] border-black rounded-[36px] p-[24px] mt-8 shadow-[0_20px_60px_rgba(0,0,0,0.12)]">
 <div class="flex justify-between items-center">
-<div class="bg-[#FFF8C6] border border-[#FDE68A] rounded-full px-4 py-2 text-[11px] font-bold">🔥 Live Auction • Ends in 30 days • 28 watching</div>
-<span class="text-[11px] text-zinc-400">Updated 12s ago</span>
+<div class="bg-[#FFF8C6] border border-[#FDE68A] rounded-full px-4 py-2 text-[11px] font-bold flex items-center gap-2"><span class="w-2 h-2 bg-red-500 rounded-full pulse-dot"></span>🔥 Leilão Ao Vivo • 355K + 48K Verificados • <span id="watching">28</span> assistindo</div>
+<span class="text-[11px] text-zinc-400" id="updated">Atualizado agora</span>
 </div>
 <div class="flex gap-6 mt-6">
 <div class="flex-1">
-<p class="text-[11px] font-black tracking-widest text-zinc-400">CURRENT BID FOR #1</p>
+<p class="text-[11px] font-black tracking-widest text-zinc-400">LANCE ATUAL PELO #1</p>
 <p class="font-black text-[46px] tracking-tighter leading-none mt-1">R$ 3.129,00</p>
-<p class="text-[12px] text-zinc-500 mt-2">by <b class="text-black">Além dos Versículos</b> • 8 minutes ago • <span class="text-green-600 font-bold">✓ Verified</span></p>
+<p class="text-[12px] text-zinc-500 mt-2">por <b class="text-black">Além dos Versículos (355K)</b> • <span id="ago">há 8 min</span></p>
 </div>
 <div class="text-right">
-<p class="text-[11px] font-black tracking-widest text-zinc-400">NEXT BID</p>
+<p class="text-[11px] font-black tracking-widest text-zinc-400">PRÓXIMO LANCE</p>
 <p class="font-black text-[22px] mt-1">R$ 3.129,01</p>
-<p class="text-[11px] text-zinc-500">+ R$ 0,01 to win</p>
+<p class="text-[11px] text-green-600 font-bold">+ R$ 0,01 pra vencer</p>
 </div>
 </div>
-<button onclick="pagar('TOPO #1 - Leilão Principal',3129)" class="w-full bg-[#FF5A36] hover:bg-[#E64A24] text-white font-black py-[20px] rounded-full mt-6 text-[20px] shadow-[0_10px_30px_rgba(255,90,54,0.4)]">PLACE BID R$ 3.129,00 →</button>
+<button onclick="pagar('TOPO #1 - Leilão Principal',3129)" class="w-full bg-[#FF5A36] text-white font-black py-[20px] rounded-full mt-6 text-[20px] shadow-[0_10px_30px_rgba(255,90,54,0.4)] hover:bg-[#E84522] hover:shadow-[0_14px_40px_rgba(255,90,54,0.5)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 cursor-pointer">DAR LANCE R$ 3.129,00 →</button>
 <div class="grid grid-cols-3 gap-3 mt-4">
-<div class="bg-[#FFFBF7] border rounded-[16px] py-3.5 text-center"><p class="font-black text-[13px]">✓ 30 days</p><p class="text-[10px] text-zinc-500 mt-0.5">guaranteed on top</p></div>
-<div class="bg-[#FFFBF7] border rounded-[16px] py-3.5 text-center"><p class="font-black text-[13px]">✓ 1.2M clicks</p><p class="text-[10px] text-zinc-500 mt-0.5">per month</p></div>
-<div class="bg-[#FFFBF7] border rounded-[16px] py-3.5 text-center"><p class="font-black text-[13px]">✓ Dofollow link</p><p class="text-[10px] text-zinc-500 mt-0.5">SEO + traffic</p></div>
+<div class="bg-[#FFFBF7] border rounded-[16px] py-3.5 text-center"><p class="font-black text-[13px]">✓ 30 dias</p><p class="text-[10px] text-zinc-500">garantidos</p></div>
+<div class="bg-[#FFFBF7] border rounded-[16px] py-3.5 text-center"><p class="font-black text-[13px]">✓ 1.2M cliques</p><p class="text-[10px] text-zinc-500">por mês</p></div>
+<div class="bg-[#FFFBF7] border rounded-[16px] py-3.5 text-center"><p class="font-black text-[13px]">✓ Dofollow</p><p class="text-[10px] text-zinc-500">link SEO</p></div>
 </div>
-<div class="flex items-center gap-2 mt-4 bg-zinc-50 rounded-full px-4 py-2.5 text-[11px]"><span class="w-5 h-5 bg-black text-white rounded-full flex items-center justify-center text-[10px]">!</span><span>Last 3 bids: R$ 3.129, R$ 1.305, R$ 850 • Auction heats up when close to #1</span></div>
 </div>
 
-<!-- TOP 10 -->
+<!-- TOP 10 EM PORTUGUÊS -->
 <div class="bg-white border border-zinc-200 rounded-[36px] p-6 mt-8 shadow-[0_8px_40px_rgba(0,0,0,0.05)]">
 <div class="flex justify-between items-start">
-<div><h2 class="font-black text-[28px] leading-[0.9] tracking-[-0.02em]">🏆 Top 10<br>Daily Leaderboard</h2><p class="text-[12px] text-zinc-500 mt-2 max-w-[260px]">Who pays more, ranks higher. Real-time bidding. Click the name to visit their site.</p></div>
-<div class="bg-black text-white text-[11px] font-bold px-4 py-3 rounded-[18px] text-center leading-tight">41.281<br>clicks today<br><span class="text-[10px] font-normal text-zinc-400">LIVE FEED</span></div>
+<div><h2 class="font-black text-[28px] leading-[0.9] tracking-tighter">🏆 Top 10<br>Ranking Diário</h2><p class="text-[12px] text-zinc-500 mt-2">Quem paga mais, fica no topo. Clique no nome → Facebook 355K / 48K</p></div>
+<div class="bg-black text-white text-[11px] font-bold px-4 py-3 rounded-[18px] text-center leading-tight">41.281<br>cliques hoje<br><span class="text-[10px] font-normal text-zinc-400">AO VIVO</span></div>
 </div>
 <div id="top10" class="mt-6"></div>
-
 <div class="bg-[#F9F9F7] rounded-[20px] p-4 mt-6">
-<div class="flex justify-between items-center"><p class="text-[11px] font-black tracking-widest text-zinc-400">🔴 LIVE BID FEED</p><p class="text-[10px] text-zinc-400">auto-refresh</p></div>
+<p class="text-[11px] font-black tracking-widest text-zinc-400">🔴 LANCES AO VIVO - ATUALIZANDO</p>
 <div id="live-feed" class="mt-3 space-y-2"></div>
-<div class="mt-4 flex gap-2"><div class="flex -space-x-2"><div class="w-6 h-6 bg-zinc-300 rounded-full border-2 border-white"></div><div class="w-6 h-6 bg-zinc-400 rounded-full border-2 border-white"></div><div class="w-6 h-6 bg-zinc-500 rounded-full border-2 border-white"></div></div><p class="text-[11px] text-zinc-500">+26 people watching this auction</p></div>
 </div>
 </div>
 
-<!-- CATEGORIAS 15 -->
-<div class="bg-white border border-zinc-200 rounded-[36px] p-6 mt-8 shadow-[0_8px_40px_rgba(0,0,0,0.05)]">
-<div class="flex justify-between items-center">
-<div><h2 class="font-black text-[24px] tracking-tighter">📂 15 Premium Categories</h2><p class="text-[12px] text-zinc-500 mt-1">All spots same price as #1 featured. 45 premium positions total.</p></div>
-<span class="bg-black text-white text-[10px] font-black px-3 py-2 rounded-full">ALL R$ 3.129</span>
-</div>
-<div id="cats" class="mt-6 grid grid-cols-1 gap-5"></div>
-<div class="bg-[#FFF8C6] border border-[#FDE68A] rounded-[16px] p-4 mt-6 text-center"><p class="font-black text-[13px]">💡 Why all categories are R$ 3.129?</p><p class="text-[12px] text-zinc-600 mt-1 leading-[1.4]">Because position is what matters. Google charges R$ 15.000 for 3.000 clicks. We charge R$ 3.129 for 41.281 visits/day. Premium price = premium spot = filters tire kickers.</p></div>
-</div>
-
-<!-- HOW IT WORKS -->
+<!-- CATEGORIAS EM PORTUGUÊS -->
 <div class="bg-white border border-zinc-200 rounded-[36px] p-6 mt-8">
-<h2 class="font-black text-[24px] tracking-tighter">⚡ How it works</h2>
-<div class="space-y-6 mt-6">
-<div class="flex gap-4"><div class="min-w-[44px] h-11 bg-black text-white rounded-full flex items-center justify-center font-black text-[16px]">1</div><div><p class="font-black text-[15px]">Pick your spot</p><p class="text-[13px] text-zinc-500 leading-[1.5] mt-1">Choose Top 10 (maximum exposure) or one of 15 niche categories (targeted traffic). All 45 category spots are R$ 3.129 now - same as #1 featured.</p></div></div>
-<div class="flex gap-4"><div class="min-w-[44px] h-11 bg-black text-white rounded-full flex items-center justify-center font-black text-[16px]">2</div><div><p class="font-black text-[15px]">Pay via Pix or Card</p><p class="text-[13px] text-zinc-500 leading-[1.5] mt-1">Secure checkout via Mercado Pago. Instant approval. No subscription. One-time payment. Your link goes live in 2 minutes.</p></div></div>
-<div class="flex gap-4"><div class="min-w-[44px] h-11 bg-[#FF5A36] text-white rounded-full flex items-center justify-center font-black text-[16px]">3</div><div><p class="font-black text-[15px]">Get 41.281 visits/day for 30 days</p><p class="text-[13px] text-zinc-500 leading-[1.5] mt-1">Your link stays 30 days receiving traffic. If someone outbids you by R$ 0,01 you get an email to cover just the difference. You never lose your link, you just pay more to stay #1.</p></div></div>
-</div>
-<div class="grid grid-cols-2 gap-3 mt-6">
-<div class="bg-[#FFFBF7] border rounded-[16px] p-4"><p class="font-black text-[12px]">⚡ Instant Live</p><p class="text-[11px] text-zinc-500 mt-1">Your link in 2 minutes</p></div>
-<div class="bg-[#FFFBF7] border rounded-[16px] p-4"><p class="font-black text-[12px]">🛡️ Outbid Protection</p><p class="text-[11px] text-zinc-500 mt-1">Email to keep your spot</p></div>
-</div>
+<h2 class="font-black text-[24px] tracking-tighter">📂 15 Categorias Premium - Tudo R$ 3.129</h2>
+<div id="cats" class="mt-6 grid gap-5"></div>
 </div>
 
-<!-- WHY R$3129 -->
-<div class="bg-black text-white rounded-[36px] p-7 mt-8">
-<h2 class="font-black text-[22px] leading-[0.95]">🔥 Why R$ 3.129 and not R$ 29,90?</h2>
-<div class="mt-5 space-y-4 text-[13px] leading-[1.6] text-zinc-200">
-<div class="flex gap-3"><span class="text-zinc-500">→</span><p><b class="text-white">Google Ads:</b> R$ 15.000/month = 3.000 clicks and disappears tomorrow. No SEO value.</p></div>
-<div class="flex gap-3"><span class="text-zinc-500">→</span><p><b class="text-white">Instagram Ads:</b> R$ 8.000/month = 10.000 views, 0 clicks to your site.</p></div>
-<div class="flex gap-3"><span class="text-green-400">→</span><p><b class="text-white">Podio Rank #1:</b> R$ 3.129 = 1.2 MILLION clicks + 30 days on top + dofollow backlink + social proof of being #1</p></div>
-<div class="bg-white/10 border border-white/10 rounded-[20px] p-5 mt-2"><p class="text-white font-black text-[15px]">It's 178x cheaper than Google Ads.</p><p class="text-[12px] text-zinc-400 mt-2 leading-[1.5]">That's why outbid.lol made $207,543 in 5 days. Smart companies don't buy cheap spots, they buy spots that convert. Cheap spots attract cheap customers.</p></div>
-</div>
-<div class="mt-7 grid grid-cols-3 gap-3 text-center border-t border-white/10 pt-6">
-<div><p class="font-black text-[20px]">41.281</p><p class="text-[10px] text-zinc-400 tracking-widest">VISITS/DAY</p></div>
-<div><p class="font-black text-[20px]">R$ <span id="totalBids">207k</span></p><p class="text-[10px] text-zinc-400 tracking-widest">IN BIDS</p></div>
-<div><p class="font-black text-[20px]">1.2M</p><p class="text-[10px] text-zinc-400 tracking-widest">CLICKS/MO</p></div>
-</div>
-<div class="flex justify-center gap-3 mt-6">
-<div class="bg-white text-black rounded-full px-4 py-2 text-[11px] font-black">✓ No subscription</div>
-<div class="bg-white/10 border border-white/20 text-white rounded-full px-4 py-2 text-[11px] font-bold">✓ 30 days guaranteed</div>
-</div>
-</div>
-
-<!-- TESTIMONIALS -->
+<!-- FAQ EM PORTUGUÊS -->
 <div class="bg-white border border-zinc-200 rounded-[36px] p-6 mt-8">
-<h2 class="font-black text-[20px]">💬 What buyers say</h2>
-<div class="mt-5 space-y-3">
-<div class="bg-[#FFFBF7] border rounded-[16px] p-4"><p class="text-[13px] leading-[1.4]">"Paguei R$ 3.129 e tive 12.847 cliques em 4 dias. ROI de 340%. Mais barato que Google."</p><p class="text-[11px] text-zinc-500 mt-2">— João M., Ecom</p></div>
-<div class="bg-[#FFFBF7] border rounded-[16px] p-4"><p class="text-[13px] leading-[1.4]">"Meu SEO subiu de #8 pra #2 em 1 semana por causa do backlink dofollow do Top 10."</p><p class="text-[11px] text-zinc-500 mt-2">— Ana P., Advogada</p></div>
+<h2 class="font-black text-[22px]">❓ Perguntas Frequentes</h2>
+<div class="mt-6 space-y-6 text-[13px]">
+<div><p class="font-black">Quanto tempo fico no topo?</p><p class="text-zinc-500 mt-2 leading-[1.6]">30 dias garantidos. Se alguém pagar R$ 0,01 a mais, você recebe email com 12h para cobrir o lance.</p></div>
+<div><p class="font-black">O link é clicável? É dofollow?</p><p class="text-zinc-500 mt-2 leading-[1.6]">Sim! 100% clicável e dofollow. Clique no Top 10 e vai direto pro Facebook verificado (355K / 48K). Google indexa.</p></div>
+<div><p class="font-black">Posso colocar link do Facebook?</p><p class="text-zinc-500 mt-2 leading-[1.6]">Sim! Facebook, Instagram, YouTube, site, WhatsApp. Aprovamos em 2 minutos.</p></div>
+<div><p class="font-black">Por que R$ 3.129?</p><p class="text-zinc-500 mt-2 leading-[1.6]">Preço premium filtra curiosos. Por isso páginas de 355K pagam. 178x mais barato que Google Ads.</p></div>
 </div>
 </div>
 
-<!-- FAQ PROFISSIONAL -->
-<div class="bg-white border border-zinc-200 rounded-[36px] p-6 mt-8">
-<h2 class="font-black text-[22px] tracking-tighter">❓ FAQ - Everything you need to know</h2>
-<div class="mt-6 space-y-7 text-[13px]">
-<div><p class="font-black text-[14px]">Quanto tempo fico no topo?</p><p class="text-zinc-500 mt-2 leading-[1.6]">30 dias garantidos. Se alguém pagar R$ 0,01 a mais que você, você recebe um email automático com 12h para cobrir a diferença e manter sua posição. Modelo de leilão igual eBay. Você nunca perde, só paga a diferença se quiser continuar no topo.</p></div>
-<div><p class="font-black text-[14px]">O link é dofollow para SEO? É clicável?</p><p class="text-zinc-500 mt-2 leading-[1.6]">Sim e sim. 100% dofollow, indexável pelo Google. Passa autoridade real. E sim, clique no nome "Além dos Versículos ↗" no Top 10 - vai direto pro site dele. Todos os links são clicáveis e rastreáveis.</p></div>
-<div><p class="font-black text-[14px]">Posso colocar qualquer link?</p><p class="text-zinc-500 mt-2 leading-[1.6]">Quase. Aprovamos em até 2 minutos automaticamente. Não permitimos: golpes financeiros, conteúdo adulto explícito, apostas ilegais, pirâmide, fake news ou sites fora do ar. Se seu site é legítimo, é aprovado na hora.</p></div>
-<div><p class="font-black text-[14px]">Por que todas as categorias são R$ 3.129 igual o #1?</p><p class="text-zinc-500 mt-2 leading-[1.6]">Porque posição premium tem que ter preço premium. Quando você cobra R$ 29,90, atrai curiosos. Quando cobra R$ 3.129, atrai compradores. É filtro. Por isso outbid.lol fez $207k em 5 dias. Qualidade > quantidade.</p></div>
-<div><p class="font-black text-[14px]">E se ninguém clicar no meu link?</p><p class="text-zinc-500 mt-2 leading-[1.6]">Impossível. Temos 41.281 visitas reais/dia comprovadas no Google Analytics público em /stats. Taxa média de CTR do Top 10 é de 18,7%. No PIOR cenário você tem 7.700 cliques no mês. No médio, 18k. No melhor, 40k+.</p></div>
-<div><p class="font-black text-[14px]">Como compro minha posição?</p><p class="text-zinc-500 mt-2 leading-[1.6]">Clique em PEGAR ou TOMAR #1, preencha nome da empresa e link https://, pague via Pix ou Cartão no Mercado Pago. Seu link entra no ar em 2 minutos, automaticamente, sem precisar falar com ninguém.</p></div>
-<div><p class="font-black text-[14px]">Tem reembolso?</p><p class="text-zinc-500 mt-2 leading-[1.6]">Sim, 7 dias. Se em 7 dias você não tiver pelo menos 5.000 impressões, devolvemos 100%. Sem perguntas.</p></div>
-</div>
-</div>
-
-<!-- FOOTER -->
 <div class="text-center mt-12 pb-10">
-<p class="font-black text-[22px] tracking-tighter">PODIO RANK</p>
-<p class="text-[12px] text-zinc-500 mt-3 max-w-[360px] mx-auto leading-[1.5]">The first pay-to-rank leaderboard in Brazil. Inspired by outbid.lol • 41.281 daily visits • R$ <span id="lances2">207.543</span> in bids • 28 online now</p>
-<div class="flex justify-center gap-5 mt-5 text-[11px] text-zinc-400"><span class="underline cursor-pointer">Terms of Service</span><span class="underline cursor-pointer">Privacy Policy</span><span class="underline cursor-pointer">Live Stats</span><span class="underline cursor-pointer">Contact</span><span class="underline cursor-pointer">API</span></div>
-<p class="text-[10px] text-zinc-300 mt-5">Pay to Rank • Made in Brazil 🇧🇷 • No subscription • No bullshit • No refunds for outbid</p>
-<div class="flex justify-center gap-2 mt-4"><div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div><p class="text-[10px] text-zinc-400">All systems operational • Last bid 2 minutes ago</p></div>
+<p class="font-black text-[22px]">PODIO RANK</p>
+<p class="text-[12px] text-zinc-500 mt-2">41.281 visitas • R$ <span id="lances2">207.543</span> em lances • Facebook 355K + 48K verificados • Feito no Brasil 🇧🇷</p>
 </div>
-
 </div>
 
 <script>
+// LINKS CORRETOS FACEBOOK 355K E 48K
 const TOP10=[
- {p:1,nome:"Além dos Versículos",dom:"alemdosversiculos.com",valor:3129.00,clicks:"1.2M",vivo:true,top:true,avatar:"📖"},
- {p:2,nome:"Rupert Marketing",dom:"rupert.com.br",valor:1305.00,clicks:"890K",vivo:true,avatar:"🚀"},
- {p:3,nome:"PEDRO Automação",dom:"pedro.com",valor:850.00,clicks:"420K",vivo:true,avatar:"🤖"},
- {p:4,nome:"VAGA LIVRE",dom:"",valor:499.00,clicks:"0",livre:true},
- {p:5,nome:"VAGA LIVRE",dom:"",valor:299.00,clicks:"0",livre:true},
- {p:6,nome:"VAGA LIVRE",dom:"",valor:199.00,clicks:"0",livre:true},
- {p:7,nome:"VAGA LIVRE",dom:"",valor:149.00,clicks:"0",livre:true},
- {p:8,nome:"VAGA LIVRE",dom:"",valor:124.86,clicks:"0",livre:true},
- {p:9,nome:"VAGA LIVRE",dom:"",valor:124.86,clicks:"0",livre:true},
- {p:10,nome:"VAGA LIVRE",dom:"",valor:124.86,clicks:"0",livre:true},
+ {p:1,nome:"Além dos Versículos - 355K",link:"https://www.facebook.com/share/1C9k3ZA1pG/",valor:3129.00,clicks:"1.2M",vivo:true,top:true,avatar:"📖"},
+ {p:2,nome:"Rupert Marketing - 48K",link:"https://www.facebook.com/share/19T6y57XuF/",valor:1305.00,clicks:"890K",vivo:true,avatar:"🚀"},
+ {p:3,nome:"PEDRO Automação",link:"https://www.facebook.com/share/19T6y57XuF/",valor:850.00,clicks:"420K",vivo:true,avatar:"🤖"},
+ {p:4,nome:"VAGA LIVRE",link:"",valor:499.00,clicks:"0",livre:true},
+ {p:5,nome:"VAGA LIVRE",link:"",valor:299.00,clicks:"0",livre:true},
+ {p:6,nome:"VAGA LIVRE",link:"",valor:199.00,clicks:"0",livre:true},
+ {p:7,nome:"VAGA LIVRE",link:"",valor:149.00,clicks:"0",livre:true},
+ {p:8,nome:"VAGA LIVRE",link:"",valor:124.86,clicks:"0",livre:true},
+ {p:9,nome:"VAGA LIVRE",link:"",valor:124.86,clicks:"0",livre:true},
+ {p:10,nome:"VAGA LIVRE",link:"",valor:124.86,clicks:"0",livre:true},
 ];
+
 document.getElementById('top10').innerHTML=TOP10.map(t=>{
- const link=t.dom?`https://${t.dom.replace('https://','').replace('http://','')}`:'#';
- return `<div class="flex justify-between items-center py-[18px] border-b border-zinc-100 last:border-0">
+ return `<div class="flex justify-between items-center py-[18px] border-b border-zinc-100 last:border-0 group">
    <div class="flex items-center gap-3">
-     <div class="w-[54px] h-[54px] ${t.top?'bg-black text-white shadow-[0_6px_16px_rgba(0,0,0,0.2)]':'bg-zinc-100 text-zinc-500'} rounded-[18px] flex items-center justify-center font-black text-[15px]">#${t.p}</div>
+     <div class="w-[54px] h-[54px] ${t.top?'bg-black text-white':'bg-zinc-100 text-zinc-500'} rounded-[18px] flex items-center justify-center font-black text-[15px] group-hover:scale-105 transition-all">#${t.p}</div>
      <div class="w-10 h-10 bg-[#FFFBF7] border rounded-full flex items-center justify-center text-[18px]">${t.avatar||'🌐'}</div>
      <div>
-       ${t.livre?`<p class="font-black text-[14px]">VAGA LIVRE</p>`: `<a href="${link}" target="_blank" class="font-black text-[14px] hover:underline hover:text-[#FF5A36]">🔥 ${t.nome} ↗</a><p class="text-[11px] text-zinc-400 underline">${t.dom}</p>`}
-       <p class="text-[12px] text-zinc-500">R$ ${t.valor.toLocaleString('pt-BR',{minimumFractionDigits:2})} · ${t.clicks} clicks ${t.vivo?'<span class="text-green-600 font-bold">• LIVE</span>':''}</p>
+       ${t.livre?`<p class="font-black text-[14px]">VAGA LIVRE</p>`: `<a href="${t.link}" target="_blank" class="font-black text-[14px] hover:text-[#FF5A36] hover:underline">🔥 ${t.nome} ↗</a>`}
+       <p class="text-[12px] text-zinc-500">R$ ${t.valor.toLocaleString('pt-BR',{minimumFractionDigits:2})} · ${t.clicks} ${t.vivo?'<span class="text-green-600 font-bold">• AO VIVO</span>':''}</p>
      </div>
    </div>
-   <button onclick="pagar('TOPO #${t.p} - ${t.nome}',${t.valor})" class="${t.top?'bg-[#FF5A36] shadow-[0_6px_20px_rgba(255,90,54,0.45)]':'bg-black hover:bg-zinc-800'} text-white px-5 py-2.5 rounded-full font-black text-[12px] hover:scale-105 transition">${t.livre?'PEGAR #'+t.p:t.p==1?'TOMAR #1':'TOMAR'}</button>
+   <button onclick="pagar('TOPO #${t.p}',${t.valor})" class="${t.top?'bg-[#FF5A36] hover:bg-[#E84522] shadow-[0_6px_20px_rgba(255,90,54,0.3)]':'bg-black hover:bg-zinc-800'} text-white px-5 py-2.5 rounded-full font-black text-[12px] hover:scale-105 active:scale-95 transition-all cursor-pointer">${t.livre?'PEGAR #'+t.p:'TOMAR'}</button>
  </div>`
 }).join('');
 
-const CATS=[
- {n:"📈 MARKETING",desc:"Tráfego, funil, lançamento, PLR"},
- {n:"⚖️ ADVOGADOS",desc:"Direito civil, trabalhista, criminal"},
- {n:"🩺 MÉDICOS",desc:"Clínicas, consultórios, estética"},
- {n:"🛒 MERCADO",desc:"Varejo local, mercado"},
- {n:"📦 ECOM",desc:"Loja virtual, Shopify, Nuvem"},
- {n:"▶️ YOUTUBE",desc:"Canais, monetização, views"},
- {n:"📘 FACEBOOK",desc:"Páginas, grupos, BM"},
- {n:"📸 INSTAGRAM",desc:"Perfis, reels, crescimento"},
- {n:"🐦 X / TWITTER",desc:"Perfis, viral, monetização"},
- {n:"🎨 DESIGN",desc:"Agências, freelancers, UI/UX"},
- {n:"💰 FINANÇAS",desc:"Investimentos, crédito, banco"},
- {n:"🔍 SEO",desc:"Agências SEO, backlink"},
- {n:"🎯 TRÁFEGO PAGO",desc:"Gestores de tráfego"},
- {n:"📚 INFOPRODUTO",desc:"Cursos, mentorias, experts"},
- {n:"💎 PLR",desc:"PLR, ebooks, templates"},
-];
-document.getElementById('cats').innerHTML=CATS.map(c=>`
-<div class="border border-zinc-100 rounded-[24px] p-4 bg-[#FFFBF7]/60 hover:bg-white hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition">
- <div class="flex justify-between items-center">
-   <div><p class="font-black text-[13px] tracking-tight">${c.n}</p><p class="text-[11px] text-zinc-500 mt-0.5">${c.desc}</p></div>
-   <span class="text-[10px] bg-black text-white px-3 py-1.5 rounded-full font-black tracking-widest">R$ 3.129</span>
- </div>
- <div class="mt-4 space-y-2.5">
-   ${[1,2,3].map(i=>`<div class="flex justify-between items-center bg-white border border-zinc-200 rounded-full px-3.5 py-3 shadow-sm"><div class="flex items-center gap-2.5"><div class="w-7 h-7 bg-zinc-900 text-white rounded-full flex items-center justify-center font-black text-[11px]">#${i}</div><span class="font-bold text-[12px]">VAGA LIVRE</span><span class="text-[11px] text-zinc-400">· R$ 3.129,00 · 13.760 clicks/dia</span></div><button onclick="pagar('${c.n} #${i}',3129)" class="bg-black hover:bg-zinc-800 text-white px-4 py-2 rounded-full text-[11px] font-black">PEGAR →</button></div>`).join('')}
- </div>
-</div>
-`).join('');
+const CATS=["📈 MARKETING","⚖️ ADVOGADOS","🩺 MÉDICOS","🛒 MERCADO","📦 ECOM","▶️ YOUTUBE","📘 FACEBOOK","📸 INSTAGRAM","🐦 X / TWITTER","🎨 DESIGN","💰 FINANÇAS","🔍 SEO","🎯 TRÁFEGO PAGO","📚 INFOPRODUTO","💎 PLR"];
+document.getElementById('cats').innerHTML=CATS.map(c=>`<div class="border border-zinc-100 rounded-[24px] p-4 bg-[#FFFBF7]/60 hover:shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-all"><div class="flex justify-between"><p class="font-black text-[13px]">${c}</p><span class="text-[10px] bg-black text-white px-3 py-1.5 rounded-full font-black">R$ 3.129</span></div><div class="mt-4 space-y-2.5">${[1,2,3].map(i=>`<div class="flex justify-between items-center bg-white border rounded-full px-3.5 py-3 hover:border-black transition-colors"><div class="flex items-center gap-2"><div class="w-7 h-7 bg-zinc-900 text-white rounded-full flex items-center justify-center font-black text-[11px]">#${i}</div><span class="font-bold text-[12px]">VAGA LIVRE</span><span class="text-[11px] text-zinc-400">· R$ 3.129</span></div><button onclick="pagar('${c} #${i}',3129)" class="bg-black text-white px-4 py-2 rounded-full text-[11px] font-black hover:bg-zinc-800 hover:scale-105 active:scale-95 transition-all cursor-pointer">PEGAR →</button></div>`).join('')}</div></div>`).join('');
 
-// LIVE FEED
-const feedEl=document.getElementById('live-feed');
-let feeds=["🔥 Alguém deu lance de R$ 3.129 no #1 há 2 min","⚡ Rupert pagou R$ 1.305 pra tomar #2","👀 3 pessoas vendo #1 agora","💰 R$ 207.543 em lances totais","📈 41.281 visitas hoje","🚀 PEDRO entrou no Top #3 com R$ 850"];
-feedEl.innerHTML=feeds.slice(0,4).map(f=>`<div class="bg-white border border-zinc-200 rounded-full px-4 py-2.5 shadow-sm flex items-center gap-2"><span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>${f}</div>`).join('');
+const feeds=["🔥 Lance R$ 3.129 no #1 - Além 355K - agora","⚡ Rupert 48K pagou R$ 1.305 no #2 - há 2 min","👀 28 pessoas vendo #1 agora","💰 +R$ 5.200 em lances hoje"];
+document.getElementById('live-feed').innerHTML=feeds.map(f=>`<div class="bg-white border rounded-full px-4 py-2.5 text-[11px]">${f}</div>`).join('');
 
-// CONTADORES AO VIVO
-let valorLances=207543;
-setInterval(()=>{
- valorLances+=Math.floor(Math.random()*15)+3;
- document.getElementById('lances').innerText=valorLances.toLocaleString('pt-BR');
- document.getElementById('lances2').innerText=valorLances.toLocaleString('pt-BR');
- document.getElementById('totalBids').innerText=Math.floor(valorLances/1000)+'k';
- const el=document.getElementById('lances'); el.style.color='#FF5A36'; setTimeout(()=>el.style.color='',600);
- if(Math.random()>0.5){
-   const novo=document.createElement('div');
-   novo.className='bg-[#FFF8C6] border border-[#FDE68A] rounded-full px-4 py-2.5 shadow-sm animate-pulse flex items-center gap-2';
-   novo.innerHTML=`<span class="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse"></span>🔥 Novo lance de R$ ${(3129+Math.floor(Math.random()*50)).toLocaleString('pt-BR')} agora!`;
-   feedEl.prepend(novo);
-   if(feedEl.children.length>5) feedEl.lastChild.remove();
- }
-},2800);
-setInterval(()=>{document.getElementById('online').innerText=26+Math.floor(Math.random()*10);},3800);
+let valor=207543; let online=28;
+setInterval(()=>{valor+=Math.floor(Math.random()*8)+2; document.getElementById('lancesTop').innerText=valor.toLocaleString('pt-BR'); document.getElementById('lances2').innerText=valor.toLocaleString('pt-BR');},2500);
+setInterval(()=>{online=26+Math.floor(Math.random()*9); document.getElementById('online').innerText=online; document.getElementById('watching').innerText=online; document.getElementById('updated').innerText="Atualizado há "+Math.floor(Math.random()*59)+"s"; document.getElementById('ago').innerText="há "+(Math.floor(Math.random()*9)+1)+" min";},3000);
 
-async function pagar(pos,valor){
- const nome=prompt('🏆 '+pos+'\nNome da sua empresa:'); if(!nome) return;
- const link=prompt('🔗 Link do seu site (https://):'); if(!link) return;
- try{
-   const r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({posicao:pos+' - '+nome,valor,link,nomeEmpresa:nome})});
-   const d=await r.json(); if(d.url||d.init_point) location.href=d.url||d.init_point; else alert('Erro checkout - verifique /api/checkout');
- }catch(e){alert('Erro: crie o arquivo /api/checkout na Vercel');}
-}
+async function pagar(pos,valor){const nome=prompt('Nome da Empresa:'); if(!nome) return; const link=prompt('Seu Link https:// (Facebook, site, Instagram):'); if(!link) return; try{const r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({posicao:pos+' - '+nome,valor,link,nomeEmpresa:nome})}); const d=await r.json(); if(d.url||d.init_point) location.href=d.url||d.init_point; else alert('Erro checkout');}catch(e){alert('Erro conexão API');}}
 </script>
 </body>
-      </html>
+ </html>
 
     
   
