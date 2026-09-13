@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   if (chaveAdmin !== process.env.ADMIN_SECRET) return res.status(401).json({ error: 'Não autorizado' });
 
   try {
-    const { acao, categoria, item, diasAtras } = req.body;
+    const { acao, categoria, item, diasAtras, receita, produtos } = req.body;
 
     if (acao === 'limpar') {
       await kv.set(`ranking:${categoria}`, []);
@@ -39,6 +39,12 @@ export default async function handler(req, res) {
       await kv.set('ranking:todas', todas);
 
       return res.status(200).json({ ok: true, entrada });
+    }
+
+    if (acao === 'ajustarStats') {
+      const stats = { receita: Number(receita) || 0, produtos: Number(produtos) || 0 };
+      await kv.set('stats', stats);
+      return res.status(200).json({ ok: true, stats });
     }
 
     return res.status(400).json({ error: 'Ação inválida' });
