@@ -1,48 +1,52 @@
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({error: 'Method not allowed'});
   
   try {
-    const body = req.body || {};
-    const link = body.link;
+    const { posicao, valor, link } = req.body;
     
-    if (!link) {
-      return res.status(400).json({ erro: 'Cola um link!' });
-    }
-
-    const token = process.env.MP_ACCESS_TOKEN;
-    if (!token) {
-      return res.status(500).json({ erro: 'TOKEN MP_ACCESS_TOKEN NAO CONFIGURADO NA VERCEL' });
-    }
+    // PEGA O VALOR REAL QUE CLICOU - 29.90 ou 274.33
+    const preco = parseFloat(valor) || 29.90;
+    
+    if (!link) return res.status(400).json({error: 'Link obrigatório'});
 
     const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${process.env.MP_ACCESS_TOKEN}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        items: [{ title: 'Podio Rank - 30 dias no topo', quantity: 1, unit_price: 274.33, currency_id: 'BRL' }],
-        back_urls: { 
-          success: 'https://podiorank.com.br/sucesso', 
-          failure: 'https://podiorank.com.br', 
-          pending: 'https://podiorank.com.br' 
+        items: [{
+          title: `Pódio - ${posicao}`,
+          quantity: 1,
+          unit_price: preco,
+          currency_id: 'BRL'
+        }],
+        back_urls: {
+          success: 'https://podio-rank.vercel.app/sucesso',
+          failure: 'https://podio-rank.vercel.app/erro',
+          pending: 'https://podio-rank.vercel.app/erro'
         },
-        auto_return: 'approved'
+        auto_return: 'approved',
+        notification_url: 'https://podio-rank.vercel.app/api/webhook',
+        metadata: {
+          posicao: posicao,
+          link: link,
+          valor: preco
+        }
       })
     });
 
     const data = await response.json();
     
-    if (!data.init_point) {
-      return res.status(500).json({ erro: 'Mercado Pago erro', detalhe: data });
+    if (data.init_point) {
+      return res.json({ url: data.init_point, init_point: data.init_point });
+    } else {
+      console.log('Erro MP:', data);
+      return res.status(400).json(data);
     }
-
-    return res.status(200).json({ url: data.init_point });
-
-  } catch (err) {
-    return res.status(500).json({ erro: 'Erro interno: ' + err.message });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ error: e.message });
   }
 }
