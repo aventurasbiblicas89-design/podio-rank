@@ -86,6 +86,7 @@
 
 </div><script>
 const CATEGORIAS = [
+  {id:"todas",        emoji:"🌐", nome:"TODAS"},
   {id:"leaderboards", emoji:"🏆", nome:"RANKINGS"},
   {id:"seo",          emoji:"🔍", nome:"SEO / IA"},
   {id:"marketing",    emoji:"📈", nome:"MARKETING"},
@@ -117,6 +118,7 @@ const CATEGORIAS = [
 ];
 let categoriaAtual = CATEGORIAS[0].id;
 let periodoAtual = "all";
+let paginaAtual = 1;
 let minimoAtual = 99;
 let valorLanceAtual = 99;
 const PASSO = 10;
@@ -128,10 +130,10 @@ function renderTabs(){
       onclick="mudarCategoria('${c.id}')">${c.emoji} ${c.nome}</button>
   `).join('');
 }
-function mudarCategoria(id){ categoriaAtual = id; renderTabs(); carregarBoard(); }
+function mudarCategoria(id){ categoriaAtual = id; paginaAtual = 1; renderTabs(); carregarBoard(); }
 
-document.getElementById('tabAll').onclick = () => { periodoAtual='all'; toggleTabs(); carregarBoard(); };
-document.getElementById('tabToday').onclick = () => { periodoAtual='today'; toggleTabs(); carregarBoard(); };
+document.getElementById('tabAll').onclick = () => { periodoAtual='all'; paginaAtual=1; toggleTabs(); carregarBoard(); };
+document.getElementById('tabToday').onclick = () => { periodoAtual='today'; paginaAtual=1; toggleTabs(); carregarBoard(); };
 function toggleTabs(){
   document.getElementById('tabAll').className = 'flex-1 py-2.5 rounded-full font-black text-[13px] ' + (periodoAtual==='all' ? 'tab-active' : 'bg-white border');
   document.getElementById('tabToday').className = 'flex-1 py-2.5 rounded-full font-black text-[13px] ' + (periodoAtual==='today' ? 'tab-active' : 'bg-white border');
@@ -153,11 +155,11 @@ async function carregarBoard(){
   const boardEl = document.getElementById('board');
   boardEl.innerHTML = `<p class="text-[13px] text-zinc-400 text-center py-6">Carregando ranking...</p>`;
   try{
-    const r = await fetch(`/api/ranking?categoria=${categoriaAtual}&periodo=${periodoAtual}`);
+    const r = await fetch(`/api/ranking?categoria=${categoriaAtual}&periodo=${periodoAtual}&page=${paginaAtual}`);
     const data = await r.json();
     const itens = data.itens || [];
 
-    if(itens.length === 0){
+    if(itens.length === 0 && paginaAtual === 1){
       boardEl.innerHTML = `<p class="text-[13px] text-zinc-400 text-center py-8">Ninguém reivindicou essa categoria ainda.<br>Seja o #1.</p>`;
       minimoAtual = 99;
       valorLanceAtual = 99;
@@ -165,36 +167,58 @@ async function carregarBoard(){
       return;
     }
 
-    minimoAtual = itens[0].valor + 30;
-    valorLanceAtual = minimoAtual;
-    atualizarValorLance();
+    if(paginaAtual === 1 && itens.length > 0){
+      minimoAtual = itens[0].valor + 30;
+      valorLanceAtual = minimoAtual;
+      atualizarValorLance();
+    }
 
+    const offset = (paginaAtual - 1) * 50;
     boardEl.innerHTML = itens.map((t,i) => `
       <div class="flex items-start gap-3 py-4 border-b border-zinc-100 last:border-0">
-        <div class="w-11 h-11 ${i<3?'bg-black text-white':'bg-[#F3F4F6]'} rounded-[14px] flex items-center justify-center font-black text-[14px] shrink-0 mt-0.5">#${i+1}</div>
+        <div class="w-11 h-11 ${(offset+i)<3?'bg-black text-white':'bg-[#F3F4F6]'} rounded-[14px] flex items-center justify-center font-black text-[14px] shrink-0 mt-0.5">#${offset+i+1}</div>
         <div class="min-w-0 flex-1">
           <div class="flex items-start justify-between gap-2">
-            <a href="${t.link}" target="_blank" rel="noopener" onclick="registrarClique('${t.id}')" class="font-black text-[14px] hover:underline line-clamp-1">${t.nome} ↗</a>
+            <a href="${t.link}" target="_blank" rel="noopener" onclick="registrarClique('${t.id}','${t.categoria}')" class="font-black text-[14px] hover:underline line-clamp-1">${t.nome} ↗</a>
             <span class="font-black text-[#FF4A15] text-[13px] shrink-0">${formatarValor(t.valor)}</span>
           </div>
           ${t.descricao ? `<p class="text-[12px] text-zinc-500 mt-0.5 line-clamp-2">${t.descricao}</p>` : ''}
           <p class="text-[11px] text-zinc-400 font-medium mt-1">🌐 ${t.dominio} · ${t.cliques ?? 0} cliques · há ${t.tempoRelativo || 'pouco'}</p>
-          <button onclick="pegarLinha('${categoriaAtual} #${i+1}', ${t.valor + 30})" class="mt-2 bg-black text-white px-4 py-2 rounded-full font-black text-[11px]">TOMAR ESSA POSIÇÃO</button>
+          <button onclick="pegarLinha('${categoriaAtual} #${offset+i+1}', ${t.valor + 30})" class="mt-2 bg-black text-white px-4 py-2 rounded-full font-black text-[11px]">TOMAR ESSA POSIÇÃO</button>
         </div>
       </div>
-    `).join('');
+    `).join('') + renderPaginacao(data.page, data.totalPaginas, data.total);
 
   }catch(e){
     boardEl.innerHTML = `<p class="text-[13px] text-zinc-400 text-center py-8">Não foi possível carregar o ranking agora.</p>`;
   }
 }
 
-async function registrarClique(id){
+function renderPaginacao(pagina, totalPaginas, total){
+  if(totalPaginas <= 1) return '';
+  let botoes = '';
+  const paginasParaMostrar = new Set([1, 2, 3, totalPaginas, pagina-1, pagina, pagina+1].filter(p => p>=1 && p<=totalPaginas));
+  const lista = [...paginasParaMostrar].sort((a,b)=>a-b);
+  let anterior = 0;
+  for(const p of lista){
+    if(p - anterior > 1) botoes += `<span class="px-1 text-zinc-400">…</span>`;
+    botoes += `<button onclick="irParaPagina(${p})" class="w-8 h-8 rounded-full font-black text-[12px] ${p===pagina?'bg-[#FF4A15] text-white':'text-zinc-600'}">${p}</button>`;
+    anterior = p;
+  }
+  return `
+    <div class="flex items-center justify-center gap-1 mt-4 pt-4 border-t border-zinc-100">${botoes}</div>
+    <p class="text-center text-[11px] text-zinc-400 mt-2">${(pagina-1)*50+1}–${Math.min(pagina*50,total)} de ${total}</p>
+  `;
+}
+
+function irParaPagina(p){ paginaAtual = p; carregarBoard(); window.scrollTo({top: document.getElementById('board').offsetTop - 80, behavior:'smooth'}); }
+
+async function registrarClique(id, categoriaDoItem){
   try{
     await fetch('/api/click', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ categoria: categoriaAtual, id: Number(id) })
+      body: JSON.stringify({ categoria: categoriaDoItem || categoriaAtual, id: Number(id) })
     });
   }catch(e){}
 }
@@ -281,7 +305,7 @@ setInterval(enviarHeartbeat, 15000);
 setInterval(carregarOnline, 10000);
 </script>
 </body>
-</html>
+  </html>
 
     
   
