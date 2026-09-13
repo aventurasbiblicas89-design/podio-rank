@@ -20,12 +20,12 @@ export default async function handler(req, res) {
           currency_id: 'BRL'
         }],
         back_urls: {
-          success: 'https://podiorank.com.br/sucesso',
-          failure: 'https://podiorank.com.br/erro',
-          pending: 'https://podiorank.com.br/erro'
+          success: 'https://www.podiorank.com.br/sucesso',
+          failure: 'https://www.podiorank.com.br/erro',
+          pending: 'https://www.podiorank.com.br/erro'
         },
         auto_return: 'approved',
-        notification_url: 'https://podiorank.com.br/api/webhook',
+        notification_url: 'https://www.podiorank.com.br/api/webhook',
         metadata: { posicao, link, valor: preco, nomeEmpresa, categoria }
       })
     });
