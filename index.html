@@ -3,155 +3,217 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Podio Rank - podiorank.com.br</title>
+<title>Podio Rank - Ranking pago de negócios | podiorank.com.br</title>
+<meta name="description" content="Pague para ficar no topo do ranking. Sem anúncios, sem algoritmo — sua posição é o que você pagou.">
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-<style>body{font-family:Inter,sans-serif;background:#FFFBF7}.hide-scrollbar::-webkit-scrollbar{display:none}</style>
+<style>
+  body{font-family:Inter,sans-serif;background:#FFFBF7}
+  .hide-scrollbar::-webkit-scrollbar{display:none}
+  .tab-active{background:#111;color:#fff}
+</style>
 </head>
 <body>
 <div class="max-w-[500px] mx-auto px-4 pt-4 pb-24">
 
-<h1 class="font-black text-[28px]">⚡ Podio Rank <span class="text-[12px] font-medium text-zinc-400 float-right mt-2">podiorank.com.br</span></h1>
+  <h1 class="font-black text-[28px]">⚡ Podio Rank <span class="text-[12px] font-medium text-zinc-400 float-right mt-2">podiorank.com.br</span></h1>
 
-<div class="flex gap-2 mt-4 overflow-x-auto hide-scrollbar">
-<span class="bg-[#FF4A15] text-white px-5 py-3 rounded-full font-black text-[13px] whitespace-nowrap">📈 MARKETING</span>
-<span class="bg-white border px-5 py-3 rounded-full font-black text-[13px] whitespace-nowrap">⚖️ ADVOGADOS</span>
-<span class="bg-white border px-5 py-3 rounded-full font-black text-[13px] whitespace-nowrap">🩺 MÉD</span>
-</div>
+  <div id="catTabs" class="flex gap-2 mt-4 overflow-x-auto hide-scrollbar"></div>
 
-<div class="flex justify-center mt-4">
-<div class="bg-white border rounded-full px-5 py-2.5 text-[13px] font-medium shadow-sm">
-🟢 <span id="online">25</span> online · <span id="visitors">717</span> visitors today · stats→
-</div>
-</div>
+  <div class="flex justify-center mt-4">
+    <div class="bg-white border rounded-full px-5 py-2.5 text-[13px] font-medium shadow-sm">
+      🟢 <span id="online">--</span> pessoas vendo agora
+    </div>
+  </div>
 
-<div class="bg-white border border-zinc-100 rounded-[28px] p-5 mt-6 shadow-sm">
-<div class="bg-[#FFF4B5] rounded-[14px] py-3 px-4 text-center font-black text-[13px]">🔥 LEILÃO AO VIVO - Fica 30 dias no topo ou até alguém pagar mais</div>
-<h2 class="font-black text-[36px] leading-[0.9] mt-5">Seja #1 por<br><span class="text-[#FF4A15]">R$ 3.129,00</span></h2>
-<div class="relative mt-5">
-<span class="absolute left-4 top-1/2 -translate-y-1/2 text-[18px]">🌐</span>
-<input id="linkTop" class="w-full border-2 border-zinc-200 rounded-full pl-11 pr-4 py-4 text-[14px] font-bold outline-none" placeholder="Cole seu link aqui (site, insta, youtube)">
-</div>
-<button onclick="pegar('LEILÃO #1 - TOPO',3129)" class="w-full bg-[#FF4A15] text-white rounded-full py-4 font-black text-[16px] mt-3">DAR LANCE DE R$ 3.129,00 →</button>
-<p class="text-[11px] text-zinc-400 text-center mt-2">Garantido 30 dias. Só sai se alguém pagar mais.</p>
-</div>
+  <div class="bg-white border border-zinc-100 rounded-[28px] p-5 mt-6 shadow-sm">
+    <div class="bg-[#FFF4B5] rounded-[14px] py-3 px-4 text-center font-black text-[13px]">
+      🔥 LEILÃO AO VIVO — fica no topo até alguém pagar mais
+    </div>
+    <h2 class="font-black text-[36px] leading-[0.9] mt-5">
+      Seja #1 por<br>
+      <span id="precoTopo" class="text-[#FF4A15]">R$ --</span>
+    </h2>
+    <div class="relative mt-5">
+      <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[18px]">🌐</span>
+      <input id="linkTop" class="w-full border-2 border-zinc-200 rounded-full pl-11 pr-4 py-4 text-[14px] font-bold outline-none" placeholder="Cole seu link aqui (site, insta, youtube)">
+    </div>
+    <button id="btnTopo" class="w-full bg-[#FF4A15] text-white rounded-full py-4 font-black text-[16px] mt-3">
+      DAR LANCE →
+    </button>
+    <p class="text-[11px] text-zinc-400 text-center mt-2">Fica no topo até alguém pagar mais. Sem prazo fixo.</p>
+  </div>
 
-<!-- TOP 10 IGUAL SEU PRINT -->
-<div class="bg-white border border-zinc-100 rounded-[28px] p-4 mt-6 shadow-sm">
-<div class="flex justify-between items-center">
-<h3 class="font-black text-[18px] leading-[1.1]">🏆 Top 10 - Leilão<br>Principal</h3>
-<span class="bg-black text-white text-[11px] px-4 py-2 rounded-full leading-[1.1] text-center">403K cliques<br>hoje</span>
-</div>
-<div id="top10" class="mt-2"></div>
-</div>
+  <div class="flex gap-2 mt-6">
+    <button id="tabAll" class="tab-active flex-1 py-2.5 rounded-full font-black text-[13px]">Todos os tempos</button>
+    <button id="tabToday" class="flex-1 py-2.5 rounded-full font-black text-[13px] bg-white border">Hoje</button>
+  </div>
 
-<div id="categorias" class="mt-8"></div>
+  <div class="bg-white border border-zinc-100 rounded-[28px] p-4 mt-3 shadow-sm">
+    <h3 class="font-black text-[18px]">🏆 Ranking</h3>
+    <div id="board" class="mt-2">
+      <p class="text-[13px] text-zinc-400 text-center py-6">Carregando ranking...</p>
+    </div>
+  </div>
 
-</div>
+  <div class="bg-white border border-zinc-100 rounded-[28px] p-4 mt-6 shadow-sm">
+    <h3 class="font-black text-[16px] mb-2">📋 Atividade recente</h3>
+    <div id="atividade" class="text-[13px] text-zinc-500 space-y-1.5">
+      <p class="text-zinc-400">Nenhum lance ainda — seja o primeiro.</p>
+    </div>
+  </div>
 
-<script>
-const TOPO = [
- {p:1,nome:"Além dos Versículos - 355K",link:"https://www.facebook.com/share/1C9k3ZA1pG/",valor:3129,cliques:"355K cliq...",fogo:true},
- {p:2,nome:"Rupert Marketing - 48K",link:"https://www.facebook.com/share/19T6y57XuF/",valor:2399,cliques:"48K cliq...",fogo:true},
- {p:3,nome:"PEDRO Automação",link:"https://youtube.com/@meme-zinho?si=VnRDBaijlDCtGv0e",valor:1299,cliques:"1K cliq...",fogo:true},
- {p:4,nome:"VAGA LIVRE",valor:999,livre:true},
- {p:5,nome:"VAGA LIVRE",valor:799,livre:true},
- {p:6,nome:"VAGA LIVRE",valor:499,livre:true},
- {p:7,nome:"VAGA LIVRE",valor:299,livre:true},
- {p:8,nome:"VAGA LIVRE",valor:199,livre:true},
- {p:9,nome:"VAGA LIVRE",valor:149,livre:true},
- {p:10,nome:"VAGA LIVRE",valor:99,livre:true},
+  <div class="text-center mt-8 text-[12px] text-zinc-400 space-y-1">
+    <p>Estatísticas do projeto desde o lançamento</p>
+    <div class="flex justify-center gap-6 mt-2 font-black text-zinc-700 text-[15px]">
+      <div><span id="statVisitantes">--</span><div class="text-[10px] font-medium text-zinc-400">visitantes</div></div>
+      <div><span id="statReceita">--</span><div class="text-[10px] font-medium text-zinc-400">arrecadado</div></div>
+      <div><span id="statProdutos">--</span><div class="text-[10px] font-medium text-zinc-400">posições vendidas</div></div>
+    </div>
+  </div>
+
+  <p class="text-center text-[11px] text-zinc-400 mt-6">
+    <a href="#" class="underline">Como funciona</a> · <a href="#" class="underline">Termos</a> · <a href="#" class="underline">Contato</a>
+  </p>
+
+</div><script>
+const CATEGORIAS = [
+  {id:"leaderboards", emoji:"🏆", nome:"RANKINGS"},
+  {id:"seo",          emoji:"🔍", nome:"SEO / IA"},
+  {id:"marketing",    emoji:"📈", nome:"MARKETING"},
+  {id:"produtividade",emoji:"⚡", nome:"PRODUTIVIDADE"},
+  {id:"agentes-ia",   emoji:"🤖", nome:"AGENTES DE IA"},
+  {id:"cripto",       emoji:"₿",  nome:"CRIPTO"},
+  {id:"dev",          emoji:"💻", nome:"DESENVOLVEDORES"},
+  {id:"saude",        emoji:"🩺", nome:"SAÚDE E FITNESS"},
+  {id:"negocios",     emoji:"💼", nome:"NEGÓCIOS / JURÍDICO"},
+  {id:"jogos",        emoji:"🎮", nome:"JOGOS"},
+  {id:"ecommerce",    emoji:"🛒", nome:"E-COMMERCE"},
+  {id:"viagem",       emoji:"✈️", nome:"VIAGEM / LIFESTYLE"},
+  {id:"diretorios",   emoji:"📂", nome:"DIRETÓRIOS"},
+  {id:"agencias",     emoji:"🏢", nome:"AGÊNCIAS"},
+  {id:"midia-ia",     emoji:"🎬", nome:"MÍDIA COM IA"},
+  {id:"educacao",     emoji:"📚", nome:"EDUCAÇÃO"},
+  {id:"redes-sociais",emoji:"📱", nome:"REDES SOCIAIS"},
+  {id:"pessoas",      emoji:"👤", nome:"PESSOAS / PERFIS"},
+  {id:"design",       emoji:"🎨", nome:"DESIGN"},
+  {id:"vagas",        emoji:"👔", nome:"VAGAS / RH"},
+  {id:"dominios",     emoji:"🌐", nome:"DOMÍNIOS"},
+  {id:"seguranca",    emoji:"🔒", nome:"SEGURANÇA"},
+  {id:"vendas",       emoji:"🎯", nome:"VENDAS / LEADS"},
+  {id:"noticias",     emoji:"📰", nome:"NOTÍCIAS"},
+  {id:"imoveis",      emoji:"🏠", nome:"IMÓVEIS"},
+  {id:"escrita",      emoji:"✍️", nome:"ESCRITA / CONTEÚDO"},
+  {id:"audio",        emoji:"🎙️", nome:"ÁUDIO / PODCAST"},
+  {id:"analytics",    emoji:"📊", nome:"ANALYTICS"},
 ];
+let categoriaAtual = CATEGORIAS[0].id;
+let periodoAtual = "all";
 
-function getPrice(pos){
- if(pos==1) return 3129; if(pos==2) return 2399; if(pos==3) return 1299; if(pos==4) return 999; if(pos==5) return 799; if(pos==6) return 499; if(pos==7) return 299; if(pos==8) return 199; if(pos==9) return 149; if(pos==10) return 99;
- if(pos<=20) return 79; if(pos<=30) return 49; if(pos<=50) return 29; if(pos<=75) return 19; if(pos<=100) return 9; if(pos<=125) return 5; return 1;
+function renderTabs(){
+  document.getElementById('catTabs').innerHTML = CATEGORIAS.map(c => `
+    <button data-cat="${c.id}"
+      class="px-5 py-3 rounded-full font-black text-[13px] whitespace-nowrap ${c.id===categoriaAtual ? 'bg-[#FF4A15] text-white' : 'bg-white border'}"
+      onclick="mudarCategoria('${c.id}')">${c.emoji} ${c.nome}</button>
+  `).join('');
+}
+function mudarCategoria(id){ categoriaAtual = id; renderTabs(); carregarBoard(); }
+
+document.getElementById('tabAll').onclick = () => { periodoAtual='all'; toggleTabs(); carregarBoard(); };
+document.getElementById('tabToday').onclick = () => { periodoAtual='today'; toggleTabs(); carregarBoard(); };
+function toggleTabs(){
+  document.getElementById('tabAll').className = 'flex-1 py-2.5 rounded-full font-black text-[13px] ' + (periodoAtual==='all' ? 'tab-active' : 'bg-white border');
+  document.getElementById('tabToday').className = 'flex-1 py-2.5 rounded-full font-black text-[13px] ' + (periodoAtual==='today' ? 'tab-active' : 'bg-white border');
 }
 
-// TOP 10 - AGORA CLICÁVEL
-document.getElementById('top10').innerHTML = TOPO.map(t=>`
-<div class="flex items-center justify-between py-4 border-b border-zinc-100 last:border-0">
-<div class="flex items-center gap-3 min-w-0">
-<div class="w-12 h-12 ${t.p<=3?'bg-black text-white':'bg-[#F3F4F6]'} rounded-[14px] flex items-center justify-center font-black text-[15px] shrink-0">#${t.p}</div>
-<div class="w-8 h-8 bg-[#F3F4F6] rounded-full flex items-center justify-center shrink-0">🌐</div>
-<div class="min-w-0 leading-[1.1]">
-${t.livre?`<p class="font-black text-[14px]">VAGA LIVRE</p>`:`
-<a href="${t.link}" target="_blank" onclick="event.stopPropagation()" class="font-black text-[14px] hover:underline line-clamp-1">${t.fogo?'🔥':''} ${t.nome} ↗</a>`}
-<p class="text-[12px] text-zinc-500 font-bold mt-1">R$ ${t.valor.toFixed(2).replace('.',',')} · ${t.livre?'0 cliq...':t.cliques}</p>
-</div>
-</div>
-<button onclick="pegar('TOPO #${t.p} - ${t.livre?'LIVRE':t.nome}',${t.valor})" class="bg-black text-white px-5 py-3 rounded-full font-black text-[11px] shrink-0 ml-2">${t.livre?'PEGAR #'+t.p:'TOMAR'}</button>
-</div>
-`).join('');
+async function carregarBoard(){
+  const boardEl = document.getElementById('board');
+  boardEl.innerHTML = `<p class="text-[13px] text-zinc-400 text-center py-6">Carregando ranking...</p>`;
+  try{
+    const r = await fetch(`/api/ranking?categoria=${categoriaAtual}&periodo=${periodoAtual}`);
+    const data = await r.json();
+    const itens = data.itens || [];
 
-// 15 CATEGORIAS COM 150 CADA
-const CATS = ["📈 MARKETING","⚖️ ADVOGADOS","🩺 MÉDICOS","🛒 MERCADO","📦 ECOM","▶️ YOUTUBE","📘 FACEBOOK","📸 INSTAGRAM","🐦 X / TWITTER","🎨 DESIGN","💰 FINANÇAS","🔍 SEO","🎯 TRÁFEGO","📚 INFOPRODUTO","💎 PLR"];
+    if(itens.length === 0){
+      boardEl.innerHTML = `<p class="text-[13px] text-zinc-400 text-center py-8">Ninguém reivindicou essa categoria ainda.<br>Seja o #1.</p>`;
+      document.getElementById('precoTopo').innerText = "R$ 99,00 (mínimo)";
+      return;
+    }
 
-document.getElementById('categorias').innerHTML = CATS.map((cat,idx)=>`
-<div class="bg-white border border-zinc-100 rounded-[24px] p-4 mb-5 shadow-sm">
-<div class="flex justify-between items-center">
-<p class="font-black text-[15px]">${cat}</p>
-<span class="bg-[#F3F4F6] text-[10px] font-bold px-3 py-1.5 rounded-full">R$ 3.129 a R$ 1</span>
-</div>
-<div id="cat-${idx}" class="mt-4">
-${[1,2,3].map(i=>`
-<div class="flex justify-between items-center bg-[#FFFBF7] border border-zinc-100 rounded-full px-3 py-3 mb-2">
-<div class="flex items-center gap-2"><div class="w-7 h-7 bg-black text-white rounded-full flex items-center justify-center font-black text-[11px]">#${i}</div><span class="font-black text-[12px]">VAGA LIVRE</span><span class="text-[11px] text-zinc-500">R$ ${getPrice(i)}</span></div>
-<button onclick="pegar('${cat} #${i}',${getPrice(i)})" class="bg-black text-white px-4 py-2 rounded-full font-black text-[11px]">PEGAR →</button>
-</div>`).join('')}
-</div>
-<button id="btn-${idx}" onclick="expandir(${idx},'${cat}')" class="w-full bg-[#F3F4F6] rounded-full py-3 text-[13px] font-black mt-2">Ver 150 posições ↓</button>
-</div>
-`).join('');
+    document.getElementById('precoTopo').innerText =
+      "R$ " + (itens[0].valor + 30).toFixed(2).replace('.', ',');
 
-function expandir(idx,cat){
- const btn=document.getElementById(`btn-${idx}`);
- const div=document.getElementById(`cat-${idx}`);
- if(btn.innerText.includes('150')){
-  let html='';
-  for(let i=1;i<=150;i++){
-   html+=`<div class="flex justify-between items-center bg-[#FFFBF7] border border-zinc-100 rounded-full px-3 py-2.5 mb-2">
-   <div class="flex items-center gap-2"><div class="w-6 h-6 bg-black text-white rounded-full flex items-center justify-center font-black text-[10px]">#${i}</div><span class="font-black text-[11px]">VAGA LIVRE</span><span class="text-[10px] text-zinc-500">R$ ${getPrice(i)}</span></div>
-   <button onclick="pegar('${cat} #${i}',${getPrice(i)})" class="bg-black text-white px-3 py-1.5 rounded-full font-black text-[10px]">PEGAR →</button></div>`;
+    boardEl.innerHTML = itens.map((t,i) => `
+      <div class="flex items-center justify-between py-4 border-b border-zinc-100 last:border-0">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-12 h-12 ${i<3?'bg-black text-white':'bg-[#F3F4F6]'} rounded-[14px] flex items-center justify-center font-black text-[15px] shrink-0">#${i+1}</div>
+          <div class="min-w-0 leading-[1.1]">
+            <a href="${t.link}" target="_blank" rel="noopener" class="font-black text-[14px] hover:underline line-clamp-1">${t.nome} ↗</a>
+            <p class="text-[12px] text-zinc-500 font-bold mt-1">
+              R$ ${t.valor.toFixed(2).replace('.', ',')} · ${t.cliques ?? 0} cliques · há ${t.tempoRelativo || 'pouco'}
+            </p>
+          </div>
+        </div>
+        <button onclick="pegar('${categoriaAtual} #${i+1}', ${t.valor + 30})" class="bg-black text-white px-5 py-3 rounded-full font-black text-[11px] shrink-0 ml-2">TOMAR</button>
+      </div>
+    `).join('');
+
+  }catch(e){
+    boardEl.innerHTML = `<p class="text-[13px] text-zinc-400 text-center py-8">Não foi possível carregar o ranking agora.</p>`;
   }
-  div.innerHTML=html;
-  btn.innerText='Mostrar menos ↑';
- }else{
-  let html='';
-  for(let i=1;i<=3;i++){
-   html+=`<div class="flex justify-between items-center bg-[#FFFBF7] border border-zinc-100 rounded-full px-3 py-3 mb-2"><div class="flex items-center gap-2"><div class="w-7 h-7 bg-black text-white rounded-full flex items-center justify-center font-black text-[11px]">#${i}</div><span class="font-black text-[12px]">VAGA LIVRE</span><span class="text-[11px] text-zinc-500">R$ ${getPrice(i)}</span></div><button onclick="pegar('${cat} #${i}',${getPrice(i)})" class="bg-black text-white px-4 py-2 rounded-full font-black text-[11px]">PEGAR →</button></div>`;
+}
+
+async function carregarOnline(){
+  try{
+    const r = await fetch('/api/online-count');
+    const d = await r.json();
+    document.getElementById('online').innerText = d.online;
+  }catch(e){
+    document.getElementById('online').innerText = '--';
   }
-  div.innerHTML=html;
-  btn.innerText='Ver 150 posições ↓';
-  div.scrollIntoView({behavior:'smooth',block:'center'});
- }
 }
 
-// CONTADORES FUNCIONANDO
-let online=25; setInterval(()=>{online+=Math.floor(Math.random()*3)-1; if(online<20) online=20; if(online>38) online=38; document.getElementById('online').innerText=online;},2500);
-let vis=717; setInterval(()=>{vis++; document.getElementById('visitors').innerText=vis;},4000);
-
-// TODOS BOTÕES FUNCIONANDO
-async function pegar(pos, valor){
- let linkTop=document.getElementById('linkTop').value;
- let link = linkTop || prompt('Cole seu link https:// (site, insta, youtube):');
- if(!link) return;
- if(!link.startsWith('http')){ alert('Tem que começar com https://'); return; }
- let nome = prompt('Nome que vai aparecer no ranking:')||'Anônimo';
-
- // Tenta checkout real
- try{
-  const r = await fetch('/api/checkout',{
-   method:'POST',
-   headers:{'Content-Type':'application/json'},
-   body:JSON.stringify({posicao:pos+' - '+nome, valor, link, nomeEmpresa:nome})
-  });
-  const d = await r.json();
-  if(d.url || d.init_point){ window.location.href = d.url || d.init_point; return; }
- }catch(e){}
-
- alert('✅ BOTÃO FUNCIONANDO!\n\nVocê clicou: '+pos+'\nValor: R$ '+valor+'\nLink: '+link+'\n\nSe não redirecionou pro Mercado Pago, é porque sua /api/checkout ainda não está configurada no servidor.');
+async function carregarStats(){
+  try{
+    const r = await fetch('/api/stats');
+    const d = await r.json();
+    document.getElementById('statVisitantes').innerText = d.visitantes ?? '--';
+    document.getElementById('statReceita').innerText = d.receita ? ('R$ ' + d.receita) : '--';
+    document.getElementById('statProdutos').innerText = d.produtos ?? '--';
+  }catch(e){}
 }
+
+const MODO_TESTE = new URLSearchParams(location.search).get('teste') === '1';
+
+async function pegar(posicao, valorMinimo){
+  let link = document.getElementById('linkTop').value || prompt('Cole seu link https:// (site, insta, youtube):');
+  if(!link) return;
+  if(!link.startsWith('http')){ alert('O link precisa começar com https://'); return; }
+  let nome = prompt('Nome que vai aparecer no ranking:') || 'Anônimo';
+
+  const minimoReal = MODO_TESTE ? 1 : valorMinimo;
+  let valor = prompt(`Valor do seu lance (mínimo R$ ${minimoReal}):`, minimoReal);
+  if(!valor || Number(valor) < minimoReal){ alert('Valor abaixo do mínimo para essa posição.'); return; }
+
+  try{
+    const r = await fetch('/api/checkout', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ posicao, valor: Number(valor), link, nomeEmpresa: nome, categoria: categoriaAtual })
+    });
+    const d = await r.json();
+    if(d.url || d.init_point){ window.location.href = d.url || d.init_point; return; }
+    alert('Não foi possível iniciar o pagamento agora. Tente novamente em instantes.');
+  }catch(e){
+    alert('Erro ao conectar com o pagamento. Tente novamente.');
+  }
+}
+document.getElementById('btnTopo').onclick = () => pegar('TOPO', 99);
+
+renderTabs();
+carregarBoard();
+carregarOnline();
+carregarStats();
 </script>
 </body>
 </html>
