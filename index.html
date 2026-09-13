@@ -6,43 +6,120 @@
 <title>Podio Rank</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#FFFBF7]">
-<div class="max-w-[680px] mx-auto p-4">
-<div class="flex justify-between items-center mt-2">
+<body class="bg-[#FFFBF7] text-zinc-900">
+<div class="max-w-6xl mx-auto p-4 pb-20">
+
+<!-- TOPO -->
+<div class="flex justify-between items-center mt-2 max-w-[680px] mx-auto">
 <h1 class="text-[22px] font-black">⚡ Podio Rank</h1>
 <span class="text-[12px] text-zinc-400">podiorank.com.br</span>
 </div>
-<div class="flex gap-2 mt-4 overflow-x-auto">
-<div class="bg-[#FF5A36] text-white px-4 py-2 rounded-full text-[13px] font-bold">📈 MARKETING</div>
-<div class="bg-white border px-4 py-2 rounded-full text-[13px] font-bold">⚖️ ADVOGADOS</div>
-<div class="bg-white border px-4 py-2 rounded-full text-[13px] font-bold">🩺 MÉDICOS</div>
+
+<div class="flex gap-2 mt-4 max-w-[680px] mx-auto overflow-x-auto">
+<div class="bg-[#FF5A36] text-white px-6 py-3 rounded-full text-sm font-bold whitespace-nowrap">📈 MARKETING</div>
+<div class="bg-white border px-6 py-3 rounded-full text-sm font-bold whitespace-nowrap">⚖️ ADVOGADOS</div>
+<div class="bg-white border px-6 py-3 rounded-full text-sm font-bold whitespace-nowrap">🩺 MÉDICOS</div>
 </div>
+
 <div class="flex justify-center mt-4">
-<div class="bg-white border rounded-full px-4 py-2 text-[13px]">🟢 1 online · 717 visitors today · stats→</div>
+<div id="online" class="bg-white border rounded-full px-5 py-2.5 text-[13px] shadow-sm">🟢 1 online · 717 visitors today · stats→</div>
 </div>
-<div class="flex justify-center gap-2 mt-3 bg-white border rounded-full p-1 w-fit mx-auto">
-<div class="bg-[#FF5A36] text-white px-5 py-2 rounded-full text-[13px] font-bold">🏆 All-time</div>
-<div class="px-5 py-2 rounded-full text-[13px] font-bold">🔴 Today</div>
+
+<div class="flex justify-center mt-4">
+<div class="bg-white border rounded-full p-1 flex gap-1">
+<div class="bg-[#FF5A36] text-white px-6 py-2.5 rounded-full text-sm font-bold">🏆 All-time</div>
+<div class="px-6 py-2.5 rounded-full text-sm font-bold">🔴 Today</div>
 </div>
-<div class="bg-white border rounded-[20px] p-5 mt-5">
-<div class="bg-[#FFF8C6] border border-[#FFE9A0] rounded-xl p-3 text-center"><p class="text-[13px] font-bold">🔥 LEILÃO AO VIVO - Fica 30 dias no topo ou até alguém pagar mais e tomar seu lugar</p></div>
-<h2 class="text-[32px] font-black text-center mt-5">Seja #1 por <span class="text-[#FF5A36]">R$ 274,33</span></h2>
-<div class="flex items-center gap-2 border rounded-full px-4 py-3 mt-4"><span>🌐</span><input id="link" class="w-full outline-none text-[14px]" placeholder="Cole seu link aqui (site, insta, youtube)"></div>
-<button onclick="pagar()" class="w-full bg-[#FF5A36] text-white font-black py-4 rounded-full mt-4 text-[16px]">DAR LANCE DE R$ 274,33 →</button>
-<p class="text-[12px] text-zinc-400 text-center mt-3">Garantido por 30 dias. Depois só sai se alguém pagar mais que você.</p>
-<p class="text-[13px] text-zinc-500 text-center mt-1">Volume total: R$ 900,32</p>
 </div>
-<div class="bg-white border rounded-[20px] p-4 mt-4 flex justify-between items-center"><div class="flex gap-3 items-center"><div class="bg-black text-white w-12 h-12 rounded-xl flex items-center justify-center font-black">#1</div><div><p class="font-bold text-[15px] leading-tight"><span class="text-[#FF5A36]">#1</span> Além dos Versículos -<br>355K</p><p class="text-[12px] text-zinc-500">R$ 211,02 · 30 dias ou até alguém tomar · <span class="text-[#FF5A36] font-bold">ver →</span></p></div></div><button onclick="document.getElementById('link').focus()" class="bg-[#FFF0EE] text-[#FF5A36] px-5 py-2 rounded-full font-bold text-[13px]">TOMAR</button></div>
+
+<!-- CARD PRINCIPAL - IGUAL DA SUA FOTO -->
+<div class="bg-white border rounded-[28px] p-6 mt-5 shadow-sm max-w-[680px] mx-auto">
+<div class="bg-[#FFF9C1] border border-[#FDE68A] rounded-2xl p-4 text-center">
+<p class="font-bold text-[15px]">🔥 LEILÃO AO VIVO - Fica 30 dias no topo ou até alguém pagar mais e tomar seu lugar</p>
 </div>
+<h2 class="text-[42px] font-black text-center mt-6 leading-none">Seja #1 por <span class="text-[#FF5A36]">R$<br><span id="precoTopo">274,33</span></span></h2>
+<div class="mt-6 flex items-center gap-3 border rounded-full px-5 py-4">
+<span class="text-xl">🌐</span>
+<input id="link" placeholder="Cole seu link aqui (site, insta, youtube)" class="w-full outline-none text-[15px] bg-transparent">
+</div>
+<button onclick="pagarTop()" class="w-full bg-[#FF5A36] text-white font-black py-5 rounded-full mt-4 text-[17px]">DAR LANCE DE R$ 274,33 →</button>
+<p class="text-[13px] text-zinc-400 text-center mt-4">Garantido por 30 dias. Depois só sai se alguém pagar mais que você.</p>
+<p class="text-[15px] text-zinc-600 text-center mt-2 font-medium">Volume total: R$ 900,32</p>
+</div>
+
+<!-- PODIO PRINCIPAL 10 VAGAS -->
+<div class="max-w-[680px] mx-auto mt-6 bg-white border rounded-[24px] p-6 shadow-sm">
+<h3 class="font-black text-[16px] mb-4">🔥 Pódio Principal — 10 vagas</h3>
+<div id="principal"></div>
+</div>
+
+<!-- CATEGORIAS -->
+<div id="cats" class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+
+<p class="text-center text-[11px] text-zinc-400 mt-10">www.podiorank.com.br • Mercado Pago ativo • Reseta domingo 23:59</p>
+</div>
+
 <script>
-async function pagar(){
-  let l=document.getElementById('link').value.trim();
-  if(!l) return alert('Cola seu link!');
-  let r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({link:l,posicao:l,valor:274.33})});
-  let d=await r.json();
-  if(d.url||d.init_point) location.href=d.url||d.init_point;
-  else alert(JSON.stringify(d));
+const CATS = ["Mercado","Marketing","Ecom","YouTube","SEO","Finanças","Design","Infoproduto","PLR","Tráfego","Afiliado","SaaS"];
+const PRINCIPAL = [
+  {n:1, nome:"🥇 #1 Além dos Versículos - 355K", valor:274.33, destaque:true},
+  {n:2, nome:"🥈 #2 Rupert - 48K", valor:211.02},
+  {n:3, nome:"#3 PEDRO - 1,4K", valor:162.32},
+  {n:4, nome:"#4 LIVRE", valor:124.86},
+  {n:5, nome:"#5 LIVRE", valor:96.04},
+  {n:6, nome:"#6 LIVRE", valor:73.88},
+  {n:7, nome:"#7 LIVRE", valor:56.83},
+  {n:8, nome:"#8 LIVRE", valor:43.72},
+  {n:9, nome:"#9 LIVRE", valor:33.63},
+  {n:10, nome:"#10 LIVRE", valor:29.90},
+];
+
+function renderPrincipal(){
+  document.getElementById('principal').innerHTML = PRINCIPAL.map(p=>`
+    <div class="flex justify-between items-center py-3.5 border-b border-zinc-100 last:border-0">
+      <span class="text-[14px] font-medium">${p.nome}</span>
+      <button onclick="pagar('${p.nome}', ${p.valor}, this)" class="${p.destaque?'bg-[#FF5A36] text-white':'bg-zinc-900 text-white'} px-5 py-2.5 rounded-full text-[13px] font-bold">
+        ${p.destaque?`TOMAR #1 - R$ ${p.valor}`:`R$ ${p.valor.toFixed(2).replace('.',',')}`}
+      </button>
+    </div>
+  `).join('');
 }
+function renderCats(){
+  document.getElementById('cats').innerHTML = CATS.map(c=>`
+    <div class="bg-white border rounded-[20px] p-5 shadow-sm">
+      <h3 class="font-black text-[14px] mb-3">🏆 ${c} — 3 vagas</h3>
+      <div class="text-[13px] text-zinc-500 space-y-2">
+        <div class="flex justify-between">#1 Livre <span>R$ 29,90</span></div>
+        <div class="flex justify-between">#2 Livre <span>R$ 29,90</span></div>
+        <div class="flex justify-between">#3 Livre <span>R$ 29,90</span></div>
+      </div>
+      <button onclick="pagar('${c} #1', 29.90, this)" class="w-full mt-4 bg-zinc-900 text-white py-3 rounded-full font-bold text-[13px]">PEGAR VAGA - R$ 29,90</button>
+    </div>
+  `).join('');
+}
+function pagarTop(){
+  let l=document.getElementById('link').value.trim();
+  if(!l) return alert('Cola seu link primeiro!');
+  pagar(l, 274.33, document.querySelector('button'));
+}
+async function pagar(pos, valor, btn){
+  let linkFinal = document.getElementById('link').value.trim() || pos;
+  const txt = btn.innerText;
+  btn.innerText='...'; btn.disabled=true;
+  try{
+    const r=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({posicao:linkFinal, valor, link:linkFinal})});
+    const d=await r.json();
+    if(d.url || d.init_point) window.location.href = d.url || d.init_point;
+    else { alert('Erro: '+JSON.stringify(d).slice(0,200)); btn.innerText=txt; btn.disabled=false; }
+  }catch(e){ alert('Erro checkout'); btn.innerText=txt; btn.disabled=false; }
+}
+let online = 28;
+setInterval(()=>{
+  online = Math.max(18, Math.min(55, online + Math.floor(Math.random()*3)-1));
+  document.getElementById('online').innerText = `🟢 ${online} online · 717 visitors today · stats→`;
+},2500);
+
+renderPrincipal(); renderCats();
 </script>
 </body>
 </html>
