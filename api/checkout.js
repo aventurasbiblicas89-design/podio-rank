@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({error: 'Method not allowed'});
   try {
-    const { posicao, valor, link, nomeEmpresa, categoria, descricao } = req.body;
+    const { posicao, valor, link, nomeEmpresa, categoria, descricao, email } = req.body;
     const preco = parseFloat(valor) || 29.90;
     if (!link) return res.status(400).json({error: 'Link obrigatório'});
     if (!categoria) return res.status(400).json({error: 'Categoria obrigatória'});
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
         },
         auto_return: 'approved',
         notification_url: 'https://www.podiorank.com.br/api/webhook',
-        metadata: { posicao, link, valor: preco, nomeEmpresa, categoria, descricao: descricao || '' }
+        metadata: { posicao, link, valor: preco, nomeEmpresa, categoria, descricao: descricao || '', email: email || '' }
       })
     });
     const data = await response.json();
