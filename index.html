@@ -164,6 +164,12 @@ function faviconUrl(dominio){
   return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(dominio)}&sz=128`;
 }
 
+function copiarSelo(id, categoria){
+  const codigo = `<script src="https://www.podiorank.com.br/badge-embed.js" data-id="${id}" data-categoria="${categoria}"><\/script>`;
+  navigator.clipboard.writeText(codigo).then(() => alert('Código do selo copiado! Cole no HTML do seu site.'))
+    .catch(() => prompt('Copie o código abaixo:', codigo));
+}
+
 async function carregarBoard(){
   const boardEl = document.getElementById('board');
   boardEl.innerHTML = `<p class="text-[13px] text-zinc-400 text-center py-6">Carregando ranking...</p>`;
@@ -203,7 +209,10 @@ async function carregarBoard(){
           </div>
           ${t.descricao ? `<p class="text-[12px] text-zinc-500 mt-0.5 line-clamp-2">${t.descricao}</p>` : ''}
           <p class="text-[11px] text-zinc-400 font-medium mt-1">🌐 ${t.dominio} · ${t.cliques ?? 0} cliques · há ${t.tempoRelativo || 'pouco'}</p>
-          <button onclick="pegarLinha('${categoriaAtual} #${offset+i+1}', ${t.valor + 30})" class="mt-2 bg-black text-white px-4 py-2 rounded-full font-black text-[11px]">TOMAR ESSA POSIÇÃO</button>
+          <div class="flex gap-2 mt-2">
+            <button onclick="pegarLinha('${categoriaAtual} #${offset+i+1}', ${t.valor + 30})" class="bg-black text-white px-4 py-2 rounded-full font-black text-[11px]">TOMAR ESSA POSIÇÃO</button>
+            <button onclick="copiarSelo('${t.id}','${t.categoria}')" class="bg-zinc-100 text-zinc-700 px-4 py-2 rounded-full font-black text-[11px]">📋 SELO</button>
+          </div>
         </div>
       </div>
     `).join('') + renderPaginacao(data.page, data.totalPaginas, data.total);
@@ -324,7 +333,7 @@ setInterval(enviarHeartbeat, 15000);
 setInterval(carregarOnline, 10000);
 </script>
 </body>
-  </html>
+</html>
 
     
   
