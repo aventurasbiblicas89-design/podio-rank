@@ -160,6 +160,9 @@ function corDoNome(nome){
 function inicialDoNome(nome){
   return (nome || '?').trim().charAt(0).toUpperCase();
 }
+function faviconUrl(dominio){
+  return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(dominio)}&sz=128`;
+}
 
 async function carregarBoard(){
   const boardEl = document.getElementById('board');
@@ -186,7 +189,10 @@ async function carregarBoard(){
     const offset = (paginaAtual - 1) * 50;
     boardEl.innerHTML = itens.map((t,i) => `
       <div class="flex items-start gap-3 py-4 border-b border-zinc-100 last:border-0">
-        <div class="w-12 h-12 rounded-[14px] flex items-center justify-center font-black text-[16px] text-white shrink-0" style="background:${corDoNome(t.nome)}">${inicialDoNome(t.nome)}</div>
+        <div class="w-12 h-12 rounded-[14px] flex items-center justify-center font-black text-[16px] text-white shrink-0 relative overflow-hidden" style="background:${corDoNome(t.nome)}">
+          <span class="absolute inset-0 flex items-center justify-center">${inicialDoNome(t.nome)}</span>
+          <img src="${faviconUrl(t.dominio)}" onerror="this.remove()" class="relative w-full h-full object-cover p-1.5" style="background:white">
+        </div>
         <div class="min-w-0 flex-1">
           <div class="flex items-start justify-between gap-2">
             <div class="min-w-0">
@@ -318,7 +324,7 @@ setInterval(enviarHeartbeat, 15000);
 setInterval(carregarOnline, 10000);
 </script>
 </body>
-</html>
+  </html>
 
     
   
