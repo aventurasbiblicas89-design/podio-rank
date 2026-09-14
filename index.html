@@ -45,6 +45,7 @@
       <input id="linkTop" class="w-full border-2 border-zinc-200 rounded-full pl-11 pr-4 py-4 text-[14px] font-bold outline-none" placeholder="Cole seu link aqui (site, insta, youtube)">
     </div>
     <input id="descTop" maxlength="80" class="w-full border-2 border-zinc-200 rounded-full px-4 py-3 text-[13px] font-medium outline-none mt-2" placeholder="Descrição curta (opcional)">
+    <input id="emailTop" type="email" class="w-full border-2 border-zinc-200 rounded-full px-4 py-3 text-[13px] font-medium outline-none mt-2" placeholder="Seu e-mail (opcional, avisamos se te superarem)">
 
     <button id="btnTopo" class="w-full bg-[#FF4A15] text-white rounded-full py-4 font-black text-[16px] mt-3">
       DAR LANCE →
@@ -275,7 +276,7 @@ async function carregarStats(){
 
 const MODO_TESTE = new URLSearchParams(location.search).get('teste') === '1';
 
-async function enviarLance(posicao, valor, link, descricao){
+async function enviarLance(posicao, valor, link, descricao, email){
   if(!link){ alert('Cole um link válido (precisa começar com https://).'); return; }
   if(!link.startsWith('http')){ alert('O link precisa começar com https://'); return; }
   let nome = prompt('Nome que vai aparecer no ranking:') || 'Anônimo';
@@ -284,7 +285,7 @@ async function enviarLance(posicao, valor, link, descricao){
     const r = await fetch('/api/checkout', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ posicao, valor, link, nomeEmpresa: nome, categoria: categoriaAtual, descricao: descricao || '' })
+      body: JSON.stringify({ posicao, valor, link, nomeEmpresa: nome, categoria: categoriaAtual, descricao: descricao || '', email: email || '' })
     });
     const d = await r.json();
     if(d.url || d.init_point){ window.location.href = d.url || d.init_point; return; }
@@ -297,15 +298,17 @@ async function enviarLance(posicao, valor, link, descricao){
 document.getElementById('btnTopo').onclick = () => {
   const link = document.getElementById('linkTop').value;
   const descricao = document.getElementById('descTop').value;
+  const email = document.getElementById('emailTop').value;
   const valor = MODO_TESTE ? 1 : valorLanceAtual;
-  enviarLance('TOPO', valor, link, descricao);
+  enviarLance('TOPO', valor, link, descricao, email);
 };
 
 function pegarLinha(posicao, valorMinimo){
   let link = prompt('Cole seu link https:// (site, insta, youtube):');
   if(!link) return;
+  let email = prompt('Seu e-mail (opcional, avisamos se te superarem):') || '';
   const minimoReal = MODO_TESTE ? 1 : valorMinimo;
-  enviarLance(posicao, minimoReal, link, '');
+  enviarLance(posicao, minimoReal, link, '', email);
 }
 
 const sessionId = localStorage.getItem('sid') || (() => {
