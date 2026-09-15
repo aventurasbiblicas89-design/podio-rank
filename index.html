@@ -230,6 +230,19 @@ function copiarSelo(id, categoria){
     .catch(() => prompt('Copie o código abaixo:', codigo));
 }
 
+function compartilharPosicao(nome, posicao, categoria, valor){
+  const texto = `Tô em #${posicao} em ${categoria} no Podio Rank! 🏆 (paguei R$ ${valor.toFixed(2)} pela posição)`;
+  const url = 'https://www.podiorank.com.br';
+
+  if(navigator.share){
+    navigator.share({ title: 'Podio Rank', text: texto, url }).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(`${texto}\n${url}`)
+      .then(() => alert('Texto copiado! Cole onde quiser compartilhar.'))
+      .catch(() => prompt('Copie o texto abaixo:', `${texto}\n${url}`));
+  }
+}
+
 async function carregarBoard(){
   const boardEl = document.getElementById('board');
   boardEl.innerHTML = `<p class="text-[13px] text-zinc-400 text-center py-6">Carregando ranking...</p>`;
@@ -272,6 +285,7 @@ async function carregarBoard(){
           <div class="flex gap-2 mt-2">
             <button onclick="pegarLinha('${categoriaAtual} #${offset+i+1}', ${t.valor + 30})" class="bg-black text-white px-4 py-2 rounded-full font-black text-[11px]">TOMAR ESSA POSIÇÃO</button>
             <button onclick="copiarSelo('${t.id}','${t.categoria}')" class="bg-zinc-100 text-zinc-700 px-4 py-2 rounded-full font-black text-[11px]">📋 SELO</button>
+            <button onclick="compartilharPosicao('${t.nome}', ${offset+i+1}, '${categoriaAtual}', ${t.valor})" class="bg-zinc-100 text-zinc-700 px-4 py-2 rounded-full font-black text-[11px]">🔗 COMPARTILHAR</button>
           </div>
         </div>
       </div>
@@ -499,7 +513,7 @@ setInterval(enviarHeartbeat, 15000);
 setInterval(carregarOnline, 10000);
 </script>
 </body>
-  </html>
+</html>
 
     
   
