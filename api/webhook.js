@@ -1,7 +1,22 @@
 import { kv } from '@vercel/kv';
 
-async function enviarEmailSuperado(email, nomeAntigo, categoria, novoValor) {
+async function enviarEmailPosicaoPerdida(email, nome, categoria, posicaoAntiga, posicaoNova, valorNovoLance) {
   if (!email) return;
+
+  const perdeuTopo = posicaoAntiga === 1;
+  const subject = perdeuTopo
+    ? 'Você foi superado no ranking! 🔥'
+    : `Você caiu para a posição #${posicaoNova} no ranking`;
+
+  const html = perdeuTopo
+    ? `<p>Olá ${nome},</p>
+       <p>Alguém acabou de pagar mais que você e tomou o #1 na categoria <strong>${categoria}</strong> (novo valor: R$ ${valorNovoLance.toFixed(2)}).</p>
+       <p>Quer recuperar sua posição? Acesse <a href="https://www.podiorank.com.br">podiorank.com.br</a> e dê um novo lance.</p>`
+    : `<p>Olá ${nome},</p>
+       <p>Um novo lance de R$ ${valorNovoLance.toFixed(2)} na categoria <strong>${categoria}</strong> fez você cair
+       da posição #${posicaoAntiga} para a posição #${posicaoNova}.</p>
+       <p>Quer subir de novo? Acesse <a href="https://www.podiorank.com.br">podiorank.com.br</a> e dê um novo lance.</p>`;
+
   try {
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -10,10 +25,10 @@ async function enviarEmailSuperado(email, nomeAntigo, categoria, novoValor) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'Podio Rank <onboarding@resend.dev>',
+        from: 'Podio Rank <ranking@podiorank.com.br>',
         to: email,
-        subject: 'Você foi superado no ranking! 🔥',
-        html: `<p>Olá ${nomeAntigo},</p><p>Alguém acabou de pagar mais que você e tomou o #1 na categoria <strong>${categoria}</strong> (novo valor: R$ ${novoValor.toFixed(2)}).</p><p>Quer recuperar sua posição? Acesse <a href="https://www.podiorank.com.br">podiorank.com.br</a> e dê um novo lance.</p>`
+        subject,
+        html
       })
     });
   } catch (err) {
@@ -42,7 +57,11 @@ export default async function handler(req, res) {
     const chave = `ranking:${categoria}`;
     const lista = (await kv.get(chave)) || [];
 
-    const anteriorTop = lista.length > 0 ? [...lista].sort((a, b) => b.valor - a.valor)[0] : null;
+    // Snapshot das posições ANTES de inserir o novo lance (ordenado por valor desc)
+    const ordemAntiga = [...lista].sort((a, b) => b.valor - a.valor);
+    const posicaoAntigaPorId = new Map(
+      ordemAntiga.map((item, index) => [item.pagoEm, index + 1])
+    );
 
     const entrada = {
       nome: nomeEmpresa || 'Anônimo',
@@ -71,8 +90,26 @@ export default async function handler(req, res) {
 
     await kv.sadd('pagamentos_processados', paymentId);
 
-    if (anteriorTop && entrada.valor > anteriorTop.valor && anteriorTop.email) {
-      await enviarEmailSuperado(anteriorTop.email, anteriorTop.nome, categoria, entrada.valor);
+    // Posições DEPOIS de inserir o novo lance
+    const posicaoNovaPorId = new Map(
+      lista.map((item, index) => [item.pagoEm, index + 1])
+    );
+
+    // Notifica qualquer entrada que caiu de posição por causa desse novo lance
+    for (const item of ordemAntiga) {
+      if (!item.email) continue;
+      const posicaoAntiga = posicaoAntigaPorId.get(item.pagoEm);
+      const posicaoNova = posicaoNovaPorId.get(item.pagoEm);
+      if (posicaoNova > posicaoAntiga) {
+        await enviarEmailPosicaoPerdida(
+          item.email,
+          item.nome,
+          categoria,
+          posicaoAntiga,
+          posicaoNova,
+          entrada.valor
+        );
+      }
     }
 
     return res.status(200).end();
@@ -80,5 +117,6 @@ export default async function handler(req, res) {
     console.error(err);
     return res.status(200).end();
   }
-      }
+}
+
 
