@@ -2,7 +2,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({error: 'Method not allowed'});
   try {
     const { posicao, valor, link, nomeEmpresa, categoria, descricao, email } = req.body;
-    const preco = parseFloat(valor) || 29.90;
+    const preco = parseFloat(valor) || 1;
     if (!link) return res.status(400).json({error: 'Link obrigatório'});
     if (!categoria) return res.status(400).json({error: 'Categoria obrigatória'});
 
