@@ -6,6 +6,7 @@
 <title>Podio Rank - Ranking pago de negócios | podiorank.com.br</title>
 <meta name="description" content="Pague para ficar no topo do ranking. Sem anúncios, sem algoritmo — sua posição é o que você pagou.">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   body{font-family:Inter,sans-serif;background:#FFFBF7}
@@ -71,6 +72,20 @@
     <div id="atividade" class="text-[13px] text-zinc-500 space-y-1.5">
       <p class="text-zinc-400">Nenhum lance ainda — seja o primeiro.</p>
     </div>
+  </div>
+
+  <div class="bg-white border border-zinc-100 rounded-[28px] p-4 mt-6 shadow-sm">
+    <h3 class="font-black text-[16px] mb-1">📈 Total arrecadado no tempo</h3>
+    <p class="text-[11px] text-zinc-400 mb-3">Soma de tudo que já foi pago no Podio Rank, desde o lançamento.</p>
+    <canvas id="graficoTotal" height="180"></canvas>
+    <p id="semHistoricoTotal" class="text-[13px] text-zinc-400 text-center py-6 hidden">Ainda não há dados suficientes.</p>
+  </div>
+
+  <div class="bg-white border border-zinc-100 rounded-[28px] p-4 mt-3 shadow-sm">
+    <h3 class="font-black text-[16px] mb-1">📊 Histórico de preço do #1</h3>
+    <p class="text-[11px] text-zinc-400 mb-3">Como o preço do topo dessa categoria foi subindo a cada novo recorde.</p>
+    <canvas id="graficoRecorde" height="180"></canvas>
+    <p id="semHistoricoRecorde" class="text-[13px] text-zinc-400 text-center py-6 hidden">Ainda não há histórico suficiente nessa categoria.</p>
   </div>
 
   <div class="bg-white border border-zinc-100 rounded-[28px] p-5 mt-6 shadow-sm">
@@ -169,7 +184,13 @@ function renderTabs(){
       onclick="mudarCategoria('${c.id}')">${c.emoji} ${c.nome}</button>
   `).join('');
 }
-function mudarCategoria(id){ categoriaAtual = id; paginaAtual = 1; renderTabs(); carregarBoard(); }
+function mudarCategoria(id){
+  categoriaAtual = id;
+  paginaAtual = 1;
+  renderTabs();
+  carregarBoard();
+  carregarHistoricoRecorde();
+}
 
 document.getElementById('tabAll').onclick = () => { periodoAtual='all'; paginaAtual=1; toggleTabs(); carregarBoard(); };
 document.getElementById('tabToday').onclick = () => { periodoAtual='today'; paginaAtual=1; toggleTabs(); carregarBoard(); };
@@ -364,11 +385,115 @@ async function enviarHeartbeat(){
   }catch(e){}
 }
 
+function formatarDataCurta(timestamp){
+  return new Date(timestamp).toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit' });
+}
+
+let chartTotal = null;
+let chartRecorde = null;
+
+async function carregarHistoricoTotal(){
+  try{
+    const r = await fetch('/api/historico-precos?tipo=total');
+    const d = await r.json();
+    const pontos = d.pontos || [];
+
+    if(pontos.length === 0){
+      document.getElementById('graficoTotal').classList.add('hidden');
+      document.getElementById('semHistoricoTotal').classList.remove('hidden');
+      return;
+    }
+    document.getElementById('graficoTotal').classList.remove('hidden');
+    document.getElementById('semHistoricoTotal').classList.add('hidden');
+
+    const labels = pontos.map(p => formatarDataCurta(p.timestamp));
+    const valores = pontos.map(p => p.valor);
+
+    if(chartTotal) chartTotal.destroy();
+    chartTotal = new Chart(document.getElementById('graficoTotal'), {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Total arrecadado (R$)',
+          data: valores,
+          borderColor: '#FF4A15',
+          backgroundColor: 'rgba(255,74,21,0.08)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 0,
+          borderWidth: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display:false } },
+          y: { grid: { color: '#f3f4f6' }, ticks: { callback: v => 'R$ ' + v } }
+        }
+      }
+    });
+  }catch(e){
+    console.error(e);
+  }
+}
+
+async function carregarHistoricoRecorde(){
+  try{
+    const r = await fetch(`/api/historico-precos?tipo=recorde&categoria=${categoriaAtual}`);
+    const d = await r.json();
+    const pontos = d.pontos || [];
+
+    if(pontos.length === 0){
+      document.getElementById('graficoRecorde').classList.add('hidden');
+      document.getElementById('semHistoricoRecorde').classList.remove('hidden');
+      return;
+    }
+    document.getElementById('graficoRecorde').classList.remove('hidden');
+    document.getElementById('semHistoricoRecorde').classList.add('hidden');
+
+    const labels = pontos.map(p => formatarDataCurta(p.timestamp));
+    const valores = pontos.map(p => p.valor);
+
+    if(chartRecorde) chartRecorde.destroy();
+    chartRecorde = new Chart(document.getElementById('graficoRecorde'), {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Preço do #1 (R$)',
+          data: valores,
+          borderColor: '#111',
+          backgroundColor: 'rgba(17,17,17,0.06)',
+          fill: true,
+          stepped: true,
+          pointRadius: 3,
+          pointBackgroundColor: '#111',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display:false } },
+          y: { grid: { color: '#f3f4f6' }, ticks: { callback: v => 'R$ ' + v } }
+        }
+      }
+    });
+  }catch(e){
+    console.error(e);
+  }
+}
+
 atualizarValorLance();
 renderTabs();
 carregarBoard();
 carregarOnline();
 carregarStats();
+carregarHistoricoTotal();
+carregarHistoricoRecorde();
 enviarHeartbeat();
 setInterval(enviarHeartbeat, 15000);
 setInterval(carregarOnline, 10000);
