@@ -52,12 +52,34 @@ export default async function handler(req, res) {
 
     if (pagamento.status !== 'approved') return res.status(200).end();
 
-    const { link, valor, nomeEmpresa, categoria, descricao, email } = pagamento.metadata;
+    const { link, valor, nomeEmpresa, categoria, descricao, email, posicao } = pagamento.metadata;
 
+    // ── TAKEOVER: domina a home por 3 horas, não entra na disputa normal do ranking ──
+    if (String(posicao).toUpperCase() === 'TAKEOVER') {
+      const takeover = {
+        nome: nomeEmpresa || 'Anônimo',
+        link,
+        descricao: descricao || '',
+        valor: Number(valor),
+        categoria: categoria || 'todas',
+        pagoEm: Date.now(),
+        expiraEm: Date.now() + 3 * 60 * 60 * 1000, // 3 horas
+      };
+      await kv.set('takeover:ativo', takeover);
+
+      const statsT = (await kv.get('stats')) || { receita: 0, produtos: 0 };
+      statsT.receita += Number(valor);
+      statsT.produtos += 1;
+      await kv.set('stats', statsT);
+
+      await kv.sadd('pagamentos_processados', paymentId);
+      return res.status(200).end();
+    }
+
+    // ── Fluxo normal de ranking ──
     const chave = `ranking:${categoria}`;
     const lista = (await kv.get(chave)) || [];
 
-    // Snapshot das posições ANTES de inserir o novo lance (ordenado por valor desc)
     const ordemAntiga = [...lista].sort((a, b) => b.valor - a.valor);
     const posicaoAntigaPorId = new Map(
       ordemAntiga.map((item, index) => [item.pagoEm, index + 1])
@@ -90,12 +112,10 @@ export default async function handler(req, res) {
 
     await kv.sadd('pagamentos_processados', paymentId);
 
-    // Posições DEPOIS de inserir o novo lance
     const posicaoNovaPorId = new Map(
       lista.map((item, index) => [item.pagoEm, index + 1])
     );
 
-    // Notifica qualquer entrada que caiu de posição por causa desse novo lance
     for (const item of ordemAntiga) {
       if (!item.email) continue;
       const posicaoAntiga = posicaoAntigaPorId.get(item.pagoEm);
@@ -117,6 +137,6 @@ export default async function handler(req, res) {
     console.error(err);
     return res.status(200).end();
   }
-}
+      }
 
 
