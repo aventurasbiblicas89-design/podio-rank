@@ -14,12 +14,21 @@
   .tab-active{background:#111;color:#fff}
   .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .line-clamp-1{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+  .hidden{display:none}
 </style>
 </head>
 <body>
 <div class="max-w-[500px] mx-auto px-4 pt-4 pb-24">
 
   <h1 class="font-black text-[28px]">⚡ Podio Rank <span class="text-[12px] font-medium text-zinc-400 float-right mt-2">podiorank.com.br</span></h1>
+
+  <div id="takeoverBanner" class="hidden bg-black text-[#BEF264] rounded-[20px] p-4 mt-4 text-center">
+    <p class="text-[11px] font-bold uppercase tracking-wide">🔥 Dominando a home agora</p>
+    <a id="takeoverLink" href="#" target="_blank" rel="noopener" class="font-black text-[18px] underline block mt-1"></a>
+    <p id="takeoverDesc" class="text-[12px] mt-1"></p>
+    <p id="takeoverTimer" class="text-[11px] font-bold mt-2">--:--:-- restantes</p>
+  </div>
+
   <div class="mt-7 text-left">
   <h1 class="font-black text-[42px] leading-[0.9] tracking-tighter text-black">
     Chegue no <span class="relative inline-block"><span class="absolute bottom-1 left-0 w-full h-[14px] bg-[#BEF264] -rotate-1"></span><span class="relative">topo.</span></span><br>
@@ -34,6 +43,8 @@
     <div class="text-center"><div class="w-[76px] h-[84px] bg-[#BEF264] rounded-t-[16px] border-2 border-black flex flex-col items-center justify-center font-black text-[28px] leading-none">1<div class="text-[16px] -mt-1">👑</div></div><p id="heroNome1" class="text-[10px] font-black line-clamp-1 max-w-[76px] mt-1">--</p><p id="heroValor1" class="text-[12px] font-black">R$ --</p></div>
     <div class="text-center"><div class="w-[68px] h-[44px] bg-white rounded-t-[14px] border-2 border-black flex items-center justify-center font-black text-[22px]">3</div><p id="heroNome3" class="text-[9px] font-bold text-zinc-500 line-clamp-1 max-w-[68px] mt-1">--</p><p id="heroValor3" class="text-[11px] font-bold">R$ --</p></div>
   </div>
+
+  <button id="btnTakeover" onclick="pegarTakeover()" class="w-full bg-black text-[#BEF264] rounded-full py-3 font-black text-[13px] mt-4">🚀 DOMINAR A HOME POR 3H</button>
   </div>
     
   </div>
@@ -127,6 +138,10 @@
         <p class="font-black">Quanto custa começar?</p>
         <p class="text-zinc-500 mt-0.5">A partir de R$ 1. Para tomar uma posição já ocupada, o mínimo é sempre 1 real acima do que foi pago por ela.</p>
       </div>
+      <div>
+        <p class="font-black">O que é "Dominar a home"?</p>
+        <p class="text-zinc-500 mt-0.5">Pagando 2× o valor do #1 atual, seu link ganha um banner de destaque no topo da página por 3 horas, visível pra todo mundo que visitar o site nesse período.</p>
+      </div>
     </div>
   </div>
 
@@ -191,6 +206,7 @@ let periodoAtual = "all";
 let paginaAtual = 1;
 let minimoAtual = 1;
 let valorLanceAtual = 1;
+let valorTopoAtual = 10;
 const PASSO = 1;
 
 function renderTabs(){
@@ -364,10 +380,10 @@ async function carregarStats(){
 
 const MODO_TESTE = new URLSearchParams(location.search).get('teste') === '1';
 
-async function enviarLance(posicao, valor, link, descricao, email){
+async function enviarLance(posicao, valor, link, descricao, email, nomeForcado){
   if(!link){ alert('Cole um link válido (precisa começar com https://).'); return; }
   if(!link.startsWith('http')){ alert('O link precisa começar com https://'); return; }
-  let nome = prompt('Nome que vai aparecer no ranking:') || 'Anônimo';
+  let nome = nomeForcado || prompt('Nome que vai aparecer no ranking:') || 'Anônimo';
 
   try{
     const r = await fetch('/api/checkout', {
@@ -397,6 +413,18 @@ function pegarLinha(posicao, valorMinimo){
   let email = prompt('Seu e-mail (opcional, avisamos se te superarem):') || '';
   const minimoReal = MODO_TESTE ? 1 : valorMinimo;
   enviarLance(posicao, minimoReal, link, '', email);
+}
+
+function pegarTakeover(){
+  const valorTakeover = Math.max(20, Math.round(valorTopoAtual * 2));
+  if(!confirm(`Dominar a home por 3 horas custa R$ ${valorTakeover},00 (2x o valor do #1 atual). Continuar?`)) return;
+  let link = prompt('Cole seu link https:// (site, insta, youtube):');
+  if(!link) return;
+  let nome = prompt('Nome que vai aparecer no banner:') || 'Anônimo';
+  let descricao = prompt('Descrição curta (opcional):') || '';
+  let email = prompt('Seu e-mail (opcional):') || '';
+  const valorReal = MODO_TESTE ? 1 : valorTakeover;
+  enviarLance('TAKEOVER', valorReal, link, descricao, email, nome);
 }
 
 const sessionId = localStorage.getItem('sid') || (() => {
@@ -523,6 +551,8 @@ async function carregarPodioHero(){
     const d = await r.json();
     const itens = d.itens || [];
 
+    if(itens[0]) valorTopoAtual = itens[0].valor;
+
     const slots = [1, 2, 3];
     slots.forEach(pos => {
       const item = itens[pos - 1];
@@ -541,6 +571,48 @@ async function carregarPodioHero(){
   }
 }
 
+let takeoverInterval = null;
+
+async function carregarTakeover(){
+  try{
+    const r = await fetch('/api/takeover');
+    const d = await r.json();
+    const banner = document.getElementById('takeoverBanner');
+    if(d.ativo){
+      banner.classList.remove('hidden');
+      document.getElementById('takeoverLink').href = d.link;
+      document.getElementById('takeoverLink').innerText = d.nome;
+      document.getElementById('takeoverDesc').innerText = d.descricao || '';
+      iniciarContagemTakeover(d.segundosRestantes);
+    } else {
+      banner.classList.add('hidden');
+      if(takeoverInterval) clearInterval(takeoverInterval);
+    }
+  }catch(e){
+    console.error(e);
+  }
+}
+
+function iniciarContagemTakeover(segundos){
+  if(takeoverInterval) clearInterval(takeoverInterval);
+  let restante = segundos;
+  function atualizar(){
+    if(restante <= 0){
+      clearInterval(takeoverInterval);
+      document.getElementById('takeoverBanner').classList.add('hidden');
+      return;
+    }
+    const h = Math.floor(restante / 3600);
+    const m = Math.floor((restante % 3600) / 60);
+    const s = restante % 60;
+    document.getElementById('takeoverTimer').innerText =
+      `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} restantes`;
+    restante--;
+  }
+  atualizar();
+  takeoverInterval = setInterval(atualizar, 1000);
+}
+
 atualizarValorLance();
 renderTabs();
 carregarBoard();
@@ -549,13 +621,15 @@ carregarStats();
 carregarHistoricoTotal();
 carregarHistoricoRecorde();
 carregarPodioHero();
+carregarTakeover();
 enviarHeartbeat();
 setInterval(enviarHeartbeat, 15000);
 setInterval(carregarOnline, 10000);
 setInterval(carregarPodioHero, 20000);
+setInterval(carregarTakeover, 30000);
 </script>
 </body>
-</html>
+  </html>
 
     
   
