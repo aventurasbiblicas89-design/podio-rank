@@ -109,7 +109,7 @@
       </div>
       <div>
         <p class="font-black">Quanto custa começar?</p>
-        <p class="text-zinc-500 mt-0.5">Varia por categoria — o valor mínimo é sempre 30 reais acima da última posição paga naquela categoria.</p>
+        <p class="text-zinc-500 mt-0.5">A partir de R$ 1. Para tomar uma posição já ocupada, o mínimo é sempre 1 real acima do que foi pago por ela.</p>
       </div>
     </div>
   </div>
@@ -173,9 +173,9 @@ const CATEGORIAS = [
 let categoriaAtual = CATEGORIAS[0].id;
 let periodoAtual = "all";
 let paginaAtual = 1;
-let minimoAtual = 99;
-let valorLanceAtual = 99;
-const PASSO = 10;
+let minimoAtual = 1;
+let valorLanceAtual = 1;
+const PASSO = 1;
 
 function renderTabs(){
   document.getElementById('catTabs').innerHTML = CATEGORIAS.map(c => `
@@ -253,14 +253,14 @@ async function carregarBoard(){
 
     if(itens.length === 0 && paginaAtual === 1){
       boardEl.innerHTML = `<p class="text-[13px] text-zinc-400 text-center py-8">Ninguém reivindicou essa categoria ainda.<br>Seja o #1.</p>`;
-      minimoAtual = 99;
-      valorLanceAtual = 99;
+      minimoAtual = 1;
+      valorLanceAtual = 1;
       atualizarValorLance();
       return;
     }
 
     if(paginaAtual === 1 && itens.length > 0){
-      minimoAtual = itens[0].valor + 30;
+      minimoAtual = itens[0].valor + 1;
       valorLanceAtual = minimoAtual;
       atualizarValorLance();
     }
@@ -283,7 +283,7 @@ async function carregarBoard(){
           ${t.descricao ? `<p class="text-[12px] text-zinc-500 mt-0.5 line-clamp-2">${t.descricao}</p>` : ''}
           <p class="text-[11px] text-zinc-400 font-medium mt-1">🌐 ${t.dominio} · ${t.cliques ?? 0} cliques · há ${t.tempoRelativo || 'pouco'}</p>
           <div class="flex gap-2 mt-2">
-            <button onclick="pegarLinha('${categoriaAtual} #${offset+i+1}', ${t.valor + 30})" class="bg-black text-white px-4 py-2 rounded-full font-black text-[11px]">TOMAR ESSA POSIÇÃO</button>
+            <button onclick="pegarLinha('${categoriaAtual} #${offset+i+1}', ${t.valor + 1})" class="bg-black text-white px-4 py-2 rounded-full font-black text-[11px]">TOMAR ESSA POSIÇÃO</button>
             <button onclick="copiarSelo('${t.id}','${t.categoria}')" class="bg-zinc-100 text-zinc-700 px-4 py-2 rounded-full font-black text-[11px]">📋 SELO</button>
             <button onclick="compartilharPosicao('${t.nome}', ${offset+i+1}, '${categoriaAtual}', ${t.valor})" class="bg-zinc-100 text-zinc-700 px-4 py-2 rounded-full font-black text-[11px]">🔗 COMPARTILHAR</button>
           </div>
@@ -513,7 +513,7 @@ setInterval(enviarHeartbeat, 15000);
 setInterval(carregarOnline, 10000);
 </script>
 </body>
-</html>
+  </html>
 
     
   
