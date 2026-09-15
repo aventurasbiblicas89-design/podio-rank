@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Editar Posições</title>
+<style>
+  body{font-family:Arial,sans-serif;background:#FFFBF7;max-width:420px;margin:0 auto;padding:20px}
+  h1{font-size:20px}
+  label{display:block;font-weight:bold;font-size:13px;margin-top:14px;margin-bottom:4px}
+  input{width:100%;box-sizing:border-box;padding:10px;border:2px solid #ddd;border-radius:8px;font-size:14px}
+  button{width:100%;background:#FF4A15;color:#fff;border:none;padding:14px;border-radius:8px;font-weight:bold;font-size:15px;margin-top:18px}
+  #resultado{margin-top:16px;font-size:12px;background:#f3f3f3;padding:10px;border-radius:8px;white-space:pre-wrap;word-break:break-all}
+</style>
+</head>
+<body>
+  <h1>🔧 Editar posições do ranking</h1>
+
+  <label>Chave admin (ADMIN_SECRET)</label>
+  <input id="chave" type="password" placeholder="Sua chave admin">
+
+  <label>Categoria</label>
+  <input id="categoria" type="text" value="todas">
+
+  <label>1º lugar (R$)</label>
+  <input id="v1" type="number" value="220">
+
+  <label>2º lugar (R$)</label>
+  <input id="v2" type="number" value="90">
+
+  <label>3º lugar (R$)</label>
+  <input id="v3" type="number" value="45">
+
+  <button onclick="enviar()">Aplicar valores</button>
+
+  <div id="resultado"></div>
+
+<script>
+async function enviar(){
+  const chave = document.getElementById('chave').value;
+  const categoria = document.getElementById('categoria').value;
+  const valores = [
+    Number(document.getElementById('v1').value),
+    Number(document.getElementById('v2').value),
+    Number(document.getElementById('v3').value)
+  ];
+  const resultadoEl = document.getElementById('resultado');
+  resultadoEl.textContent = 'Enviando...';
+
+  try{
+    const r = await fetch('/api/admin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-key': chave
+      },
+      body: JSON.stringify({ acao: 'editarPosicoes', categoria, valores })
+    });
+    const d = await r.json();
+    resultadoEl.textContent = JSON.stringify(d, null, 2);
+  }catch(e){
+    resultadoEl.textContent = 'Erro: ' + e.message;
+  }
+}
+</script>
+</body>
+</html>
