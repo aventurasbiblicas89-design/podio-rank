@@ -10,7 +10,7 @@
   label{display:block;font-weight:bold;font-size:13px;margin-top:14px;margin-bottom:4px}
   input{width:100%;box-sizing:border-box;padding:10px;border:2px solid #ddd;border-radius:8px;font-size:14px}
   button{width:100%;background:#FF4A15;color:#fff;border:none;padding:14px;border-radius:8px;font-weight:bold;font-size:15px;margin-top:18px}
-  #resultado{margin-top:16px;font-size:12px;background:#f3f3f3;padding:10px;border-radius:8px;white-space:pre-wrap;word-break:break-all}
+  #resultado, #resultadoStats{margin-top:16px;font-size:12px;background:#f3f3f3;padding:10px;border-radius:8px;white-space:pre-wrap;word-break:break-all}
 </style>
 </head>
 <body>
@@ -35,6 +35,20 @@
 
   <div id="resultado"></div>
 
+  <hr style="margin:24px 0;border:none;border-top:1px solid #ddd">
+
+  <h1>📊 Ajustar estatísticas</h1>
+
+  <label>Receita total (R$)</label>
+  <input id="receita" type="number" value="355">
+
+  <label>Posições vendidas</label>
+  <input id="produtos" type="number" value="3">
+
+  <button onclick="enviarStats()">Atualizar estatísticas</button>
+
+  <div id="resultadoStats"></div>
+
 <script>
 async function enviar(){
   const chave = document.getElementById('chave').value;
@@ -55,6 +69,29 @@ async function enviar(){
         'x-admin-key': chave
       },
       body: JSON.stringify({ acao: 'editarPosicoes', categoria, valores })
+    });
+    const d = await r.json();
+    resultadoEl.textContent = JSON.stringify(d, null, 2);
+  }catch(e){
+    resultadoEl.textContent = 'Erro: ' + e.message;
+  }
+}
+
+async function enviarStats(){
+  const chave = document.getElementById('chave').value;
+  const receita = Number(document.getElementById('receita').value);
+  const produtos = Number(document.getElementById('produtos').value);
+  const resultadoEl = document.getElementById('resultadoStats');
+  resultadoEl.textContent = 'Enviando...';
+
+  try{
+    const r = await fetch('/api/admin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-key': chave
+      },
+      body: JSON.stringify({ acao: 'ajustarStats', receita, produtos })
     });
     const d = await r.json();
     resultadoEl.textContent = JSON.stringify(d, null, 2);
