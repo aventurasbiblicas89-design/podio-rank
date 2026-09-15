@@ -30,9 +30,9 @@
     Tome o lugar dele agora. Lance via <b>PIX</b>, disputa 100% transparente, <u class="decoration-[#BEF264] decoration-[4px] underline-offset-4 font-bold">vence quem paga mais.</u>
   </p>
   <div class="flex items-end justify-center gap-3 mt-7 mb-2">
-    <div class="text-center"><div class="w-[68px] h-[56px] bg-white rounded-t-[14px] border-2 border-black flex items-center justify-center font-black text-[22px]">2</div><p id="heroValor2" class="text-[11px] font-bold mt-1">R$ 90</p></div>
-    <div class="text-center"><div class="w-[76px] h-[84px] bg-[#BEF264] rounded-t-[16px] border-2 border-black flex flex-col items-center justify-center font-black text-[28px] leading-none">1<div class="text-[16px] -mt-1">👑</div></div><p id="heroValor1" class="text-[12px] font-black mt-1">R$ 220</p></div>
-    <div class="text-center"><div class="w-[68px] h-[44px] bg-white rounded-t-[14px] border-2 border-black flex items-center justify-center font-black text-[22px]">3</div><p id="heroValor3" class="text-[11px] font-bold mt-1">R$ 45</p></div>
+    <div class="text-center"><div class="w-[68px] h-[56px] bg-white rounded-t-[14px] border-2 border-black flex items-center justify-center font-black text-[22px]">2</div><p id="heroNome2" class="text-[9px] font-bold text-zinc-500 line-clamp-1 max-w-[68px] mt-1">--</p><p id="heroValor2" class="text-[11px] font-bold">R$ --</p></div>
+    <div class="text-center"><div class="w-[76px] h-[84px] bg-[#BEF264] rounded-t-[16px] border-2 border-black flex flex-col items-center justify-center font-black text-[28px] leading-none">1<div class="text-[16px] -mt-1">👑</div></div><p id="heroNome1" class="text-[10px] font-black line-clamp-1 max-w-[76px] mt-1">--</p><p id="heroValor1" class="text-[12px] font-black">R$ --</p></div>
+    <div class="text-center"><div class="w-[68px] h-[44px] bg-white rounded-t-[14px] border-2 border-black flex items-center justify-center font-black text-[22px]">3</div><p id="heroNome3" class="text-[9px] font-bold text-zinc-500 line-clamp-1 max-w-[68px] mt-1">--</p><p id="heroValor3" class="text-[11px] font-bold">R$ --</p></div>
   </div>
   </div>
     
@@ -517,6 +517,30 @@ async function carregarHistoricoRecorde(){
   }
 }
 
+async function carregarPodioHero(){
+  try{
+    const r = await fetch('/api/ranking?categoria=todas&periodo=all&page=1');
+    const d = await r.json();
+    const itens = d.itens || [];
+
+    const slots = [1, 2, 3];
+    slots.forEach(pos => {
+      const item = itens[pos - 1];
+      const elNome = document.getElementById(`heroNome${pos}`);
+      const elValor = document.getElementById(`heroValor${pos}`);
+      if(item){
+        if(elNome) elNome.innerText = item.nome;
+        if(elValor) elValor.innerText = formatarValor(item.valor);
+      } else {
+        if(elNome) elNome.innerText = 'Vago';
+        if(elValor) elValor.innerText = 'A partir de R$ 1';
+      }
+    });
+  }catch(e){
+    console.error(e);
+  }
+}
+
 atualizarValorLance();
 renderTabs();
 carregarBoard();
@@ -524,12 +548,14 @@ carregarOnline();
 carregarStats();
 carregarHistoricoTotal();
 carregarHistoricoRecorde();
+carregarPodioHero();
 enviarHeartbeat();
 setInterval(enviarHeartbeat, 15000);
 setInterval(carregarOnline, 10000);
+setInterval(carregarPodioHero, 20000);
 </script>
 </body>
-  </html>
+</html>
 
     
   
