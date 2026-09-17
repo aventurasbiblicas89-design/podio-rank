@@ -11,11 +11,11 @@ async function enviarEmailPosicaoPerdida(email, nome, categoria, posicaoAntiga, 
   const html = perdeuTopo
     ? `<p>Olá ${nome},</p>
        <p>Alguém acabou de pagar mais que você e tomou o #1 na categoria <strong>${categoria}</strong> (novo valor: R$ ${valorNovoLance.toFixed(2)}).</p>
-       <p>Quer recuperar sua posição? Acesse <a href="https://www.podiorank.com.br">podiorank.com.br</a> e dê um novo lance.</p>`
+       <p>Quer recuperar sua posição? Acesse <a href="https://www.rankgospel.com.br">rankgospel.com.br</a> e dê um novo lance.</p>`
     : `<p>Olá ${nome},</p>
        <p>Um novo lance de R$ ${valorNovoLance.toFixed(2)} na categoria <strong>${categoria}</strong> fez você cair
        da posição #${posicaoAntiga} para a posição #${posicaoNova}.</p>
-       <p>Quer subir de novo? Acesse <a href="https://www.podiorank.com.br">podiorank.com.br</a> e dê um novo lance.</p>`;
+       <p>Quer subir de novo? Acesse <a href="https://www.rankgospel.com.br">rankgospel.com.br</a> e dê um novo lance.</p>`;
 
   try {
     await fetch('https://api.resend.com/emails', {
@@ -25,7 +25,7 @@ async function enviarEmailPosicaoPerdida(email, nome, categoria, posicaoAntiga, 
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'Podio Rank <ranking@podiorank.com.br>',
+        from: 'RankGospel <ranking@rankgospel.com.br>',
         to: email,
         subject,
         html
@@ -137,6 +137,6 @@ export default async function handler(req, res) {
     console.error(err);
     return res.status(200).end();
   }
-      }
+  }
 
 
