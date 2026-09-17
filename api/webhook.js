@@ -11,11 +11,11 @@ async function enviarEmailPosicaoPerdida(email, nome, categoria, posicaoAntiga, 
   const html = perdeuTopo
     ? `<p>Olá ${nome},</p>
        <p>Alguém acabou de pagar mais que você e tomou o #1 na categoria <strong>${categoria}</strong> (novo valor: R$ ${valorNovoLance.toFixed(2)}).</p>
-       <p>Quer recuperar sua posição? Acesse <a href="https://www.rankgospel.com.br">rankgospel.com.br</a> e dê um novo lance.</p>`
+       <p>Quer recuperar sua posição? Acesse <a href="https://www.podiorank.com.br">podiorank.com.br</a> e dê um novo lance.</p>`
     : `<p>Olá ${nome},</p>
        <p>Um novo lance de R$ ${valorNovoLance.toFixed(2)} na categoria <strong>${categoria}</strong> fez você cair
        da posição #${posicaoAntiga} para a posição #${posicaoNova}.</p>
-       <p>Quer subir de novo? Acesse <a href="https://www.rankgospel.com.br">rankgospel.com.br</a> e dê um novo lance.</p>`;
+       <p>Quer subir de novo? Acesse <a href="https://www.podiorank.com.br">podiorank.com.br</a> e dê um novo lance.</p>`;
 
   try {
     await fetch('https://api.resend.com/emails', {
@@ -25,7 +25,7 @@ async function enviarEmailPosicaoPerdida(email, nome, categoria, posicaoAntiga, 
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'RankGospel <ranking@rankgospel.com.br>',
+        from: 'RankGospel <ranking@podiorank.com.br>',
         to: email,
         subject,
         html
@@ -54,7 +54,6 @@ export default async function handler(req, res) {
 
     const { link, valor, nomeEmpresa, categoria, descricao, email, posicao } = pagamento.metadata;
 
-    // ── TAKEOVER: domina a home por 3 horas, não entra na disputa normal do ranking ──
     if (String(posicao).toUpperCase() === 'TAKEOVER') {
       const takeover = {
         nome: nomeEmpresa || 'Anônimo',
@@ -63,7 +62,7 @@ export default async function handler(req, res) {
         valor: Number(valor),
         categoria: categoria || 'todas',
         pagoEm: Date.now(),
-        expiraEm: Date.now() + 3 * 60 * 60 * 1000, // 3 horas
+        expiraEm: Date.now() + 3 * 60 * 60 * 1000,
       };
       await kv.set('takeover:ativo', takeover);
 
@@ -76,7 +75,6 @@ export default async function handler(req, res) {
       return res.status(200).end();
     }
 
-    // ── Fluxo normal de ranking ──
     const chave = `ranking:${categoria}`;
     const lista = (await kv.get(chave)) || [];
 
