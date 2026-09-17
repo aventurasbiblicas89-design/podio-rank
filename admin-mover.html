@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RankGospel — Mover categoria</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>body{font-family:sans-serif;background:#FAF6EF}</style>
+</head>
+<body>
+<div class="max-w-[500px] mx-auto px-4 pt-8 pb-24">
+  <h1 class="font-black text-[22px] text-[#1B1F3B] mb-1">Mover categoria</h1>
+  <p class="text-[13px] text-zinc-500 mb-6">Reclassifica uma entrada existente do ranking sem perder valor, data ou cliques.</p>
+
+  <label class="block text-[12px] font-bold text-zinc-600 mb-1">Senha admin</label>
+  <input id="senha" type="password" class="w-full border-2 border-zinc-200 rounded-xl px-4 py-3 text-[14px] outline-none mb-6" placeholder="ADMIN_SECRET">
+
+  <div class="space-y-3">
+    <button onclick="mover('Além dos Versículos','criadores', this)" class="w-full bg-[#1B1F3B] text-white rounded-xl py-4 font-bold text-[14px] text-left px-4">
+      Além dos Versículos → criadores
+    </button>
+    <button onclick="mover('Rupert','criadores', this)" class="w-full bg-[#1B1F3B] text-white rounded-xl py-4 font-bold text-[14px] text-left px-4">
+      Rupert → criadores
+    </button>
+    <button onclick="mover('Tik tok Alem dos Versículos','criadores', this)" class="w-full bg-[#1B1F3B] text-white rounded-xl py-4 font-bold text-[14px] text-left px-4">
+      Tik tok Alem dos Versículos → criadores
+    </button>
+  </div>
+
+  <div id="log" class="mt-6 space-y-2"></div>
+
+  <div class="mt-10 border-t pt-6">
+    <p class="text-[12px] font-bold text-zinc-600 mb-2">Mover uma entrada qualquer (manual)</p>
+    <input id="nomeManual" class="w-full border-2 border-zinc-200 rounded-xl px-4 py-3 text-[14px] outline-none mb-2" placeholder="Nome exato como aparece no ranking">
+    <select id="catManual" class="w-full border-2 border-zinc-200 rounded-xl px-4 py-3 text-[14px] outline-none mb-2">
+      <option value="livrarias">Livrarias e lojas</option>
+      <option value="editoras">Editoras</option>
+      <option value="criadores">Criadores</option>
+      <option value="igrejas">Igrejas e ministérios</option>
+      <option value="musica">Música gospel</option>
+      <option value="estudos">Estudos e devocionais</option>
+    </select>
+    <button onclick="moverManual(this)" class="w-full bg-[#7A2E2E] text-white rounded-xl py-4 font-bold text-[14px]">Mover</button>
+  </div>
+</div>
+
+<script>
+async function mover(nome, categoriaNova, btn){
+  const senha = document.getElementById('senha').value;
+  if(!senha){ alert('Preencha a senha admin primeiro.'); return; }
+  btn.disabled = true;
+  btn.innerText = 'Movendo...';
+  try{
+    const r = await fetch('/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-key': senha },
+      body: JSON.stringify({ acao: 'moverCategoria', nome, categoriaNova })
+    });
+    const d = await r.json();
+    logResultado(nome, categoriaNova, r.ok, d);
+  }catch(e){
+    logResultado(nome, categoriaNova, false, { error: e.message });
+  }
+  btn.disabled = false;
+  btn.innerText = `${nome} → ${categoriaNova}`;
+}
+
+async function moverManual(btn){
+  const nome = document.getElementById('nomeManual').value;
+  const categoriaNova = document.getElementById('catManual').value;
+  if(!nome){ alert('Digite o nome exato.'); return; }
+  await mover(nome, categoriaNova, btn);
+}
+
+function logResultado(nome, categoriaNova, ok, d){
+  const el = document.createElement('div');
+  el.className = ok
+    ? 'bg-green-50 border border-green-200 text-green-800 rounded-lg p-3 text-[12px]'
+    : 'bg-red-50 border border-red-200 text-red-800 rounded-lg p-3 text-[12px]';
+  el.innerText = ok
+    ? `✅ ${nome} movido para "${categoriaNova}" (era "${d.categoriaAntiga || '?'}")`
+    : `❌ Erro ao mover ${nome}: ${d.error || 'erro desconhecido'}`;
+  document.getElementById('log').prepend(el);
+}
+</script>
+</body>
+</html>
