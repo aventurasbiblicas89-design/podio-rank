@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RankGospel - Ranking pago do meio cristão | rankgospel.com.br</title>
+<title>RankGospel - Ranking pago do meio cristão | podiorank.com.br</title>
 <meta name="description" content="O ranking de destaque para livrarias, editoras, criadores e ministérios cristãos. Sem algoritmo — sua posição é o que você pagou.">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -21,7 +21,8 @@
 <body>
 <div class="max-w-[500px] mx-auto px-4 pt-4 pb-24">
 
-  <h1 class="serif font-black text-[26px] text-[#1B1F3B]">📖 Rank<span class="text-[#C9A227]">Gospel</span> <span class="text-[12px] font-medium text-zinc-400 float-right mt-2">rankgospel.com.br</span></h1>
+  <h1 class="serif font-black text-[26px] text-[#1B1F3B]">📖 Rank<span class="text-[#C9A227]">Gospel</span> <span class="text-[12px] font-medium text-zinc-400 float-right mt-2">podiorank.com.br</span></h1>
+  <p class="text-center text-[11px] text-zinc-400 mt-1">O endereço pra acessar o site é <b class="text-zinc-600">podiorank.com.br</b></p>
 
   <div id="takeoverBanner" class="hidden bg-[#1B1F3B] text-[#E4CE84] rounded-[20px] p-4 mt-4 text-center">
     <p class="text-[11px] font-bold uppercase tracking-wide">✨ Em destaque na home agora</p>
@@ -250,14 +251,14 @@ function faviconUrl(dominio){
 }
 
 function copiarSelo(id, categoria){
-  const codigo = `<script src="https://www.rankgospel.com.br/badge-embed.js" data-id="${id}" data-categoria="${categoria}"><\/script>`;
+  const codigo = `<script src="https://www.podiorank.com.br/badge-embed.js" data-id="${id}" data-categoria="${categoria}"><\/script>`;
   navigator.clipboard.writeText(codigo).then(() => alert('Código do selo copiado! Cole no HTML do seu site.'))
     .catch(() => prompt('Copie o código abaixo:', codigo));
 }
 
 function compartilharPosicao(nome, posicao, categoria, valor){
   const texto = `Tô em #${posicao} em ${categoria} no RankGospel! 🏆 (paguei R$ ${valor.toFixed(2)} pela posição)`;
-  const url = 'https://www.rankgospel.com.br';
+  const url = 'https://www.podiorank.com.br';
 
   if(navigator.share){
     navigator.share({ title: 'RankGospel', text: texto, url }).catch(()=>{});
