@@ -20,12 +20,12 @@ export default async function handler(req, res) {
           currency_id: 'BRL'
         }],
         back_urls: {
-          success: 'https://www.rankgospel.com.br/sucesso',
-          failure: 'https://www.rankgospel.com.br/erro',
-          pending: 'https://www.rankgospel.com.br/erro'
+          success: 'https://www.podiorank.com.br/sucesso',
+          failure: 'https://www.podiorank.com.br/erro',
+          pending: 'https://www.podiorank.com.br/erro'
         },
         auto_return: 'approved',
-        notification_url: 'https://www.rankgospel.com.br/api/webhook',
+        notification_url: 'https://www.podiorank.com.br/api/webhook',
         metadata: { posicao, link, valor: preco, nomeEmpresa, categoria, descricao: descricao || '', email: email || '' }
       })
     });
