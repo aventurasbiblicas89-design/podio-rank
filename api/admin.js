@@ -106,13 +106,14 @@ export default async function handler(req, res) {
 
     // Move uma entrada existente de categoria (mantém valor, data e cliques intactos).
     // Body esperado: { acao: 'moverCategoria', nome: 'Rupert', categoriaNova: 'criadores' }
-    // Acha a entrada por nome exato dentro de 'ranking:todas'.
+    // Acha a entrada por nome (ignorando maiúsculas/minúsculas e espaços extras) dentro de 'ranking:todas'.
     if (acao === 'moverCategoria') {
       if (!nome) return res.status(400).json({ error: "Campo 'nome' obrigatório (nome exato como aparece no ranking)" });
       if (!categoriaNova) return res.status(400).json({ error: "Campo 'categoriaNova' obrigatório" });
 
       const todas = (await kv.get('ranking:todas')) || [];
-      const entrada = todas.find(i => i.nome === nome);
+      const nomeNormalizado = nome.trim().toLowerCase();
+      const entrada = todas.find(i => (i.nome || '').trim().toLowerCase() === nomeNormalizado);
       if (!entrada) return res.status(404).json({ error: `Nenhuma entrada encontrada com o nome '${nome}' em 'ranking:todas'` });
 
       const categoriaAntiga = entrada.categoria;
@@ -144,5 +145,5 @@ export default async function handler(req, res) {
     console.error(err);
     return res.status(500).json({ error: err.message });
   }
-                            }
+                     }
 
