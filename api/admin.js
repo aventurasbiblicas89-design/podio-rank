@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   if (chaveAdmin !== process.env.ADMIN_SECRET) return res.status(401).json({ error: 'Não autorizado' });
 
   try {
-    const { acao, categoria, item, diasAtras, receita, produtos, valores } = req.body;
+    const { acao, categoria, item, diasAtras, receita, produtos, valores, nome, categoriaNova } = req.body;
 
     if (acao === 'limpar') {
       await kv.set(`ranking:${categoria}`, []);
@@ -47,8 +47,6 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true, stats });
     }
 
-    // Ajusta o valor das N primeiras posições de uma categoria (e mantém 'ranking:todas' sincronizado)
-    // Body esperado: { acao: 'editarPosicoes', categoria: 'todas', valores: [220, 90, 45] }
     if (acao === 'editarPosicoes') {
       if (!categoria) return res.status(400).json({ error: 'Categoria obrigatória' });
       if (!Array.isArray(valores) || valores.length === 0) {
@@ -81,8 +79,6 @@ export default async function handler(req, res) {
       ordenada.sort((a, b) => b.valor - a.valor);
       await kv.set(chaveCategoria, ordenada);
 
-      // Se a categoria editada for 'todas', cada item pode pertencer a uma categoria própria diferente —
-      // sincroniza o valor lá também.
       if (categoria === 'todas') {
         const categoriasAfetadas = [...new Set(alterados.map(a => a.categoriaOriginal).filter(c => c && c !== 'todas'))];
         for (const cat of categoriasAfetadas) {
@@ -96,7 +92,6 @@ export default async function handler(req, res) {
           await kv.set(chaveCat, novaListaCat);
         }
       } else {
-        // Se editou uma categoria específica, sincroniza o valor em 'ranking:todas' também
         const todas = (await kv.get('ranking:todas')) || [];
         const novaTodas = todas.map(item => {
           const alterado = alterados.find(a => a.pagoEm === item.pagoEm);
@@ -109,10 +104,45 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true, alterados });
     }
 
+    // Move uma entrada existente de categoria (mantém valor, data e cliques intactos).
+    // Body esperado: { acao: 'moverCategoria', nome: 'Rupert', categoriaNova: 'criadores' }
+    // Acha a entrada por nome exato dentro de 'ranking:todas'.
+    if (acao === 'moverCategoria') {
+      if (!nome) return res.status(400).json({ error: "Campo 'nome' obrigatório (nome exato como aparece no ranking)" });
+      if (!categoriaNova) return res.status(400).json({ error: "Campo 'categoriaNova' obrigatório" });
+
+      const todas = (await kv.get('ranking:todas')) || [];
+      const entrada = todas.find(i => i.nome === nome);
+      if (!entrada) return res.status(404).json({ error: `Nenhuma entrada encontrada com o nome '${nome}' em 'ranking:todas'` });
+
+      const categoriaAntiga = entrada.categoria;
+      if (categoriaAntiga === categoriaNova) {
+        return res.status(200).json({ ok: true, aviso: 'Já estava nessa categoria', entrada });
+      }
+
+      const chaveAntiga = `ranking:${categoriaAntiga}`;
+      const listaAntiga = (await kv.get(chaveAntiga)) || [];
+      const listaAntigaFiltrada = listaAntiga.filter(i => i.pagoEm !== entrada.pagoEm);
+      await kv.set(chaveAntiga, listaAntigaFiltrada);
+
+      entrada.categoria = categoriaNova;
+      const chaveNova = `ranking:${categoriaNova}`;
+      const listaNova = (await kv.get(chaveNova)) || [];
+      listaNova.push(entrada);
+      listaNova.sort((a, b) => b.valor - a.valor);
+      await kv.set(chaveNova, listaNova);
+
+      const novaTodas = todas.map(i => (i.pagoEm === entrada.pagoEm ? { ...i, categoria: categoriaNova } : i));
+      novaTodas.sort((a, b) => b.valor - a.valor);
+      await kv.set('ranking:todas', novaTodas);
+
+      return res.status(200).json({ ok: true, entrada, categoriaAntiga, categoriaNova });
+    }
+
     return res.status(400).json({ error: 'Ação inválida' });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: err.message });
   }
-    }
+                            }
 
