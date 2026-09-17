@@ -3,15 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Podio Rank - Ranking pago de negócios | podiorank.com.br</title>
-<meta name="description" content="Pague para ficar no topo do ranking. Sem anúncios, sem algoritmo — sua posição é o que você pagou.">
+<title>RankGospel - Ranking pago do meio cristão | rankgospel.com.br</title>
+<meta name="description" content="O ranking de destaque para livrarias, editoras, criadores e ministérios cristãos. Sem algoritmo — sua posição é o que você pagou.">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  body{font-family:Inter,sans-serif;background:#FFFBF7}
+  body{font-family:Inter,sans-serif;background:#FAF6EF}
+  .serif{font-family:'Fraunces',serif}
   .hide-scrollbar::-webkit-scrollbar{display:none}
-  .tab-active{background:#111;color:#fff}
+  .tab-active{background:#1B1F3B;color:#fff}
   .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .line-clamp-1{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
   .hidden{display:none}
@@ -20,34 +21,33 @@
 <body>
 <div class="max-w-[500px] mx-auto px-4 pt-4 pb-24">
 
-  <h1 class="font-black text-[28px]">⚡ Podio Rank <span class="text-[12px] font-medium text-zinc-400 float-right mt-2">podiorank.com.br</span></h1>
+  <h1 class="serif font-black text-[26px] text-[#1B1F3B]">📖 Rank<span class="text-[#C9A227]">Gospel</span> <span class="text-[12px] font-medium text-zinc-400 float-right mt-2">rankgospel.com.br</span></h1>
 
-  <div id="takeoverBanner" class="hidden bg-black text-[#BEF264] rounded-[20px] p-4 mt-4 text-center">
-    <p class="text-[11px] font-bold uppercase tracking-wide">🔥 Dominando a home agora</p>
+  <div id="takeoverBanner" class="hidden bg-[#1B1F3B] text-[#E4CE84] rounded-[20px] p-4 mt-4 text-center">
+    <p class="text-[11px] font-bold uppercase tracking-wide">✨ Em destaque na home agora</p>
     <a id="takeoverLink" href="#" target="_blank" rel="noopener" class="font-black text-[18px] underline block mt-1"></a>
     <p id="takeoverDesc" class="text-[12px] mt-1"></p>
     <p id="takeoverTimer" class="text-[11px] font-bold mt-2">--:--:-- restantes</p>
   </div>
 
   <div class="mt-7 text-left">
-  <h1 class="font-black text-[42px] leading-[0.9] tracking-tighter text-black">
-    Chegue no <span class="relative inline-block"><span class="absolute bottom-1 left-0 w-full h-[14px] bg-[#BEF264] -rotate-1"></span><span class="relative">topo.</span></span><br>
-    Pague menos por<br>isso.
+  <h1 class="serif font-black text-[40px] leading-[1.02] tracking-tight text-[#1B1F3B]">
+    Seu lugar de <span class="relative inline-block"><span class="absolute bottom-1 left-0 w-full h-[14px] bg-[#E4CE84] -rotate-1"></span><span class="relative">destaque</span></span><br>
+    no meio cristão.
   </h1>
   <p class="mt-5 text-[16px] leading-[1.35] text-zinc-800 max-w-[330px]">
-    <span class="bg-black text-[#BEF264] px-2 py-0.5 rounded-md font-bold">Seu concorrente já está no topo.</span>
-    Tome o lugar dele agora. Lance via <b>PIX</b>, disputa 100% transparente, <u class="decoration-[#BEF264] decoration-[4px] underline-offset-4 font-bold">vence quem paga mais.</u>
+    <span class="bg-[#1B1F3B] text-[#E4CE84] px-2 py-0.5 rounded-md font-bold">Livrarias, editoras, criadores e ministérios já disputam posição.</span>
+    Reivindique a sua via <b>PIX</b>, de forma 100% transparente, <u class="decoration-[#E4CE84] decoration-[4px] underline-offset-4 font-bold">quem paga mais fica no topo.</u>
   </p>
   <div class="flex items-end justify-center gap-3 mt-7 mb-2">
-    <div class="text-center"><div class="w-[68px] h-[56px] bg-white rounded-t-[14px] border-2 border-black flex items-center justify-center font-black text-[22px]">2</div><p id="heroNome2" class="text-[9px] font-bold text-zinc-500 line-clamp-1 max-w-[68px] mt-1">--</p><p id="heroValor2" class="text-[11px] font-bold">R$ --</p></div>
-    <div class="text-center"><div class="w-[76px] h-[84px] bg-[#BEF264] rounded-t-[16px] border-2 border-black flex flex-col items-center justify-center font-black text-[28px] leading-none">1<div class="text-[16px] -mt-1">👑</div></div><p id="heroNome1" class="text-[10px] font-black line-clamp-1 max-w-[76px] mt-1">--</p><p id="heroValor1" class="text-[12px] font-black">R$ --</p></div>
-    <div class="text-center"><div class="w-[68px] h-[44px] bg-white rounded-t-[14px] border-2 border-black flex items-center justify-center font-black text-[22px]">3</div><p id="heroNome3" class="text-[9px] font-bold text-zinc-500 line-clamp-1 max-w-[68px] mt-1">--</p><p id="heroValor3" class="text-[11px] font-bold">R$ --</p></div>
+    <div class="text-center"><div class="w-[68px] h-[56px] bg-white rounded-t-[14px] border-2 border-[#1B1F3B] flex items-center justify-center serif font-black text-[22px] text-[#1B1F3B]">2</div><p id="heroNome2" class="text-[9px] font-bold text-zinc-500 line-clamp-1 max-w-[68px] mt-1">--</p><p id="heroValor2" class="text-[11px] font-bold">R$ --</p></div>
+    <div class="text-center"><div class="w-[76px] h-[84px] bg-[#E4CE84] rounded-t-[16px] border-2 border-[#1B1F3B] flex flex-col items-center justify-center serif font-black text-[28px] leading-none text-[#1B1F3B]">1<div class="text-[16px] -mt-1">✦</div></div><p id="heroNome1" class="text-[10px] font-black line-clamp-1 max-w-[76px] mt-1">--</p><p id="heroValor1" class="text-[12px] font-black">R$ --</p></div>
+    <div class="text-center"><div class="w-[68px] h-[44px] bg-white rounded-t-[14px] border-2 border-[#1B1F3B] flex items-center justify-center serif font-black text-[22px] text-[#1B1F3B]">3</div><p id="heroNome3" class="text-[9px] font-bold text-zinc-500 line-clamp-1 max-w-[68px] mt-1">--</p><p id="heroValor3" class="text-[11px] font-bold">R$ --</p></div>
   </div>
 
-  <button id="btnTakeover" onclick="pegarTakeover()" class="w-full bg-black text-[#BEF264] rounded-full py-3 font-black text-[13px] mt-4">🚀 DOMINAR A HOME POR 3H</button>
+  <button id="btnTakeover" onclick="pegarTakeover()" class="w-full bg-[#1B1F3B] text-[#E4CE84] rounded-full py-3 font-black text-[13px] mt-4">✨ DESTAQUE NA HOME POR 3H</button>
   </div>
-    
-  </div>
+
   <div id="catTabs" class="flex gap-2 mt-4 overflow-x-auto hide-scrollbar"></div>
 
   <div class="flex justify-center mt-4">
@@ -57,14 +57,14 @@
   </div>
 
   <div class="bg-white border border-zinc-100 rounded-[28px] p-5 mt-6 shadow-sm">
-    <div class="bg-[#FFF4B5] rounded-[14px] py-3 px-4 text-center font-black text-[13px]">
-      🔥 LEILÃO AO VIVO — fica no topo até alguém pagar mais
+    <div class="bg-[#F3E7C9] rounded-[14px] py-3 px-4 text-center font-black text-[13px] text-[#1B1F3B]">
+      ✦ DISPUTA AO VIVO — fica no topo até alguém pagar mais
     </div>
 
-    <p class="font-black text-[15px] mt-5">Seja #1 por</p>
+    <p class="serif font-black text-[15px] mt-5 text-[#1B1F3B]">Seja #1 por</p>
     <div class="flex items-center gap-3 mt-2">
       <button id="btnMenos" class="w-11 h-11 rounded-full bg-[#F3F4F6] font-black text-[20px] shrink-0">−</button>
-      <span id="valorLance" class="text-[32px] font-black text-[#FF4A15] flex-1 text-center">R$ --</span>
+      <span id="valorLance" class="serif text-[32px] font-black text-[#7A2E2E] flex-1 text-center">R$ --</span>
       <button id="btnMais" class="w-11 h-11 rounded-full bg-[#F3F4F6] font-black text-[20px] shrink-0">+</button>
     </div>
 
@@ -75,7 +75,7 @@
     <input id="descTop" maxlength="80" class="w-full border-2 border-zinc-200 rounded-full px-4 py-3 text-[13px] font-medium outline-none mt-2" placeholder="Descrição curta (opcional)">
     <input id="emailTop" type="email" class="w-full border-2 border-zinc-200 rounded-full px-4 py-3 text-[13px] font-medium outline-none mt-2" placeholder="Seu e-mail (opcional, avisamos se te superarem)">
 
-    <button id="btnTopo" class="w-full bg-[#FF4A15] text-white rounded-full py-4 font-black text-[16px] mt-3">
+    <button id="btnTopo" class="w-full bg-[#7A2E2E] text-white rounded-full py-4 font-black text-[16px] mt-3">
       DAR LANCE →
     </button>
     <p class="text-[11px] text-zinc-400 text-center mt-2">Fica no topo até alguém pagar mais. Sem prazo fixo.</p>
@@ -88,35 +88,35 @@
   </div>
 
   <div class="bg-white border border-zinc-100 rounded-[28px] p-4 mt-3 shadow-sm">
-    <h3 class="font-black text-[18px]">🏆 Ranking</h3>
+    <h3 class="serif font-black text-[18px] text-[#1B1F3B]">🏆 Ranking</h3>
     <div id="board" class="mt-2">
       <p class="text-[13px] text-zinc-400 text-center py-6">Carregando ranking...</p>
     </div>
   </div>
 
   <div class="bg-white border border-zinc-100 rounded-[28px] p-4 mt-6 shadow-sm">
-    <h3 class="font-black text-[16px] mb-2">📋 Atividade recente</h3>
+    <h3 class="serif font-black text-[16px] mb-2 text-[#1B1F3B]">📋 Atividade recente</h3>
     <div id="atividade" class="text-[13px] text-zinc-500 space-y-1.5">
       <p class="text-zinc-400">Nenhum lance ainda — seja o primeiro.</p>
     </div>
   </div>
 
   <div class="bg-white border border-zinc-100 rounded-[28px] p-4 mt-6 shadow-sm">
-    <h3 class="font-black text-[16px] mb-1">📈 Total arrecadado no tempo</h3>
-    <p class="text-[11px] text-zinc-400 mb-3">Soma de tudo que já foi pago no Podio Rank, desde o lançamento.</p>
+    <h3 class="serif font-black text-[16px] mb-1 text-[#1B1F3B]">📈 Total arrecadado no tempo</h3>
+    <p class="text-[11px] text-zinc-400 mb-3">Soma de tudo que já foi pago no RankGospel, desde o lançamento.</p>
     <canvas id="graficoTotal" height="180"></canvas>
     <p id="semHistoricoTotal" class="text-[13px] text-zinc-400 text-center py-6 hidden">Ainda não há dados suficientes.</p>
   </div>
 
   <div class="bg-white border border-zinc-100 rounded-[28px] p-4 mt-3 shadow-sm">
-    <h3 class="font-black text-[16px] mb-1">📊 Histórico de preço do #1</h3>
+    <h3 class="serif font-black text-[16px] mb-1 text-[#1B1F3B]">📊 Histórico de preço do #1</h3>
     <p class="text-[11px] text-zinc-400 mb-3">Como o preço do topo dessa categoria foi subindo a cada novo recorde.</p>
     <canvas id="graficoRecorde" height="180"></canvas>
     <p id="semHistoricoRecorde" class="text-[13px] text-zinc-400 text-center py-6 hidden">Ainda não há histórico suficiente nessa categoria.</p>
   </div>
 
   <div class="bg-white border border-zinc-100 rounded-[28px] p-5 mt-6 shadow-sm">
-    <h3 class="font-black text-[16px] mb-3">❓ Perguntas frequentes</h3>
+    <h3 class="serif font-black text-[16px] mb-3 text-[#1B1F3B]">❓ Perguntas frequentes</h3>
     <div class="space-y-3 text-[13px]">
       <div>
         <p class="font-black">Como funciona?</p>
@@ -136,17 +136,17 @@
       </div>
       <div>
         <p class="font-black">Quanto custa começar?</p>
-        <p class="text-zinc-500 mt-0.5">A partir de R$ 1. Para tomar uma posição já ocupada, o mínimo é sempre 1 real acima do que foi pago por ela.</p>
+        <p class="text-zinc-500 mt-0.5">A partir de R$ 10. Para tomar uma posição já ocupada, o mínimo é sempre 1 real acima do que foi pago por ela.</p>
       </div>
       <div>
-        <p class="font-black">O que é "Dominar a home"?</p>
+        <p class="font-black">O que é "Destaque na home"?</p>
         <p class="text-zinc-500 mt-0.5">Pagando 2× o valor do #1 atual, seu link ganha um banner de destaque no topo da página por 3 horas, visível pra todo mundo que visitar o site nesse período.</p>
       </div>
     </div>
   </div>
 
   <div class="bg-white border border-zinc-100 rounded-[28px] p-5 mt-3 shadow-sm">
-    <h3 class="font-black text-[16px] mb-3">📜 Regras</h3>
+    <h3 class="serif font-black text-[16px] mb-3 text-[#1B1F3B]">📜 Regras</h3>
     <ul class="text-[13px] text-zinc-500 space-y-1.5 list-disc pl-4">
       <li>Proibido conteúdo adulto/NSFW</li>
       <li>Proibido links de convite (Discord, Telegram, WhatsApp)</li>
@@ -156,12 +156,12 @@
     </ul>
   </div>
 
-  <div class="bg-black text-[#BEF264] rounded-[24px] p-5 mt-8 text-center">
+  <div class="bg-[#1B1F3B] text-[#E4CE84] rounded-[24px] p-5 mt-8 text-center">
     <p class="text-[13px] font-bold leading-snug">
       Esse site simples já gerou <span id="statReceitaFlex">--</span> desde que foi ao ar,
       <span id="tempoDesdeLancamento">--</span> atrás.
     </p>
-    <div class="flex justify-center gap-6 mt-3 font-black text-[16px]">
+    <div class="flex justify-center gap-6 mt-3 serif font-black text-[16px]">
       <div><span id="statVisitantes">--</span><div class="text-[10px] font-medium opacity-70">visitantes</div></div>
       <div><span id="statReceita">--</span><div class="text-[10px] font-medium opacity-70">arrecadado</div></div>
       <div><span id="statProdutos">--</span><div class="text-[10px] font-medium opacity-70">posições vendidas</div></div>
@@ -169,7 +169,7 @@
   </div>
 
   <div class="mt-6">
-    <h3 class="font-black text-[16px] mb-3 text-center">💬 Quem pagou o topo</h3>
+    <h3 class="serif font-black text-[16px] mb-3 text-center text-[#1B1F3B]">💬 Quem pagou o topo</h3>
     <div id="depoimentos" class="space-y-2">
       <div class="bg-white border border-dashed border-zinc-300 rounded-[20px] p-4 text-center">
         <p class="text-[12px] text-zinc-400">Os primeiros relatos de quem tomou o topo aparecem aqui em breve.</p>
@@ -180,54 +180,32 @@
   <p class="text-center text-[11px] text-zinc-400 mt-6">
     <a href="/como-funciona.html" class="underline">Como funciona</a> · <a href="/termos.html" class="underline">Termos</a> · <a href="mailto:mathiaspedroluiz44@gmail.com" class="underline">Contato</a>
   </p>
-  <p class="text-center text-[10px] text-zinc-300 mt-2">Criado por Pedro · Podio Rank</p>
+  <p class="text-center text-[10px] text-zinc-300 mt-2">Criado por Pedro · RankGospel</p>
 
 </div><script>
 const LANCAMENTO = new Date('2026-09-12T20:26:00-03:00').getTime();
 
 const CATEGORIAS = [
-  {id:"todas",        emoji:"🌐", nome:"TODAS"},
-  {id:"leaderboards", emoji:"🏆", nome:"RANKINGS"},
-  {id:"seo",          emoji:"🔍", nome:"SEO / IA"},
-  {id:"marketing",    emoji:"📈", nome:"MARKETING"},
-  {id:"produtividade",emoji:"⚡", nome:"PRODUTIVIDADE"},
-  {id:"agentes-ia",   emoji:"🤖", nome:"AGENTES DE IA"},
-  {id:"cripto",       emoji:"₿",  nome:"CRIPTO"},
-  {id:"dev",          emoji:"💻", nome:"DESENVOLVEDORES"},
-  {id:"saude",        emoji:"🩺", nome:"SAÚDE E FITNESS"},
-  {id:"negocios",     emoji:"💼", nome:"NEGÓCIOS / JURÍDICO"},
-  {id:"jogos",        emoji:"🎮", nome:"JOGOS"},
-  {id:"ecommerce",    emoji:"🛒", nome:"E-COMMERCE"},
-  {id:"viagem",       emoji:"✈️", nome:"VIAGEM / LIFESTYLE"},
-  {id:"diretorios",   emoji:"📂", nome:"DIRETÓRIOS"},
-  {id:"agencias",     emoji:"🏢", nome:"AGÊNCIAS"},
-  {id:"midia-ia",     emoji:"🎬", nome:"MÍDIA COM IA"},
-  {id:"educacao",     emoji:"📚", nome:"EDUCAÇÃO"},
-  {id:"redes-sociais",emoji:"📱", nome:"REDES SOCIAIS"},
-  {id:"pessoas",      emoji:"👤", nome:"PESSOAS / PERFIS"},
-  {id:"design",       emoji:"🎨", nome:"DESIGN"},
-  {id:"vagas",        emoji:"👔", nome:"VAGAS / RH"},
-  {id:"dominios",     emoji:"🌐", nome:"DOMÍNIOS"},
-  {id:"seguranca",    emoji:"🔒", nome:"SEGURANÇA"},
-  {id:"vendas",       emoji:"🎯", nome:"VENDAS / LEADS"},
-  {id:"noticias",     emoji:"📰", nome:"NOTÍCIAS"},
-  {id:"imoveis",      emoji:"🏠", nome:"IMÓVEIS"},
-  {id:"escrita",      emoji:"✍️", nome:"ESCRITA / CONTEÚDO"},
-  {id:"audio",        emoji:"🎙️", nome:"ÁUDIO / PODCAST"},
-  {id:"analytics",    emoji:"📊", nome:"ANALYTICS"},
+  {id:"todas",     emoji:"📖", nome:"TODAS"},
+  {id:"livrarias", emoji:"📚", nome:"LIVRARIAS E LOJAS"},
+  {id:"editoras",  emoji:"🖋️", nome:"EDITORAS"},
+  {id:"criadores", emoji:"🎥", nome:"CRIADORES"},
+  {id:"igrejas",   emoji:"⛪", nome:"IGREJAS E MINISTÉRIOS"},
+  {id:"musica",    emoji:"🎵", nome:"MÚSICA GOSPEL"},
+  {id:"estudos",   emoji:"📓", nome:"ESTUDOS E DEVOCIONAIS"},
 ];
 let categoriaAtual = CATEGORIAS[0].id;
 let periodoAtual = "all";
 let paginaAtual = 1;
-let minimoAtual = 1;
-let valorLanceAtual = 1;
+let minimoAtual = 10;
+let valorLanceAtual = 10;
 let valorTopoAtual = 10;
 const PASSO = 1;
 
 function renderTabs(){
   document.getElementById('catTabs').innerHTML = CATEGORIAS.map(c => `
     <button data-cat="${c.id}"
-      class="px-5 py-3 rounded-full font-black text-[13px] whitespace-nowrap ${c.id===categoriaAtual ? 'bg-[#FF4A15] text-white' : 'bg-white border'}"
+      class="px-5 py-3 rounded-full font-black text-[13px] whitespace-nowrap ${c.id===categoriaAtual ? 'bg-[#7A2E2E] text-white' : 'bg-white border'}"
       onclick="mudarCategoria('${c.id}')">${c.emoji} ${c.nome}</button>
   `).join('');
 }
@@ -272,17 +250,17 @@ function faviconUrl(dominio){
 }
 
 function copiarSelo(id, categoria){
-  const codigo = `<script src="https://www.podiorank.com.br/badge-embed.js" data-id="${id}" data-categoria="${categoria}"><\/script>`;
+  const codigo = `<script src="https://www.rankgospel.com.br/badge-embed.js" data-id="${id}" data-categoria="${categoria}"><\/script>`;
   navigator.clipboard.writeText(codigo).then(() => alert('Código do selo copiado! Cole no HTML do seu site.'))
     .catch(() => prompt('Copie o código abaixo:', codigo));
 }
 
 function compartilharPosicao(nome, posicao, categoria, valor){
-  const texto = `Tô em #${posicao} em ${categoria} no Podio Rank! 🏆 (paguei R$ ${valor.toFixed(2)} pela posição)`;
-  const url = 'https://www.podiorank.com.br';
+  const texto = `Tô em #${posicao} em ${categoria} no RankGospel! 🏆 (paguei R$ ${valor.toFixed(2)} pela posição)`;
+  const url = 'https://www.rankgospel.com.br';
 
   if(navigator.share){
-    navigator.share({ title: 'Podio Rank', text: texto, url }).catch(()=>{});
+    navigator.share({ title: 'RankGospel', text: texto, url }).catch(()=>{});
   } else {
     navigator.clipboard.writeText(`${texto}\n${url}`)
       .then(() => alert('Texto copiado! Cole onde quiser compartilhar.'))
@@ -300,8 +278,8 @@ async function carregarBoard(){
 
     if(itens.length === 0 && paginaAtual === 1){
       boardEl.innerHTML = `<p class="text-[13px] text-zinc-400 text-center py-8">Ninguém reivindicou essa categoria ainda.<br>Seja o #1.</p>`;
-      minimoAtual = 1;
-      valorLanceAtual = 1;
+      minimoAtual = 10;
+      valorLanceAtual = 10;
       atualizarValorLance();
       return;
     }
@@ -325,12 +303,12 @@ async function carregarBoard(){
               <span class="text-[11px] font-black text-zinc-400">#${offset+i+1}</span>
               <a href="${t.link}" target="_blank" rel="noopener" onclick="registrarClique('${t.id}','${t.categoria}')" class="font-black text-[14px] hover:underline line-clamp-1 block">${t.nome} ↗</a>
             </div>
-            <span class="font-black text-[#FF4A15] text-[13px] shrink-0">${formatarValor(t.valor)}</span>
+            <span class="font-black text-[#7A2E2E] text-[13px] shrink-0">${formatarValor(t.valor)}</span>
           </div>
           ${t.descricao ? `<p class="text-[12px] text-zinc-500 mt-0.5 line-clamp-2">${t.descricao}</p>` : ''}
           <p class="text-[11px] text-zinc-400 font-medium mt-1">🌐 ${t.dominio} · ${t.cliques ?? 0} cliques · há ${t.tempoRelativo || 'pouco'}</p>
           <div class="flex gap-2 mt-2">
-            <button onclick="pegarLinha('${categoriaAtual} #${offset+i+1}', ${t.valor + 1})" class="bg-black text-white px-4 py-2 rounded-full font-black text-[11px]">TOMAR ESSA POSIÇÃO</button>
+            <button onclick="pegarLinha('${categoriaAtual} #${offset+i+1}', ${t.valor + 1})" class="bg-[#1B1F3B] text-white px-4 py-2 rounded-full font-black text-[11px]">TOMAR ESSA POSIÇÃO</button>
             <button onclick="copiarSelo('${t.id}','${t.categoria}')" class="bg-zinc-100 text-zinc-700 px-4 py-2 rounded-full font-black text-[11px]">📋 SELO</button>
             <button onclick="compartilharPosicao('${t.nome}', ${offset+i+1}, '${categoriaAtual}', ${t.valor})" class="bg-zinc-100 text-zinc-700 px-4 py-2 rounded-full font-black text-[11px]">🔗 COMPARTILHAR</button>
           </div>
@@ -351,7 +329,7 @@ function renderPaginacao(pagina, totalPaginas, total){
   let anterior = 0;
   for(const p of lista){
     if(p - anterior > 1) botoes += `<span class="px-1 text-zinc-400">…</span>`;
-    botoes += `<button onclick="irParaPagina(${p})" class="w-8 h-8 rounded-full font-black text-[12px] ${p===pagina?'bg-[#FF4A15] text-white':'text-zinc-600'}">${p}</button>`;
+    botoes += `<button onclick="irParaPagina(${p})" class="w-8 h-8 rounded-full font-black text-[12px] ${p===pagina?'bg-[#7A2E2E] text-white':'text-zinc-600'}">${p}</button>`;
     anterior = p;
   }
   return `
@@ -443,7 +421,7 @@ function pegarLinha(posicao, valorMinimo){
 
 function pegarTakeover(){
   const valorTakeover = Math.max(20, Math.round(valorTopoAtual * 2));
-  if(!confirm(`Dominar a home por 3 horas custa R$ ${valorTakeover},00 (2x o valor do #1 atual). Continuar?`)) return;
+  if(!confirm(`Ficar em destaque na home por 3 horas custa R$ ${valorTakeover},00 (2x o valor do #1 atual). Continuar?`)) return;
   let link = prompt('Cole seu link https:// (site, insta, youtube):');
   if(!link) return;
   let nome = prompt('Nome que vai aparecer no banner:') || 'Anônimo';
@@ -501,8 +479,8 @@ async function carregarHistoricoTotal(){
         datasets: [{
           label: 'Total arrecadado (R$)',
           data: valores,
-          borderColor: '#FF4A15',
-          backgroundColor: 'rgba(255,74,21,0.08)',
+          borderColor: '#7A2E2E',
+          backgroundColor: 'rgba(122,46,46,0.08)',
           fill: true,
           tension: 0.3,
           pointRadius: 0,
@@ -548,12 +526,12 @@ async function carregarHistoricoRecorde(){
         datasets: [{
           label: 'Preço do #1 (R$)',
           data: valores,
-          borderColor: '#111',
-          backgroundColor: 'rgba(17,17,17,0.06)',
+          borderColor: '#1B1F3B',
+          backgroundColor: 'rgba(27,31,59,0.06)',
           fill: true,
           stepped: true,
           pointRadius: 3,
-          pointBackgroundColor: '#111',
+          pointBackgroundColor: '#1B1F3B',
           borderWidth: 2
         }]
       },
@@ -589,7 +567,7 @@ async function carregarPodioHero(){
         if(elValor) elValor.innerText = formatarValor(item.valor);
       } else {
         if(elNome) elNome.innerText = 'Vago';
-        if(elValor) elValor.innerText = 'A partir de R$ 1';
+        if(elValor) elValor.innerText = 'A partir de R$ 10';
       }
     });
   }catch(e){
