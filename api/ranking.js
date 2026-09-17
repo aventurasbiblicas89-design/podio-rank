@@ -14,7 +14,7 @@ function extrairDominio(link) {
 
 export default async function handler(req, res) {
   try {
-    const { categoria = 'marketing', periodo = 'all', page = '1' } = req.query;
+    const { categoria = 'todas', periodo = 'all', page = '1' } = req.query;
     const pagina = Math.max(1, parseInt(page) || 1);
     const tamanhoPagina = 50;
 
@@ -52,3 +52,4 @@ export default async function handler(req, res) {
     return res.status(500).json({ itens: [], total: 0, page: 1, totalPaginas: 1 });
   }
 }
+
