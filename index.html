@@ -40,9 +40,9 @@
     Reivindique a sua via <b>PIX</b>, de forma 100% transparente, <u class="decoration-[#E4CE84] decoration-[4px] underline-offset-4 font-bold">quem paga mais fica no topo.</u>
   </p>
   <div class="flex items-end justify-center gap-3 mt-7 mb-2">
-    <div class="text-center"><div class="w-[68px] h-[56px] bg-white rounded-t-[14px] border-2 border-[#1B1F3B] flex items-center justify-center serif font-black text-[22px] text-[#1B1F3B]">2</div><p id="heroNome2" class="text-[9px] font-bold text-zinc-500 line-clamp-1 max-w-[68px] mt-1">--</p><p id="heroValor2" class="text-[11px] font-bold">R$ --</p></div>
-    <div class="text-center"><div class="w-[76px] h-[84px] bg-[#E4CE84] rounded-t-[16px] border-2 border-[#1B1F3B] flex flex-col items-center justify-center serif font-black text-[28px] leading-none text-[#1B1F3B]">1<div class="text-[16px] -mt-1">✦</div></div><p id="heroNome1" class="text-[10px] font-black line-clamp-1 max-w-[76px] mt-1">--</p><p id="heroValor1" class="text-[12px] font-black">R$ --</p></div>
-    <div class="text-center"><div class="w-[68px] h-[44px] bg-white rounded-t-[14px] border-2 border-[#1B1F3B] flex items-center justify-center serif font-black text-[22px] text-[#1B1F3B]">3</div><p id="heroNome3" class="text-[9px] font-bold text-zinc-500 line-clamp-1 max-w-[68px] mt-1">--</p><p id="heroValor3" class="text-[11px] font-bold">R$ --</p></div>
+    <a id="heroLink2" href="#" target="_blank" rel="noopener" class="text-center block"><div class="w-[68px] h-[56px] bg-white rounded-t-[14px] border-2 border-[#1B1F3B] flex items-center justify-center serif font-black text-[22px] text-[#1B1F3B]">2</div><p id="heroNome2" class="text-[9px] font-bold text-zinc-500 line-clamp-1 max-w-[68px] mt-1">--</p><p id="heroValor2" class="text-[11px] font-bold">R$ --</p></a>
+    <a id="heroLink1" href="#" target="_blank" rel="noopener" class="text-center block"><div class="w-[76px] h-[84px] bg-[#E4CE84] rounded-t-[16px] border-2 border-[#1B1F3B] flex flex-col items-center justify-center serif font-black text-[28px] leading-none text-[#1B1F3B]">1<div class="text-[16px] -mt-1">✦</div></div><p id="heroNome1" class="text-[10px] font-black line-clamp-1 max-w-[76px] mt-1">--</p><p id="heroValor1" class="text-[12px] font-black">R$ --</p></a>
+    <a id="heroLink3" href="#" target="_blank" rel="noopener" class="text-center block"><div class="w-[68px] h-[44px] bg-white rounded-t-[14px] border-2 border-[#1B1F3B] flex items-center justify-center serif font-black text-[22px] text-[#1B1F3B]">3</div><p id="heroNome3" class="text-[9px] font-bold text-zinc-500 line-clamp-1 max-w-[68px] mt-1">--</p><p id="heroValor3" class="text-[11px] font-bold">R$ --</p></a>
   </div>
 
   <button id="btnTakeover" onclick="pegarTakeover()" class="w-full bg-[#1B1F3B] text-[#E4CE84] rounded-full py-3 font-black text-[13px] mt-4">✨ DESTAQUE NA HOME POR 3H</button>
@@ -562,12 +562,23 @@ async function carregarPodioHero(){
       const item = itens[pos - 1];
       const elNome = document.getElementById(`heroNome${pos}`);
       const elValor = document.getElementById(`heroValor${pos}`);
+      const elLink = document.getElementById(`heroLink${pos}`);
       if(item){
         if(elNome) elNome.innerText = item.nome;
         if(elValor) elValor.innerText = formatarValor(item.valor);
+        if(elLink){
+          elLink.href = item.link;
+          elLink.onclick = () => registrarClique(item.id, item.categoria);
+          elLink.style.cursor = 'pointer';
+        }
       } else {
         if(elNome) elNome.innerText = 'Vago';
         if(elValor) elValor.innerText = 'A partir de R$ 10';
+        if(elLink){
+          elLink.removeAttribute('href');
+          elLink.onclick = null;
+          elLink.style.cursor = 'default';
+        }
       }
     });
   }catch(e){
