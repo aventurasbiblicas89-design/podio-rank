@@ -1,21 +1,10 @@
-const crypto = require('crypto');
+import crypto from 'crypto';
+import { kv } from '@vercel/kv';
 
 const ENDPOINT = 'https://open-api.affiliate.shopee.com.br/graphql';
 const KEYWORDS = ['organizador cozinha', 'gadget cozinha', 'produto limpeza casa', 'organizador casa'];
 const DESCONTO_MINIMO = 20;
 const MAX_OFERTAS = 60;
-
-const REDIS_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-const REDIS_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-
-async function redis(cmd) {
-  const r = await fetch(REDIS_URL, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${REDIS_TOKEN}` },
-    body: JSON.stringify(cmd),
-  });
-  return r.json();
-}
 
 async function buscar(keyword) {
   const appId = process.env.SHOPEE_APP_ID;
@@ -41,7 +30,9 @@ async function buscar(keyword) {
 async function rodarRobo(req, res) {
   const auth = req.headers.authorization === `Bearer ${process.env.CRON_SECRET}`;
   const manual = req.query && req.query.key === process.env.CRON_SECRET;
-  if (!process.env.CRON_SECRET || (!auth && !manual)) return res.status(401).json({ erro: 'não autorizado' });
+  if (!process.env.CRON_SECRET || (!auth && !manual)) {
+    return res.status(401).json({ erro: 'não autorizado' });
+  }
   try {
     const vistos = new Map();
     for (const kw of KEYWORDS) {
@@ -63,21 +54,20 @@ async function rodarRobo(req, res) {
       }
     }
     const lista = [...vistos.values()].sort((a, b) => b.desconto - a.desconto).slice(0, MAX_OFERTAS);
-    await redis(['SET', 'ofertas:lista', JSON.stringify({ atualizadoEm: new Date().toISOString(), lista })]);
-    res.status(200).json({ ok: true, total: lista.length });
+    await kv.set('ofertas:lista', { atualizadoEm: new Date().toISOString(), lista });
+    return res.status(200).json({ ok: true, total: lista.length });
   } catch (e) {
-    res.status(500).json({ erro: String(e.message || e) });
+    return res.status(500).json({ erro: String(e.message || e) });
   }
 }
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.query && req.query.acao === 'robo') return rodarRobo(req, res);
   try {
-    const j = await redis(['GET', 'ofertas:lista']);
-    const dados = j.result ? JSON.parse(j.result) : { atualizadoEm: null, lista: [] };
+    const dados = (await kv.get('ofertas:lista')) || { atualizadoEm: null, lista: [] };
     res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
-    res.status(200).json(dados);
+    return res.status(200).json(dados);
   } catch (e) {
-    res.status(500).json({ atualizadoEm: null, lista: [] });
+    return res.status(500).json({ atualizadoEm: null, lista: [] });
   }
-};
+                                }
