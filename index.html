@@ -3,347 +3,374 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Achou Bom — achadinhos de casa e utilidades</title>
+<title>CAPY</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --paper:#F5F5F0;
-    --ink:#22261F;
-    --sage:#4B6455;
-    --sage-dark:#33473B;
-    --mustard:#D6A24C;
-    --card:#FFFFFF;
-    --line:#DCD8CC;
-    --font-head:'Fraunces', serif;
-    --font-body:'Work Sans', sans-serif;
-    box-sizing:border-box;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --paper:#191C16; --ink:#EDEBE2; --card:#22261F; --line:#3A3E33;
-    }
-  }
-  :root[data-theme="dark"]{
-    --paper:#191C16; --ink:#EDEBE2; --card:#22261F; --line:#3A3E33;
-  }
-  html{scroll-padding-top: env(safe-area-inset-top, 0px);}
-  *{margin:0;box-sizing:border-box;}
-  body{
-    background:var(--paper); color:var(--ink);
-    font-family:var(--font-body); line-height:1.5;
-    -webkit-font-smoothing:antialiased;
-  }
-  a{color:inherit;}
-  .wrap{max-width:1040px;margin:0 auto;padding:0 24px;}
+:root{
+  --bg1:#FF5DA2; --bg2:#7C3AED; --bg3:#3B82F6;
+  --sand:#FFF3D6; --water:#3ED0D0;
+  --capy:#B98045; --capy-dark:#8C5E2E; --capy-light:#E0AE73;
+  --gold:#FFC93C; --pink:#FF6FA5; --lime:#B6F23C; --sky:#5FD9FF;
+  --text:#2B1046; --muted:#6E5A96;
+  --card:#FFFFFF;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0}
+body{
+  background:
+    radial-gradient(circle at 15% 8%, rgba(255,255,255,.35), transparent 40%),
+    linear-gradient(160deg,var(--bg1) 0%, var(--bg2) 55%, var(--bg3) 100%);
+  color:var(--text);
+  font-family:'Nunito',system-ui,sans-serif;
+  display:flex; flex-direction:column; align-items:center;
+  min-height:100%; padding:16px;
+}
+.app{width:100%; max-width:420px; display:flex; flex-direction:column; gap:16px}
+.topbar{display:flex; justify-content:space-between; align-items:center}
+.brand{font-family:'Baloo 2',sans-serif; font-size:26px; font-weight:800; letter-spacing:.3px; color:#fff; text-shadow:0 3px 0 rgba(0,0,0,.15)}
+.brand span{color:var(--gold); filter:drop-shadow(0 2px 0 rgba(0,0,0,.15))}
+.currency{display:flex; gap:8px; font-family:'Baloo 2',sans-serif; font-weight:700; font-size:15px}
+.chip{background:#fff; border-radius:999px; padding:6px 14px; display:flex; align-items:center; gap:6px; box-shadow:0 4px 0 rgba(0,0,0,.15)}
+.chip.gold{color:#B8790A}
+.chip.xp{color:#5B3DBF}
 
-  header{
-    position:sticky; top:0; top: env(safe-area-inset-top, 0px);
-    background:var(--paper); border-bottom:1px solid var(--line);
-    z-index:10;
-  }
-  .nav{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:18px 24px; max-width:1040px; margin:0 auto;
-  }
-  .logo{font-family:var(--font-head); font-weight:600; font-size:1.4rem;}
-  .logo span{color:var(--sage);}
-  .nav-links{display:flex; gap:22px; font-size:.92rem;}
-  .nav-links a{text-decoration:none; opacity:.8;}
-  .nav-links a:hover{opacity:1;}
+.stage{
+  background:
+    radial-gradient(circle at 78% 14%, #FFE58A 0%, rgba(255,229,138,0) 22%),
+    linear-gradient(180deg,#6FE3E0 0%, #3ED0D0 55%, #1CA7C4 100%);
+  border-radius:28px; padding:22px 16px 12px; position:relative; overflow:hidden;
+  min-height:270px; display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+  box-shadow:0 10px 0 rgba(0,0,0,.12), inset 0 0 0 4px rgba(255,255,255,.5);
+}
+.sun{position:absolute; top:-18px; right:-18px; width:90px; height:90px; border-radius:50%;
+  background:radial-gradient(circle, #FFE47A 0%, #FFC93C 70%, rgba(255,201,60,0) 75%);}
+.sparkle{position:absolute; font-size:16px; opacity:.9; animation:twinkle 2.4s ease-in-out infinite}
+.sparkle.s1{top:16%; left:12%; animation-delay:.2s}
+.sparkle.s2{top:28%; right:20%; animation-delay:1s}
+.sparkle.s3{top:10%; left:45%; animation-delay:1.7s}
+@keyframes twinkle{0%,100%{opacity:.3; transform:scale(.8)}50%{opacity:1; transform:scale(1.15)}}
+.mission{
+  position:absolute; top:10px; left:10px; right:10px;
+  background:#fff; color:var(--text); border-radius:16px; padding:9px 13px;
+  font-weight:700; font-size:12.5px; display:flex; justify-content:space-between; align-items:center; gap:8px;
+  box-shadow:0 4px 0 rgba(0,0,0,.12);
+}
+.mission b{color:#B8790A}
+.pond{position:absolute; bottom:0; left:0; right:0; height:76px; background:linear-gradient(180deg, rgba(28,167,196,0) 0%, #1493B2 90%); opacity:.95}
 
-  .hero{
-    padding:64px 24px 48px; max-width:1040px; margin:0 auto;
-    display:grid; grid-template-columns:1.1fr .9fr; gap:40px; align-items:center;
-  }
-  @media (max-width:720px){ .hero{grid-template-columns:1fr; padding-top:40px;} }
-  .hero h1{
-    font-family:var(--font-head); font-weight:500;
-    font-size:clamp(2.1rem, 5vw, 3.1rem); line-height:1.08; letter-spacing:-.01em;
-  }
-  .hero p{margin-top:18px; font-size:1.05rem; max-width:42ch; opacity:.82;}
-  .hero-cta{margin-top:28px; display:flex; gap:12px; flex-wrap:wrap;}
-  .btn{
-    font-family:var(--font-body); font-weight:600; font-size:.95rem;
-    padding:13px 22px; border-radius:3px; border:1px solid transparent;
-    cursor:pointer; text-decoration:none; display:inline-block;
-  }
-  .btn-primary{background:var(--sage); color:#fff;}
-  .btn-primary:hover{background:var(--sage-dark);}
-  .btn-ghost{border-color:var(--line);}
+#capy{cursor:pointer; transform-origin:center bottom; transition:transform .15s}
+#capy.bounce{animation:bounce .5s ease}
+@keyframes bounce{0%{transform:scale(1)}30%{transform:scale(1.08,.92)}60%{transform:scale(.95,1.06)}100%{transform:scale(1)}}
+.mood-label{font-size:13px; font-weight:700; color:#fff; text-shadow:0 1px 3px rgba(0,0,0,.2); margin-top:6px; text-align:center; min-height:16px}
 
-  .hero-card{
-    background:var(--card); border:1px solid var(--line); border-radius:4px;
-    padding:26px; position:relative;
-  }
-  .hero-card .tag{
-    font-size:.78rem; color:var(--mustard); font-weight:600;
-  }
-  .hero-card h3{font-family:var(--font-head); font-weight:500; font-size:1.3rem; margin-top:8px;}
-  .hero-card p{font-size:.9rem; opacity:.75; margin-top:8px;}
-  .hero-card .price{margin-top:16px; font-family:var(--font-head); font-size:1.6rem;}
-  .hero-card .price small{font-family:var(--font-body); font-size:.8rem; opacity:.6; font-weight:400;}
-  .swatch{
-    width:100%; height:120px; border-radius:3px; margin-bottom:14px;
-    background:linear-gradient(135deg, var(--sage) 0%, var(--mustard) 100%);
-    opacity:.85;
-  }
+.stats{display:flex; flex-direction:column; gap:11px; background:var(--card); border-radius:20px; padding:16px; box-shadow:0 6px 0 rgba(0,0,0,.1)}
+.stat{display:flex; align-items:center; gap:10px}
+.stat .icon{width:24px; text-align:center; font-size:18px}
+.bar{flex:1; height:11px; background:#F1ECFB; border-radius:99px; overflow:hidden}
+.bar > i{display:block; height:100%; border-radius:99px; transition:width .4s ease}
+.bar.fome > i{background:linear-gradient(90deg,#FF6FA5,#FF9776)}
+.bar.energia > i{background:linear-gradient(90deg,#FFC93C,#FFE47A)}
+.bar.humor > i{background:linear-gradient(90deg,#3ED0D0,#B6F23C)}
 
-  section{padding:52px 24px; max-width:1040px; margin:0 auto;}
-  .section-head{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:26px; gap:16px; flex-wrap:wrap;}
-  .section-head h2{font-family:var(--font-head); font-weight:500; font-size:1.7rem;}
-  .section-head p{font-size:.92rem; opacity:.7;}
+.actions{display:grid; grid-template-columns:repeat(4,1fr); gap:10px}
+.actions button{
+  background:#fff; color:var(--text); border:none; border-radius:18px;
+  padding:13px 4px; font-size:12.5px; font-weight:800; font-family:'Baloo 2',sans-serif; display:flex; flex-direction:column; align-items:center; gap:5px;
+  cursor:pointer; transition:transform .12s; box-shadow:0 5px 0 rgba(0,0,0,.12);
+}
+.actions button:active{transform:translateY(3px); box-shadow:0 2px 0 rgba(0,0,0,.12)}
+.actions button:disabled{opacity:.35; cursor:not-allowed}
+.actions button .em{font-size:22px}
 
-  .cats{
-    display:grid; grid-template-columns:repeat(4,1fr); gap:14px;
-  }
-  @media (max-width:720px){ .cats{grid-template-columns:repeat(2,1fr);} }
-  .cat{
-    border:1px solid var(--line); border-radius:4px; padding:20px 16px;
-    text-decoration:none; background:var(--card);
-  }
-  .cat .dot{width:10px; height:10px; border-radius:50%; background:var(--sage); margin-bottom:12px;}
-  .cat h4{font-size:1rem; font-weight:600;}
-  .cat span{font-size:.82rem; opacity:.65;}
+.section-title{font-family:'Baloo 2',sans-serif; font-size:15px; font-weight:800; color:#fff; text-shadow:0 2px 0 rgba(0,0,0,.15); margin:2px 2px -4px}
+.shop{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+.item{background:#fff; border-radius:18px; padding:11px; text-align:center; cursor:pointer; box-shadow:0 5px 0 rgba(0,0,0,.1); transition:transform .12s}
+.item:active{transform:translateY(3px)}
+.item .em{font-size:26px}
+.item .name{font-size:11.5px; font-weight:800; margin-top:4px}
+.item .price{font-size:11px; color:#B8790A; font-weight:800; margin-top:2px}
+.item.disabled{opacity:.45; cursor:not-allowed}
 
-  .grid{
-    display:grid; grid-template-columns:repeat(3,1fr); gap:18px;
-  }
-  @media (max-width:720px){ .grid{grid-template-columns:1fr 1fr;} }
-  .prod{
-    border:1px solid var(--line); border-radius:4px; background:var(--card); overflow:hidden;
-  }
-  .prod .ph{height:130px; background:var(--line); opacity:.5;}
-  .prod .body{padding:14px;}
-  .prod .platform{font-size:.72rem; font-weight:600; color:var(--sage); text-transform:none;}
-  .prod h4{font-size:.95rem; margin-top:6px; font-weight:600; line-height:1.3;}
-  .prod .price{margin-top:8px; font-weight:600;}
-  .prod .old{font-weight:400; opacity:.5; text-decoration:line-through; margin-left:6px; font-size:.85em;}
-  .prod a.buy{
-    display:block; margin-top:10px; text-align:center; font-size:.85rem;
-    padding:9px; border:1px solid var(--line); border-radius:3px; text-decoration:none;
-  }
-  .prod a.buy:hover{background:var(--sage); color:#fff; border-color:var(--sage);}
+.game-card{background:var(--card); border-radius:20px; padding:16px; text-align:center; box-shadow:0 6px 0 rgba(0,0,0,.1)}
+.game-card button{
+  margin-top:10px; background:linear-gradient(90deg,var(--pink),var(--gold)); color:#2B1046; border:none; border-radius:99px;
+  padding:11px 22px; font-weight:800; font-family:'Baloo 2',sans-serif; font-size:14px; cursor:pointer; box-shadow:0 4px 0 rgba(0,0,0,.15);
+}
+.game-card button:active{transform:translateY(3px); box-shadow:0 1px 0 rgba(0,0,0,.15)}
+#gameArea{position:relative; height:180px; background:linear-gradient(180deg,#EAF7FF,#CDEBFF); border-radius:16px; margin-top:10px; overflow:hidden; display:none}
+.fruit{position:absolute; font-size:28px; cursor:pointer; user-select:none}
 
-  .filters{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:24px;}
-  .filter-btn{
-    font-family:var(--font-body); font-size:.85rem; font-weight:600;
-    padding:8px 16px; border-radius:20px; border:1px solid var(--line);
-    background:var(--card); cursor:pointer; color:var(--ink);
-  }
-  .filter-btn.active{background:var(--sage); color:#fff; border-color:var(--sage);}
-  .badge{
-    display:inline-block; font-size:.68rem; font-weight:700; color:var(--mustard);
-    margin-top:6px;
-  }
+.toast{
+  position:fixed; bottom:18px; left:50%; transform:translateX(-50%);
+  background:linear-gradient(90deg,var(--pink),#FF9776); color:#fff; padding:11px 20px; border-radius:99px;
+  font-family:'Baloo 2',sans-serif; font-size:13.5px; font-weight:700; box-shadow:0 6px 16px rgba(0,0,0,.25);
+  opacity:0; pointer-events:none; transition:opacity .25s, transform .25s;
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(-6px)}
 
-  .how{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
-  @media (max-width:720px){ .how{grid-template-columns:1fr;} }
-  .how div h4{font-family:var(--font-head); font-weight:500; font-size:1.15rem; margin-bottom:8px;}
-  .how div p{font-size:.92rem; opacity:.75;}
-
-  footer{
-    border-top:1px solid var(--line); padding:32px 24px;
-    font-size:.85rem; opacity:.7;
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#1F3B32; --bg2:#274A3E;
   }
-  footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;}
+}
 </style>
 </head>
 <body>
-
-<header>
-  <nav class="nav">
-    <div class="logo">Achou<span>Bom</span></div>
-    <div class="nav-links">
-      <a href="#categorias">Categorias</a>
-      <a href="#ofertas">Ofertas</a>
-      <a href="#como-funciona">Como funciona</a>
-    </div>
-  </nav>
-</header>
-
-<div class="hero">
-  <div>
-    <h1>Achadinhos de casa que valem o clique.</h1>
-    <p>Organização, cozinha e limpeza — só o que resolve um problema real, garimpado na Shopee, no Mercado Livre e no TikTok Shop.</p>
-    <div class="hero-cta">
-      <a class="btn btn-primary" href="#ofertas">Ver ofertas de hoje</a>
-      <a class="btn btn-ghost" href="#categorias">Explorar categorias</a>
+<div class="app">
+  <div class="topbar">
+    <div class="brand">CAPY <span>🐹</span></div>
+    <div class="currency">
+      <div class="chip gold">🪙 <span id="coins">0</span></div>
+      <div class="chip xp">⭐ Nv <span id="level">1</span></div>
     </div>
   </div>
-  <div class="hero-card">
-    <div class="swatch"></div>
-    <span class="tag">Achadinho da semana</span>
-    <h3>Organizador de gavetas expansível</h3>
-    <p>Resolve a bagunça da cozinha em 5 minutos, sem furar nada.</p>
-    <div class="price">R$ 34,90 <small>na Shopee</small></div>
+
+  <div class="stage">
+    <div class="sun"></div>
+    <div class="sparkle s1">✨</div>
+    <div class="sparkle s2">✨</div>
+    <div class="sparkle s3">⭐</div>
+    <div class="mission" id="missionBar">Carregando missão…</div>
+    <svg id="capy" width="150" height="120" viewBox="0 0 150 120" onclick="petCapy()">
+      <ellipse cx="75" cy="95" rx="55" ry="10" fill="rgba(0,0,0,.25)"/>
+      <ellipse cx="75" cy="70" rx="58" ry="38" fill="#9A7B52"/>
+      <ellipse cx="75" cy="80" rx="50" ry="26" fill="#7A5F3E"/>
+      <ellipse cx="40" cy="55" rx="24" ry="20" fill="#9A7B52"/>
+      <ellipse cx="20" cy="46" rx="6" ry="9" fill="#7A5F3E"/>
+      <ellipse cx="55" cy="46" rx="6" ry="9" fill="#7A5F3E"/>
+      <circle id="eyeL" cx="30" cy="52" r="3.4" fill="#241C10"/>
+      <circle id="eyeR" cx="48" cy="52" r="3.4" fill="#241C10"/>
+      <ellipse cx="24" cy="63" rx="4" ry="3" fill="#241C10"/>
+      <path id="mouth" d="M20 68 Q24 71 28 68" stroke="#241C10" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="mood-label" id="moodLabel">A capivara está tranquila.</div>
+    <div class="pond"></div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><span class="icon">🍉</span><div class="bar fome"><i id="barFome"></i></div></div>
+    <div class="stat"><span class="icon">⚡</span><div class="bar energia"><i id="barEnergia"></i></div></div>
+    <div class="stat"><span class="icon">😊</span><div class="bar humor"><i id="barHumor"></i></div></div>
+  </div>
+
+  <div class="actions">
+    <button onclick="doAction('alimentar')"><span class="em">🍉</span>Alimentar</button>
+    <button onclick="doAction('brincar')"><span class="em">🎾</span>Brincar</button>
+    <button onclick="doAction('banho')"><span class="em">💧</span>Banho</button>
+    <button onclick="doAction('dormir')"><span class="em">💤</span>Dormir</button>
+  </div>
+
+  <div class="section-title">Lojinha</div>
+  <div class="shop" id="shop"></div>
+
+  <div class="section-title">Minijogo · Chuva de laranjas</div>
+  <div class="game-card">
+    <div id="moodPreGame">Capture as laranjas antes que caiam na água e ganhe moedas!</div>
+    <div id="gameArea"></div>
+    <button id="playBtn" onclick="startGame()">Jogar (30s)</button>
   </div>
 </div>
 
-<section id="categorias">
-  <div class="section-head">
-    <h2>Categorias</h2>
-    <p>Só casa e utilidades. Nada de misturar nicho.</p>
-  </div>
-  <div class="cats">
-    <a class="cat" href="#"><div class="dot"></div><h4>Cozinha</h4><span>Utensílios e gadgets</span></a>
-    <a class="cat" href="#"><div class="dot"></div><h4>Organização</h4><span>Gavetas, armários, closet</span></a>
-    <a class="cat" href="#"><div class="dot"></div><h4>Limpeza</h4><span>Praticidade no dia a dia</span></a>
-    <a class="cat" href="#"><div class="dot"></div><h4>Gadgets</h4><span>Resolve na hora</span></a>
-  </div>
-</section>
-
-<section id="ofertas">
-  <div class="section-head">
-    <h2>Ofertas de hoje</h2>
-    <p>Atualizado com o que está vendendo mais</p>
-  </div>
-  <div class="filters">
-    <button class="filter-btn active" data-filter="todos">Todos</button>
-    <button class="filter-btn" data-filter="cozinha">Cozinha</button>
-    <button class="filter-btn" data-filter="organizacao">Organização</button>
-    <button class="filter-btn" data-filter="limpeza">Limpeza</button>
-    <button class="filter-btn" data-filter="gadgets">Gadgets</button>
-  </div>
-  <div class="grid" id="grid-produtos">
-    <div class="prod" data-cat="cozinha">
-      <div class="ph" style="background-image:url('/kit-utensilios.jpg');background-size:cover;background-position:center;"></div>
-      <div class="body">
-        <div class="platform">Shopee</div>
-        <h4>Kit Utensílios de Silicone Antiaderente (12 pç)</h4>
-        <div class="price">R$ 18,61</div>
-        <span class="badge">Alta comissão · ⭐ 4.8 · 3mil+ vendidos</span><br>
-        <a class="buy" href="/api/click?id=kit-utensilios-silicone&plat=shopee&url=https%3A%2F%2Fs.shopee.com.br%2F80CyrtpjCo">Ver oferta</a>
-      </div>
-    </div>
-    <div class="prod" data-cat="cozinha">
-      <div class="ph" style="background-image:url('/rodo-flat-mop.jpg'); background-size:cover; background-position:center;"></div>
-      <div class="body">
-        <div class="platform">TikTok Shop</div>
-        <h4>Escorredor de Louça Suspenso Reforçado</h4>
-        <div class="price">R$ 78,00 <span class="old">R$ 130,00</span></div>
-        <span class="badge">⭐ 4.6 · 420 vendidos</span><br>
-        <a class="buy" href="/api/click?id=escorredor-suspenso&plat=tiktok&url=https%3A%2F%2Fshop.tiktok.com%2Fbr%2Fpdp%2F1734379247551153162%3F_t%3DZS-9A4QS4vIyq0">Ver oferta</a>
-      </div>
-    </div>
-    <div class="prod" data-cat="limpeza">
-      <div class="ph" style="background-image:url('/escorredor-pia.jpg'); background-size:cover; background-position:center;"></div>
-      <div class="body">
-        <div class="platform">Mercado Livre</div>
-        <h4>Rodo Flat Mop com Balde 5L + 2 Refis</h4>
-        <div class="price">R$ 46,90 <span class="old">R$ 55,97</span></div>
-        <span class="badge">Mais vendido · ⭐ 4.3</span><br>
-        <a class="buy" href="/api/click?id=flat-mop-balde&plat=mercadolivre&url=https%3A%2F%2Fmeli.la%2F2ofFNrq">Ver oferta</a>
-      </div>
-    </div>
-    <div class="prod" data-cat="organizacao">
-      <div class="ph" style="background-image:url('/escorredor-suspenso.jpg'); background-size:cover; background-position:center;"></div>
-      <div class="body">
-        <div class="platform">Mercado Livre</div>
-        <h4>Organizador Porta Talheres Extensor Duplo</h4>
-        <div class="price">R$ 47,98 <span class="old">R$ 89,90</span></div>
-        <span class="badge">⭐ 4.9 · +5 mil vendidos</span><br>
-        <a class="buy" href="/api/click?id=organizador-talheres&plat=mercadolivre&url=https%3A%2F%2Fmeli.la%2F18FpL1Y">Ver oferta</a>
-      </div>
-    </div>
-    <div class="prod" data-cat="cozinha">
-      <div class="ph" style="background-image:url('/rodo-mop.jpg'); background-size:cover; background-position:center;"></div>
-      <div class="body">
-        <div class="platform">TikTok Shop</div>
-        <h4>Escorredor de Louças sobre a Pia (2 Andares)</h4>
-        <div class="price">R$ 159,00 <span class="old">R$ 300,00</span></div>
-        <span class="badge">⭐ 5.0 · Compacto</span><br>
-        <a class="buy" href="/api/click?id=escorredor-loucas&plat=tiktok&url=https%3A%2F%2Fshop.tiktok.com%2Fbr%2Fpdp%2F1735258185347728441%3F_t%3DZS-9A4Q5qxceby">Ver oferta</a>
-      </div>
-    </div>
-    <div class="prod" data-cat="limpeza">
-      <div class="ph" style="background-image:url('/organizador-talheres.jpg'); background-size:cover; background-position:center;"></div>
-      <div class="body">
-        <div class="platform">Mercado Livre</div>
-        <h4>Kit Coala Mega Limpeza Orquídea Negra</h4>
-        <div class="price">R$ 100,83 <span class="old">R$ 229,90</span></div>
-        <span class="badge">⭐ 4.9 · +500 vendidos</span><br>
-        <a class="buy" href="/api/click?id=kit-limpeza-coala&plat=mercadolivre&url=https%3A%2F%2Fmeli.la%2F2m3vbwB">Ver oferta</a>
-      </div>
-    </div>
-    <div class="prod" data-cat="limpeza">
-      <div class="ph" style="background-image:url('/panos-microfibra.jpg'); background-size:cover; background-position:center;"></div>
-      <div class="body">
-        <div class="platform">Mercado Livre</div>
-        <h4>Rodo Mágico Mop Giratório Chão e Janelas</h4>
-        <div class="price">R$ 46,95 <span class="old">R$ 79,00</span></div>
-        <span class="badge">⭐ 4.4 · +100 vendidos</span><br>
-        <a class="buy" href="/api/click?id=rodo-magico-mop&plat=mercadolivre&url=https%3A%2F%2Fmeli.la%2F2awGzzR">Ver oferta</a>
-      </div>
-    </div>
-    <div class="prod" data-cat="limpeza">
-      <div class="ph" style="background-image:url('/kit-limpeza.jpg'); background-size:cover; background-position:center;"></div>
-      <div class="body">
-        <div class="platform">Mercado Livre</div>
-        <h4>Kit 10 Panos de Microfibra Multiuso</h4>
-        <div class="price">R$ 9,98 <span class="old">R$ 49,90</span></div>
-        <span class="badge">⭐ 4.2 · +1000 vendidos</span><br>
-        <a class="buy" href="/api/click?id=panos-microfibra&plat=mercadolivre&url=https%3A%2F%2Fmeli.la%2F1R7n8DZ">Ver oferta</a>
-      </div>
-    </div>
-    <div class="prod" data-cat="cozinha">
-      <div class="ph" style="background-image:url('/cafeteira.jpg'); background-size:cover; background-position:center;"></div>
-      <div class="body">
-        <div class="platform">TikTok Shop</div>
-        <h4>Cafeteira Italiana Moka Inox 600ml (12 xícaras)</h4>
-        <div class="price">R$ 48,90 <span class="old">R$ 99,99</span></div>
-        <span class="badge">⭐ 4.6 · 2836 vendidos</span><br>
-        <a class="buy" href="/api/click?id=cafeteira-italiana&plat=tiktok&url=https%3A%2F%2Fshop.tiktok.com%2Fbr%2Fpdp%2F1736861889945831168%3F_t%3DZS-9A5D9KmxhfG">Ver oferta</a>
-      </div>
-    </div>
-  </div>
-</section>
+<div class="toast" id="toast"></div>
 
 <script>
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filtro = btn.dataset.filter;
-      document.querySelectorAll('#grid-produtos .prod').forEach(card => {
-        card.style.display = (filtro === 'todos' || card.dataset.cat === filtro) ? '' : 'none';
-      });
-    });
+const KEY='capy_save_v1';
+let state = load() || {
+  fome:80, energia:80, humor:80, coins:40, xp:0, level:1,
+  inventory:{}, missionDate:null, missionDone:false, missionType:'alimentar', missionCount:0, missionGoal:3, lastTick:Date.now()
+};
+
+const SHOP_ITEMS = [
+  {id:'melancia', name:'Melancia', em:'🍉', price:8, type:'fome', value:25},
+  {id:'bola', name:'Bolinha', em:'🎾', price:12, type:'brinquedo', value:0},
+  {id:'chapeu', name:'Chapéu', em:'👒', value:30, type:'cosmetico'},
+  {id:'boia', name:'Boia', em:'🛟', value:35, type:'cosmetico'},
+  {id:'flor', name:'Coroa de flor', em:'🌼', value:45, type:'cosmetico'},
+  {id:'oculos', name:'Óculos', em:'🕶️', value:40, type:'cosmetico'},
+];
+
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+function load(){ try{ const r=localStorage.getItem(KEY); return r?JSON.parse(r):null; }catch(e){ return null; } }
+
+function clamp(v){ return Math.max(0, Math.min(100, v)); }
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toast._h);
+  toast._h=setTimeout(()=>t.classList.remove('show'), 1600);
+}
+
+function checkMission(){
+  const today = new Date().toDateString();
+  if(state.missionDate !== today){
+    state.missionDate = today;
+    state.missionDone = false;
+    state.missionCount = 0;
+    const types=['alimentar','brincar','banho'];
+    state.missionType = types[Math.floor(Math.random()*types.length)];
+    state.missionGoal = 3;
+  }
+}
+
+function missionLabel(){
+  const names={alimentar:'Alimente a Capy',brincar:'Brinque com a Capy',banho:'Dê banho na Capy'};
+  if(state.missionDone) return '✅ Missão do dia concluída! +15 moedas já recebidas';
+  return `🎯 Missão: ${names[state.missionType]} (${state.missionCount}/${state.missionGoal}) · +15🪙 +20⭐`;
+}
+
+function gainXP(v){
+  state.xp += v;
+  const need = state.level*50;
+  if(state.xp >= need){
+    state.xp -= need; state.level++;
+    toast('Subiu de nível! Nível '+state.level);
+  }
+}
+
+function updateEyes(){
+  const el=document.getElementById('eyeL'), er=document.getElementById('eyeR'), mouth=document.getElementById('mouth');
+  const avg=(state.fome+state.energia+state.humor)/3;
+  const label=document.getElementById('moodLabel');
+  if(avg<30){
+    mouth.setAttribute('d','M20 70 Q24 66 28 70'); label.textContent='A capivara está precisando de cuidado.';
+  } else if(avg<65){
+    mouth.setAttribute('d','M20 68 Q24 69 28 68'); label.textContent='A capivara está tranquila.';
+  } else {
+    mouth.setAttribute('d','M20 68 Q24 72 28 68'); label.textContent='A capivara está feliz na água quentinha.';
+  }
+}
+
+function render(){
+  document.getElementById('barFome').style.width = state.fome+'%';
+  document.getElementById('barEnergia').style.width = state.energia+'%';
+  document.getElementById('barHumor').style.width = state.humor+'%';
+  document.getElementById('coins').textContent = state.coins;
+  document.getElementById('level').textContent = state.level;
+  document.getElementById('missionBar').innerHTML = missionLabel();
+  updateEyes();
+  renderShop();
+  save();
+}
+
+function renderShop(){
+  const wrap=document.getElementById('shop');
+  wrap.innerHTML='';
+  SHOP_ITEMS.forEach(it=>{
+    const owned = state.inventory[it.id];
+    const div=document.createElement('div');
+    div.className='item'+((owned && it.type==='cosmetico')?' disabled':'');
+    div.innerHTML = `<div class="em">${it.em}</div><div class="name">${it.name}</div><div class="price">${owned && it.type==='cosmetico' ? 'Adquirido' : it.price+' 🪙'}</div>`;
+    div.onclick=()=>buyItem(it);
+    wrap.appendChild(div);
   });
+}
+
+function buyItem(it){
+  if(it.type==='cosmetico' && state.inventory[it.id]){ toast('Você já tem esse item'); return; }
+  if(state.coins < it.price){ toast('Moedas insuficientes'); return; }
+  state.coins -= it.price;
+  if(it.type==='fome'){ state.fome = clamp(state.fome+it.value); toast('Melancia entregue! 🍉'); }
+  else if(it.type==='brinquedo'){ state.humor = clamp(state.humor+18); toast('Nova bolinha! A Capy adorou.'); }
+  else { state.inventory[it.id]=true; toast(it.name+' adicionado ao guarda-roupa!'); }
+  render();
+}
+
+function petCapy(){
+  const el=document.getElementById('capy');
+  el.classList.remove('bounce'); void el.offsetWidth; el.classList.add('bounce');
+  state.humor = clamp(state.humor+2);
+  render();
+}
+
+function doAction(type){
+  const el=document.getElementById('capy');
+  el.classList.remove('bounce'); void el.offsetWidth; el.classList.add('bounce');
+
+  if(type==='alimentar'){
+    if(state.fome>=95){ toast('A Capy já está satisfeita'); return; }
+    state.fome = clamp(state.fome+20); state.humor=clamp(state.humor+3); gainXP(3);
+  } else if(type==='brincar'){
+    if(state.energia<15){ toast('A Capy está cansada demais para brincar'); return; }
+    state.humor = clamp(state.humor+15); state.energia=clamp(state.energia-10); gainXP(4);
+  } else if(type==='banho'){
+    state.humor = clamp(state.humor+12); state.fome=clamp(state.fome-3); gainXP(3);
+  } else if(type==='dormir'){
+    state.energia = clamp(state.energia+30); gainXP(2);
+  }
+
+  checkMission();
+  if(!state.missionDone && state.missionType===type){
+    state.missionCount++;
+    if(state.missionCount>=state.missionGoal){
+      state.missionDone=true; state.coins+=15; gainXP(20);
+      toast('Missão do dia concluída! +15🪙');
+    }
+  }
+  render();
+}
+
+// decaimento passivo ao voltar ao jogo
+function applyPassiveDecay(){
+  const now=Date.now();
+  const mins=(now-(state.lastTick||now))/60000;
+  const decay=Math.min(mins*0.5, 60);
+  state.fome=clamp(state.fome-decay);
+  state.energia=clamp(state.energia-decay*0.6);
+  state.humor=clamp(state.humor-decay*0.7);
+  state.lastTick=now;
+}
+
+// minijogo
+let gameTimer=null, gameInterval=null, gameScore=0;
+function startGame(){
+  const area=document.getElementById('gameArea');
+  const btn=document.getElementById('playBtn');
+  area.style.display='block'; area.innerHTML=''; btn.disabled=true; btn.textContent='Jogando…';
+  gameScore=0;
+  let timeLeft=30;
+  gameInterval=setInterval(()=>{
+    const f=document.createElement('div');
+    f.className='fruit'; f.textContent='🍊';
+    const x=Math.random()*85;
+    f.style.left=x+'%'; f.style.top='-30px';
+    area.appendChild(f);
+    let y=-30;
+    const fall=setInterval(()=>{
+      y+=6; f.style.top=y+'px';
+      if(y>150){ clearInterval(fall); f.remove(); }
+    },40);
+    f.onclick=()=>{ gameScore++; clearInterval(fall); f.remove(); };
+  }, 550);
+  gameTimer=setInterval(()=>{
+    timeLeft--;
+    if(timeLeft<=0){ endGame(); }
+  },1000);
+}
+function endGame(){
+  clearInterval(gameInterval); clearInterval(gameTimer);
+  const area=document.getElementById('gameArea');
+  area.querySelectorAll('.fruit').forEach(f=>f.remove());
+  const coinsWon = gameScore*2;
+  state.coins += coinsWon; state.humor=clamp(state.humor+8); gainXP(gameScore);
+  toast(`Fim de jogo! ${gameScore} laranjas · +${coinsWon} moedas`);
+  const btn=document.getElementById('playBtn');
+  btn.disabled=false; btn.textContent='Jogar novamente (30s)';
+  render();
+}
+
+checkMission();
+applyPassiveDecay();
+render();
+setInterval(()=>{ state.lastTick=Date.now()-1; applyPassiveDecay(); render(); }, 60000);
 </script>
-
-<section id="como-funciona">
-  <div class="section-head">
-    <h2>Como funciona</h2>
-  </div>
-  <div class="how">
-    <div>
-      <h4>Garimpo</h4>
-      <p>Cada produto é escolhido por resolver um problema real de casa, com preço e avaliação conferidos.</p>
-    </div>
-    <div>
-      <h4>Comparação</h4>
-      <p>Você vê onde está mais barato — Shopee, TikTok Shop ou Mercado Livre — antes de clicar.</p>
-    </div>
-    <div>
-      <h4>Compra direta</h4>
-      <p>O clique leva direto para o checkout da plataforma escolhida, sem cadastro extra no site.</p>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <span>Achou Bom — achadinhos de casa e utilidades</span>
-    <span>Contato: mathiaspedroluiz44@gmail.com</span>
-  </div>
-</footer>
-
 </body>
-                       </html>
+</html>
 
     
   
