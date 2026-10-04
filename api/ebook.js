@@ -6,6 +6,7 @@ import { kv } from '@vercel/kv';
 const produtos = {
   pt: { titulo: 'E-book Deus Está Conosco (Português)', preco: 14.9 },
   es: { titulo: 'E-book Dios Está con Nosotros (Español)', preco: 14.9 },
+  plano: { titulo: 'E-book Plano da Salvação', preco: 14.9 },
   'livro-pt': { titulo: 'E-book animado Guarda o Teu Coração (Português)', preco: 19.9 },
   'livro-es': { titulo: 'E-book animado Guarda tu Corazón (Español)', preco: 19.9 },
   'livro-en': { titulo: 'Animated e-book Guard Your Heart (English)', preco: 19.9 },
@@ -17,7 +18,7 @@ const pagamento = (id) =>
     headers: { Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}` },
   }).then((r) => r.json());
 const idioma = (ref) => (ref.endsWith('-es') ? 'es' : ref.endsWith('-en') ? 'en' : 'pt');
-const ehNosso = (ref) => ref.startsWith('ebook-') || ref.startsWith('livro-');
+const ehNosso = (ref) => ref.startsWith('ebook-') || ref.startsWith('livro-') || ref.startsWith('plano-');
 
 const emails = {
   pt: ['Seu e-book está pronto', 'Obrigado pela compra! Acesse seu e-book aqui:', 'Abrir e-book'],
@@ -34,7 +35,7 @@ export default async function handler(req, res) {
     try {
       const id = produtos[req.body?.id] ? req.body.id : 'pt';
       const p = produtos[id];
-      const ref = id.startsWith('livro-') ? id : `ebook-${id}`;
+      const ref = id.startsWith('livro-') ? id : id === 'plano' ? 'plano-pt' : `ebook-${id}`;
       const r = await fetch('https://api.mercadopago.com/checkout/preferences', {
         method: 'POST',
         headers: { Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`, 'Content-Type': 'application/json' },
@@ -44,7 +45,7 @@ export default async function handler(req, res) {
           back_urls: { success: `${SITE}/obrigado.html`, pending: `${SITE}/obrigado.html`, failure: `${SITE}/` },
           auto_return: 'approved',
           notification_url: `${SITE}/api/ebook?acao=webhook`,
-          statement_descriptor: 'EBOOK DEUS CONOSCO',
+          statement_descriptor: id === 'plano' ? 'EBOOK PLANO SALVACAO' : 'EBOOK DEUS CONOSCO',
         }),
       });
       const d = await r.json();
@@ -69,6 +70,12 @@ export default async function handler(req, res) {
         const arq = path.join(process.cwd(), 'api', '_private', `livro-coracao-${lang}.html`);
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
         res.setHeader('Cache-Control', 'private, no-store');
+        return res.status(200).send(fs.readFileSync(arq));
+      }
+      if (ref.startsWith('plano-')) {
+        const arq = path.join(process.cwd(), 'api', '_private', 'plano-salvacao.pdf');
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename="Plano-da-Salvacao.pdf"');
         return res.status(200).send(fs.readFileSync(arq));
       }
       const arquivo = path.join(process.cwd(), 'api', '_private', `ebook-${lang}.pdf`);
