@@ -1,1 +1,1 @@
-{ "functions": { "api/ebook.js": { "includeFiles": "api/_private/**" } } }
+{ "functions": { "api/ebook.js": { "includeFiles": "api/_*" } } }
