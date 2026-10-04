@@ -2,10 +2,13 @@ import fs from 'fs';
 import path from 'path';
 import { kv } from '@vercel/kv';
 
-// Preço em reais. Se mudar, mude também no index.html (procure 14,90).
+// Preços em reais. Se mudar, mude também no index.html.
 const produtos = {
   pt: { titulo: 'E-book Deus Está Conosco (Português)', preco: 14.9 },
   es: { titulo: 'E-book Dios Está con Nosotros (Español)', preco: 14.9 },
+  'livro-pt': { titulo: 'E-book animado Guarda o Teu Coração (Português)', preco: 19.9 },
+  'livro-es': { titulo: 'E-book animado Guarda tu Corazón (Español)', preco: 19.9 },
+  'livro-en': { titulo: 'Animated e-book Guard Your Heart (English)', preco: 19.9 },
 };
 
 const SITE = 'https://www.podiorank.com.br';
@@ -13,6 +16,14 @@ const pagamento = (id) =>
   fetch(`https://api.mercadopago.com/v1/payments/${id}`, {
     headers: { Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}` },
   }).then((r) => r.json());
+const idioma = (ref) => (ref.endsWith('-es') ? 'es' : ref.endsWith('-en') ? 'en' : 'pt');
+const ehNosso = (ref) => ref.startsWith('ebook-') || ref.startsWith('livro-');
+
+const emails = {
+  pt: ['Seu e-book está pronto', 'Obrigado pela compra! Acesse seu e-book aqui:', 'Abrir e-book'],
+  es: ['Tu e-book está listo', '¡Gracias por tu compra! Accede a tu e-book aquí:', 'Abrir e-book'],
+  en: ['Your e-book is ready', 'Thank you for your purchase! Open your e-book here:', 'Open e-book'],
+};
 
 export default async function handler(req, res) {
   const acao = req.query.acao;
@@ -21,14 +32,15 @@ export default async function handler(req, res) {
   if (acao === 'checkout') {
     if (req.method !== 'POST') return res.status(405).json({ erro: 'Método não permitido' });
     try {
-      const id = req.body?.id === 'es' ? 'es' : 'pt';
+      const id = produtos[req.body?.id] ? req.body.id : 'pt';
       const p = produtos[id];
+      const ref = id.startsWith('livro-') ? id : `ebook-${id}`;
       const r = await fetch('https://api.mercadopago.com/checkout/preferences', {
         method: 'POST',
         headers: { Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           items: [{ title: p.titulo, quantity: 1, unit_price: p.preco, currency_id: 'BRL' }],
-          external_reference: `ebook-${id}`,
+          external_reference: ref,
           back_urls: { success: `${SITE}/obrigado.html`, pending: `${SITE}/obrigado.html`, failure: `${SITE}/` },
           auto_return: 'approved',
           notification_url: `${SITE}/api/ebook?acao=webhook`,
@@ -43,16 +55,22 @@ export default async function handler(req, res) {
     }
   }
 
-  // 2) Entregar o PDF (só com pagamento aprovado)
+  // 2) Entregar o arquivo (só com pagamento aprovado): PDF ou livro animado
   if (acao === 'download') {
     const pid = String(req.query.payment_id || '').replace(/\D/g, '');
     if (!pid) return res.status(400).send('Pagamento não informado.');
     try {
       const pay = await pagamento(pid);
       const ref = String(pay.external_reference || '');
-      if (pay.status !== 'approved' || !ref.startsWith('ebook-'))
+      if (pay.status !== 'approved' || !ehNosso(ref))
         return res.status(402).send('Pagamento ainda não aprovado.');
-      const lang = ref === 'ebook-es' ? 'es' : 'pt';
+      const lang = idioma(ref);
+      if (ref.startsWith('livro-')) {
+        const arq = path.join(process.cwd(), 'api', '_private', `livro-coracao-${lang}.html`);
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.setHeader('Cache-Control', 'private, no-store');
+        return res.status(200).send(fs.readFileSync(arq));
+      }
       const arquivo = path.join(process.cwd(), 'api', '_private', `ebook-${lang}.pdf`);
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename="${lang === 'es' ? 'Dios-Esta-Con-Nosotros' : 'Deus-Esta-Conosco'}.pdf"`);
@@ -62,7 +80,7 @@ export default async function handler(req, res) {
     }
   }
 
-  // 3) Aviso do Mercado Pago: manda o e-mail com o link de download
+  // 3) Aviso do Mercado Pago: manda o e-mail com o link
   if (acao === 'webhook') {
     try {
       const pid = req.body?.data?.id || req.query['data.id'] || req.query.id;
@@ -70,12 +88,12 @@ export default async function handler(req, res) {
       const pay = await pagamento(pid);
       const ref = String(pay.external_reference || '');
       const email = pay.payer?.email;
-      if (pay.status === 'approved' && ref.startsWith('ebook-') && email && process.env.RESEND_API_KEY) {
+      if (pay.status === 'approved' && ehNosso(ref) && email && process.env.RESEND_API_KEY) {
         let novo = 1;
         try { novo = await kv.sadd('ebook_enviados', String(pay.id)); } catch (e) {}
         if (novo === 1) {
           try { await kv.incr('ebook:vendas'); } catch (e) {}
-          const es = ref === 'ebook-es';
+          const [assunto, texto, botao] = emails[idioma(ref)];
           const link = `${SITE}/obrigado.html?payment_id=${pay.id}`;
           await fetch('https://api.resend.com/emails', {
             method: 'POST',
@@ -83,10 +101,8 @@ export default async function handler(req, res) {
             body: JSON.stringify({
               from: 'Deus Está Conosco <contato@podiorank.com.br>',
               to: [email],
-              subject: es ? 'Tu e-book está listo' : 'Seu e-book está pronto',
-              html: es
-                ? `<p>¡Gracias por tu compra! Descarga tu e-book aquí:</p><p><a href="${link}">Descargar e-book</a></p>`
-                : `<p>Obrigado pela compra! Baixe seu e-book aqui:</p><p><a href="${link}">Baixar e-book</a></p>`,
+              subject: assunto,
+              html: `<p>${texto}</p><p><a href="${link}">${botao}</a></p>`,
             }),
           });
         }
