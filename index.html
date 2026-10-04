@@ -86,7 +86,32 @@ footer{max-width:560px;margin:0 auto;padding:50px 24px calc(110px + env(safe-are
   <div class="seq" style="--d:6.8s"><a class="cta" href="#comprar" data-i="cta1"></a><button class="alt" id="alt" data-i="alt"></button></div>
   <img class="book seq" style="--d:7.4s" id="cover" alt="Capa do e-book" width="250" height="355">
 </div>
-
+<section id="plano" aria-labelledby="pl2">
+ <div class="an">
+  <span class="nvt" id="pl1"></span>
+  <img src="capa-plano.jpg" alt="Plano da Salvação" width="210" height="298">
+  <h2 id="pl2"></h2>
+  <p id="pl3"></p>
+  <div class="price">R$ 14,90</div>
+  <p class="small" id="pl4"></p>
+  <button class="cta" id="pl5"></button>
+  <div id="pl6" role="alert" style="color:#ffb4a8;min-height:1.3em;font-size:15px"></div>
+ </div>
+</section>
+<script>
+(function(){
+var T={pt:{n:"E-book",h:"Plano da Salvação",d:"Por que entregar sua vida a Jesus Cristo é a decisão mais urgente da sua vida. 18 páginas com sinopse, 6 capítulos, versículos, a oração da salvação e o caminho depois da decisão.",s:"PDF para ler no celular. O download libera assim que o pagamento for aprovado.",b:"Comprar o Plano da Salvação",e:"Não foi possível abrir o pagamento. Tente de novo."},
+es:{n:"E-book",h:"Plan de Salvación",d:"Por qué entregar tu vida a Jesucristo es la decisión más urgente de tu vida. 18 páginas, 6 capítulos, versículos y la oración de salvación. Disponible solo en portugués.",s:"PDF para leer en el celular. La descarga se libera al aprobarse el pago.",b:"Comprar el Plan de Salvación",e:"No se pudo abrir el pago. Inténtalo de nuevo."}};
+var $=function(i){return document.getElementById(i)},L=function(){return(typeof lang!=="undefined"&&lang==="es")?"es":"pt"};
+function upd(){var t=T[L()];$("pl1").textContent=t.n;$("pl2").textContent=t.h;$("pl3").textContent=t.d;$("pl4").textContent=t.s;$("pl5").textContent=t.b}
+$("pl5").onclick=function(){var b=$("pl5");b.disabled=true;$("pl6").textContent="";
+ fetch("/api/ebook?acao=checkout",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:"plano"})})
+ .then(function(r){return r.json()}).then(function(d){if(d.url){location.href=d.url}else{throw 0}})
+ .catch(function(){b.disabled=false;$("pl6").textContent=T[L()].e})};
+if(typeof set==="function"){var _s=set;set=function(l){_s(l);upd()}}
+upd();
+})();
+</script>
 <main>
 <section aria-labelledby="hv">
   <h2 id="hv" data-i="hv"></h2>
