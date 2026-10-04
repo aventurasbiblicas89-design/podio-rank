@@ -67,18 +67,18 @@ export default async function handler(req, res) {
         return res.status(402).send('Pagamento ainda não aprovado.');
       const lang = idioma(ref);
       if (ref.startsWith('livro-')) {
-        const arq = path.join(process.cwd(), 'api', '_private', `livro-coracao-${lang}.html`);
+        const arq = path.join(process.cwd(), 'api', `_livro-coracao-${lang}.html`);
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
         res.setHeader('Cache-Control', 'private, no-store');
         return res.status(200).send(fs.readFileSync(arq));
       }
       if (ref.startsWith('plano-')) {
-        const arq = path.join(process.cwd(), 'api', '_private', 'plano-salvacao.pdf');
+        const arq = path.join(process.cwd(), 'api', '_plano-salvacao.pdf');
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', 'attachment; filename="Plano-da-Salvacao.pdf"');
         return res.status(200).send(fs.readFileSync(arq));
       }
-      const arquivo = path.join(process.cwd(), 'api', '_private', `ebook-${lang}.pdf`);
+      const arquivo = path.join(process.cwd(), 'api', `_ebook-${lang}.pdf`);
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename="${lang === 'es' ? 'Dios-Esta-Con-Nosotros' : 'Deus-Esta-Conosco'}.pdf"`);
       return res.status(200).send(fs.readFileSync(arquivo));
