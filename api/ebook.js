@@ -95,5 +95,22 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
+  // 4) Visitantes do dia (únicos, horário de São Paulo)
+  if (acao === 'visita' || acao === 'visitas') {
+    try {
+      const dia = new Date().toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
+      const chave = `visitas:${dia}`;
+      if (acao === 'visita') {
+        const vid = String(req.query.vid || '').slice(0, 40);
+        if (vid) { await kv.sadd(chave, vid); await kv.expire(chave, 60 * 60 * 24 * 3); }
+      }
+      const n = await kv.scard(chave);
+      res.setHeader('Cache-Control', 'no-store');
+      return res.status(200).json({ n });
+    } catch (e) {
+      return res.status(200).json({});
+    }
+  }
+
   return res.status(404).end();
-}
+        }
