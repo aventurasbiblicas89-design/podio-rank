@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0B1226">
+<title>Guard Your Heart</title>
+<style>
+:root{--bg:#0B1226;--ink:#F5F0E3;--mut:#B9BFD0;--gold:#E0B65A;--glow:#FFD98A;--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:radial-gradient(120% 80% at 50% 0,#1a2548,#0B1226 60%);color:var(--ink);font:18px/1.6 system-ui,-apple-system,sans-serif;overflow:hidden}
+#app{position:fixed;inset:0;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.prog{height:3px;background:#ffffff14}.prog i{display:block;height:100%;width:0;background:var(--gold);transition:width .5s}
+.cnt{position:absolute;top:calc(env(safe-area-inset-top) + 12px);right:16px;font:600 13px system-ui;color:var(--mut);z-index:3}
+.stage{flex:1;position:relative;overflow:hidden}
+.pg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:26px 24px 12px;text-align:center;opacity:0;visibility:hidden;transform:translateX(34px);transition:opacity .5s,transform .5s,visibility 0s .5s;overflow-y:auto}
+.pg.on{opacity:1;visibility:visible;transform:none;transition:opacity .6s,transform .6s}
+.pg.out{transform:translateX(-34px)}
+.ill{width:min(58vw,250px);height:auto;flex:none;margin-bottom:12px;overflow:visible}
+h2{font:600 29px/1.15 var(--serif);color:var(--glow);margin-bottom:12px}
+p.x{color:var(--mut);max-width:34ch;margin-bottom:16px}
+.v{border-left:3px solid var(--gold);padding:6px 0 6px 14px;max-width:34ch;text-align:left;font:italic 19px/1.4 var(--serif)}
+.v b{display:block;font:600 14px system-ui;font-style:normal;color:var(--gold);margin-top:6px}
+.pg>*{opacity:0;transform:translateY(14px)}
+.pg.on>*{animation:up .8s ease forwards}
+.pg.on>*:nth-child(1){animation-delay:.1s}.pg.on>*:nth-child(2){animation-delay:.35s}.pg.on>*:nth-child(3){animation-delay:.6s}.pg.on>*:nth-child(4){animation-delay:.85s}
+@keyframes up{to{opacity:1;transform:none}}
+.nav{display:flex;gap:10px;padding:10px 16px 14px}
+.nav button,.btn{flex:1;padding:15px;border-radius:99px;font:700 17px system-ui;border:1px solid var(--gold);background:transparent;color:var(--ink);cursor:pointer}
+.nav button.p,.btn.p{background:var(--gold);color:var(--bg)}
+.nav button:disabled{opacity:.3}
+button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+body.c .nav,body.c .cnt{display:none}
+.cover h1{font:600 clamp(40px,12.5vw,60px)/1 var(--serif);color:var(--glow);text-shadow:0 0 36px #FF8A3D88;margin:6px 0 12px}
+.cover .ill{width:min(78vw,320px)}
+.cover .btn{flex:none;padding:17px 34px;font-size:19px;margin-top:6px}
+.cover.on .btn{animation:up .8s ease .85s forwards,glw 2.6s 2s infinite}
+@keyframes glw{0%{box-shadow:0 0 0 0 #E0B65A66}70%,100%{box-shadow:0 0 0 18px #E0B65A00}}
+.pl{list-style:none;padding:0;text-align:left;max-width:36ch;font-size:16.5px;line-height:1.45}
+.pl li{display:flex;gap:12px;margin-bottom:10px;color:var(--mut)}
+.pl i{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid var(--gold);position:relative;margin-top:1px}
+.pl b{color:var(--glow)}
+.pg.on .pl i{animation:ck .5s ease forwards;animation-delay:calc(1s + var(--n)*.45s)}
+@keyframes ck{to{background:var(--gold);box-shadow:0 0 12px var(--gold)}}
+.row{display:flex;gap:10px;width:100%;max-width:340px;margin-top:6px}
+.pulse,.rot,.rp{transform-box:fill-box;transform-origin:center}
+.pg.on .pulse{animation:pl 1.6s ease-in-out infinite}
+@keyframes pl{50%{transform:scale(1.07)}}
+.pg.on .rot{animation:rt 40s linear infinite}
+@keyframes rt{to{transform:rotate(360deg)}}
+.pg.on .rp{animation:rpl 3s ease-out infinite}
+@keyframes rpl{from{transform:scale(.5);opacity:.8}to{transform:scale(2.1);opacity:0}}
+.pg.on .crk{stroke-dasharray:120;animation:cr 3s ease-in-out infinite alternate}
+@keyframes cr{from{stroke-dashoffset:120}to{stroke-dashoffset:0}}
+.pg.on .wat{transform-origin:50% 100%;transform-box:fill-box;animation:wt 5s ease-in-out infinite alternate}
+@keyframes wt{from{transform:scaleY(.2)}to{transform:scaleY(.95)}}
+.pg.on .dr{animation:dp 2s ease-in infinite}
+@keyframes dp{from{transform:translateY(-20px);opacity:0}30%{opacity:1}to{transform:translateY(45px);opacity:0}}
+.pg.on .kn{animation:kn 2.4s ease-in-out infinite}
+@keyframes kn{0%,60%,100%{transform:translateX(0)}6%,18%,30%{transform:translateX(-3px)}12%,24%,36%{transform:translateX(3px)}}
+.pg.on .lt{animation:lt 2.4s ease-in-out infinite alternate}
+@keyframes lt{from{opacity:.2}to{opacity:1}}
+.pg.on .st1{animation:s1 6s ease-in-out infinite alternate}
+.pg.on .st2{animation:s2 6s ease-in-out infinite alternate}
+@keyframes s1{to{opacity:0}}@keyframes s2{from{opacity:0}to{opacity:1}}
+.pg.on .rt{stroke-dasharray:100;animation:rr 4s ease-in-out infinite alternate}
+@keyframes rr{from{stroke-dashoffset:0}to{stroke-dashoffset:100}}
+.pg.on .sp{animation:sp 3s ease-out infinite}
+@keyframes sp{from{transform:translateY(0);opacity:0}20%{opacity:1}to{transform:translateY(-70px);opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.pg>*{opacity:1;transform:none}.pg.on .pl i{background:var(--gold)}}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<radialGradient id="hg" cx="40%" cy="35%" r="75%"><stop offset="0" stop-color="#FFD98A"/><stop offset=".45" stop-color="#FF8A3D"/><stop offset="1" stop-color="#B3402A"/></radialGradient>
+<linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9CCBF0"/><stop offset="1" stop-color="#3E6FA8"/></linearGradient>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD98A" stop-opacity=".9"/><stop offset="1" stop-color="#FFD98A" stop-opacity="0"/></linearGradient>
+</defs></svg>
+<div id="app"><div class="prog"><i id="bar"></i></div><div class="cnt" id="cnt"></div>
+<div class="stage" id="stage"></div>
+<div class="nav"><button id="pv">Back</button><button class="p" id="nx">Next</button></div></div>
+<script>
+var SITE="https://www.podiorank.com.br/";
+var H="M100 172C28 122 18 70 54 50C78 37 96 49 100 66C104 49 122 37 146 50C182 70 172 122 100 172Z";
+function rays(){var s="";for(var i=0;i<14;i++){var a=i*Math.PI*2/14;s+='<line x1="'+(100+Math.cos(a)*56)+'" y1="'+(105+Math.sin(a)*56)+'" x2="'+(100+Math.cos(a)*94)+'" y2="'+(105+Math.sin(a)*94)+'"/>'}return s}
+var Hh='<path class="pulse" d="'+H+'" fill="url(#hg)"/>',R='<circle class="rp" cx="100" cy="108" r="45" fill="none" stroke="#FFD98A" stroke-width="1.5"/>';
+var I={
+pulse:'<g class="rot" stroke="#FFD98A" stroke-width="2" stroke-linecap="round" opacity=".55">'+rays()+'</g>'+R+Hh,
+ripple:R+R.replace('class="rp"','class="rp" style="animation-delay:1s"')+R.replace('class="rp"','class="rp" style="animation-delay:2s"')+Hh,
+well:'<rect x="58" y="34" width="84" height="136" rx="16" fill="#ffffff0d" stroke="#E0B65A" stroke-width="2"/><rect class="wat" x="63" y="39" width="74" height="126" rx="12" fill="url(#wg)"/><g fill="#9CCBF0"><circle class="dr" cx="100" cy="30" r="4"/><circle class="dr" style="animation-delay:.9s" cx="84" cy="30" r="3"/></g>',
+crack:'<ellipse cx="100" cy="184" rx="50" ry="6" fill="#000" opacity=".4"/><path d="'+H+'" fill="#5B6478"/><path class="crk" d="M100 66L90 92L108 106L92 128L104 146" fill="none" stroke="#0B1226" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>',
+door:'<path class="lt" d="M62 170L14 200H186L138 170Z" fill="url(#lg)"/><g class="kn"><rect x="62" y="34" width="76" height="136" rx="6" fill="#18224A" stroke="#E0B65A" stroke-width="2.5"/><g fill="none" stroke="#E0B65A" opacity=".5"><rect x="72" y="46" width="24" height="44" rx="3"/><rect x="104" y="46" width="24" height="44" rx="3"/><rect x="72" y="100" width="56" height="58" rx="3"/></g><circle cx="126" cy="108" r="4" fill="#FFD98A"/></g>',
+stone:'<path class="st2" d="'+H+'" fill="url(#hg)"/><g class="st1"><path d="'+H+'" fill="#5B6478"/><path d="M100 66L92 92L106 106L94 128" fill="none" stroke="#0B1226" stroke-width="3.5" stroke-linecap="round"/></g>',
+wash:'<path d="'+H+'" fill="#5A4632"/><path class="st2" d="'+H+'" fill="url(#hg)"/><g fill="#9CCBF0"><circle class="dr" cx="70" cy="34" r="4"/><circle class="dr" style="animation-delay:.6s" cx="100" cy="26" r="4"/><circle class="dr" style="animation-delay:1.2s" cx="130" cy="34" r="4"/><circle class="dr" style="animation-delay:1.7s" cx="85" cy="20" r="3"/></g>',
+root:'<path d="'+H+'" transform="translate(100 52) scale(.5) translate(-100 -105)" fill="url(#hg)"/><g fill="none" stroke="#9A6B45" stroke-width="4" stroke-linecap="round"><path class="rt" d="M100 92C96 120 70 132 62 172"/><path class="rt" d="M100 92C104 122 128 134 140 174"/><path class="rt" d="M100 92V182"/></g>',
+shield:'<circle class="rot" cx="100" cy="105" r="82" fill="none" stroke="#E0B65A" stroke-width="3" stroke-dasharray="14 10"/><circle cx="100" cy="105" r="72" fill="#E0B65A" opacity=".08"/><g transform="translate(100 105) scale(.7) translate(-100 -105)">'+Hh+'</g>',
+joy:Hh+'<g fill="#FFD98A"><circle class="sp" cx="60" cy="150" r="3"/><circle class="sp" style="animation-delay:.7s" cx="100" cy="140" r="2.5"/><circle class="sp" style="animation-delay:1.4s" cx="140" cy="150" r="3"/><circle class="sp" style="animation-delay:2.1s" cx="80" cy="135" r="2"/><circle class="sp" style="animation-delay:.3s" cx="120" cy="145" r="2"/></g>'
+};
+var P=[
+{k:"cover"},
+{i:"ripple",t:"What is inside you?",x:"Before everything you do, there is something no one sees: your heart. That is where desires, words and decisions are born. This journey shows what the Bible says about it.",v:["Keep thy heart with all diligence; for out of it are the issues of life.","Proverbs 4:23"]},
+{i:"well",t:"Everything starts there",x:"Like a spring, the heart feeds your whole life. What is inside shows up in your attitudes, in the way you speak and in what you choose.",v:["Out of the abundance of the heart the mouth speaketh.","Matthew 12:34"]},
+{i:"crack",t:"A heart that deceives",x:"We do not always know what is going on inside us. We can excuse what is wrong and call normal what hurts us. That is why we need a light from outside.",v:["The heart is deceitful above all things, and desperately wicked: who can know it?","Jeremiah 17:9"]},
+{i:"pulse",t:"A light from outside",x:"God's Word shows what is hidden without humiliating. It reveals to heal, not to condemn. You can ask: show me what I cannot see.",v:["Search me, O God, and know my heart.","Psalm 139:23"]},
+{i:"door",t:"Someone is knocking",x:"God does not force his way in. He knocks with respect and waits. Opening the door is a simple act: admit that you need him and say “come in”.",v:["Behold, I stand at the door, and knock: if any man hear my voice, and open the door, I will come in to him.","Revelation 3:20"]},
+{i:"stone",t:"From stone to flesh",x:"Some hearts are hardened by pain, disappointment, pride. The promise is that God replaces what hardened with something alive and tender.",v:["I will take away the stony heart out of your flesh, and I will give you an heart of flesh.","Ezekiel 36:26"]},
+{i:"wash",t:"Cleaning from within",x:"Asking forgiveness is not a performance. It is letting God wash what you cannot clean alone and starting again lighter.",v:["Create in me a clean heart, O God.","Psalm 51:10"]},
+{i:"root",t:"Watch the roots",x:"Grudges kept grow roots. At first they look small; later they poison everything. To forgive is to pull the root before it grows.",v:["Lest any root of bitterness springing up trouble you.","Hebrews 12:15"]},
+{i:"shield",t:"A peace that stands guard",x:"Guarding the heart is not living in fear. It is receiving a peace that stands watch, protecting your thoughts and feelings.",v:["And the peace of God shall keep your hearts and minds through Christ Jesus.","Philippians 4:7"]},
+{i:"ripple",t:"Trust with all your heart",x:"To trust is to hand over the wheel. You do your part and let God steer what is beyond your control.",v:["Trust in the LORD with all thine heart; and lean not unto thine own understanding.","Proverbs 3:5"]},
+{i:"joy",t:"A grateful heart",x:"Gratitude warms. Whoever learns to give thanks sees what they already have and makes room for joy.",v:["I will praise thee, O LORD, with my whole heart.","Psalm 9:1"]},
+{k:"plan",t:"Your 7-day plan",l:["Read Proverbs 4 and write down what weighs most on your heart.","Ask God to search you (Psalm 139).","Write down a grudge and hand it over in prayer.","Ask someone's forgiveness, or forgive someone.","Swap one complaint for one thank-you.","Read Philippians 4 and say a promise of peace out loud.","Pray, giving your whole heart."]},
+{k:"end",i:"pulse",t:"A prayer for today",x:"Lord, search my heart. Take away the hardness, wash what is dirty and give me a new heart. Come in, stay and guard my life. Amen."}
+];
+var $=function(i){return document.getElementById(i)},st=$("stage"),cur=0,pg=[];
+function svg(k,c){return'<svg class="ill" viewBox="0 0 200 200" aria-hidden="true">'+I[k]+'</svg>'}
+P.forEach(function(p,n){var s=document.createElement("section");s.className="pg"+(p.k==="cover"?" cover":"");var h="";
+ if(p.k==="cover")h=svg("pulse")+'<h1>Guard Your Heart</h1><p class="x">A journey from darkness to light, in 12 animated pages.</p><button class="btn p" id="go">Start reading</button>';
+ else if(p.k==="plan")h='<h2>'+p.t+'</h2><ol class="pl">'+p.l.map(function(t,j){return'<li style="--n:'+j+'"><i></i><span><b>Day '+(j+1)+'.</b> '+t+'</span></li>'}).join("")+'</ol>';
+ else if(p.k==="end")h=svg(p.i)+'<h2>'+p.t+'</h2><p class="x">'+p.x+'</p><div class="row"><button class="btn" id="re">Read again</button><a class="btn p" id="sh" target="_blank" rel="noopener" style="text-decoration:none;text-align:center">Send to a friend</a></div>';
+ else h=svg(p.i)+'<h2>'+p.t+'</h2><p class="x">'+p.x+'</p><div class="v">“'+p.v[0]+'”<b>'+p.v[1]+'</b></div>';
+ s.innerHTML=h;st.appendChild(s);pg.push(s)});
+function go(n){n=Math.max(0,Math.min(P.length-1,n));cur=n;pg.forEach(function(p,i){p.classList.toggle("on",i===n);p.classList.toggle("out",i<n)});
+ $("bar").style.width=(n/(P.length-1)*100)+"%";$("cnt").textContent=n+" / "+(P.length-1);document.body.className=n===0?"c":"";
+ $("pv").disabled=n===0;$("nx").disabled=n===P.length-1}
+$("pv").onclick=function(){go(cur-1)};$("nx").onclick=function(){go(cur+1)};$("go").onclick=function(){go(1)};$("re").onclick=function(){go(0)};
+$("sh").href="https://wa.me/?text="+encodeURIComponent("Check out this animated e-book about the heart: "+SITE);
+addEventListener("keydown",function(e){if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1)});
+var x0=null;st.addEventListener("touchstart",function(e){x0=e.touches[0].clientX},{passive:true});
+st.addEventListener("touchend",function(e){if(x0==null)return;var d=e.changedTouches[0].clientX-x0;x0=null;if(d<-60)go(cur+1);else if(d>60)go(cur-1)});
+go(0);
+</script></body></html>
