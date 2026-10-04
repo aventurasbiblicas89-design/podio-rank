@@ -51,7 +51,7 @@ export default async function handler(req, res) {
     const pagamento = await r.json();
 
     if (pagamento.status !== 'approved') return res.status(200).end();
-
+if (String(pagamento.external_reference || '').startsWith('ebook-') || !pagamento.metadata?.posicao) return res.status(200).end();
     const { link, valor, nomeEmpresa, categoria, descricao, email, posicao } = pagamento.metadata;
 
     if (String(posicao).toUpperCase() === 'TAKEOVER') {
